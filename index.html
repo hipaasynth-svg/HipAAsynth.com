@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HipAAsynth — Deterministic Synthetic EHR Datasets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #888888;
+            --accent-blue: #00A8E8;
+            --accent-red: #E63946;
+            --border-subtle: #222222;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Circuit Pattern Decorations */
+        .circuit-bg {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .circuit-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, transparent 49%, rgba(0, 168, 232, 0.03) 50%, transparent 51%),
+                linear-gradient(0deg, transparent 49%, rgba(0, 168, 232, 0.03) 50%, transparent 51%);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .circuit-lines {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.08;
+        }
+
+        .circuit-lines.left {
+            left: 0;
+            bottom: 0;
+            width: 200px;
+            height: 300px;
+        }
+
+        .circuit-lines.right {
+            right: 0;
+            top: 0;
+            width: 150px;
+            height: 200px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header / Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 24px;
+            position: relative;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .hero .tagline {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: var(--accent-blue);
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .hero .subtext {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #c92f3a;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        section:nth-child(even) {
+            background-color: var(--bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* List Styles */
+        .feature-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px 40px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .feature-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 11px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-blue);
+            border-radius: 1px;
+        }
+
+        /* Negative List */
+        .negative-list li::before {
+            background-color: var(--accent-red);
+            transform: rotate(45deg);
+            width: 6px;
+            height: 6px;
+        }
+
+        /* Grid Layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .grid-item {
+            background-color: var(--bg-tertiary);
+            padding: 20px 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.2s ease;
+        }
+
+        .grid-item:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .grid-item span {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 120px 0;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 600;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-primary);
+            padding: 60px 0;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .footer-badges {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-blue);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-blue);
+            border-radius: 50%;
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            section {
+                padding: 60px 0;
+            }
+
+            .hero {
+                padding: 60px 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Selection */
+        ::selection {
+            background-color: rgba(0, 168, 232, 0.3);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero circuit-bg">
+        <div class="circuit-lines left">
+            <svg viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 300V200H60V150H100V100" stroke="#00A8E8" stroke-width="1.5"/>
+                <path d="M40 300V220H80V180H140V80" stroke="#00A8E8" stroke-width="1.5"/>
+                <path d="M60 300V240H120V200H160V120" stroke="#00A8E8" stroke-width="1.5"/>
+                <path d="M80 300V260H140V220H180V140" stroke="#00A8E8" stroke-width="1.5"/>
+                <circle cx="60" cy="150" r="4" fill="#00A8E8"/>
+                <circle cx="100" cy="100" r="4" fill="#00A8E8"/>
+                <circle cx="80" cy="180" r="4" fill="#00A8E8"/>
+                <circle cx="140" cy="80" r="4" fill="#00A8E8"/>
+                <circle cx="120" cy="200" r="4" fill="#00A8E8"/>
+                <circle cx="160" cy="120" r="4" fill="#00A8E8"/>
+                <circle cx="180" cy="140" r="4" fill="#00A8E8"/>
+            </svg>
+        </div>
+        <div class="circuit-lines right">
+            <svg viewBox="0 0 150 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M150 20H100V60H60V100H20" stroke="#00A8E8" stroke-width="1.5"/>
+                <path d="M150 50H120V80H80V120H40" stroke="#00A8E8" stroke-width="1.5"/>
+                <path d="M150 80H80V110H50V150" stroke="#00A8E8" stroke-width="1.5"/>
+                <circle cx="100" cy="60" r="4" fill="#00A8E8"/>
+                <circle cx="60" cy="100" r="4" fill="#00A8E8"/>
+                <circle cx="20" cy="100" r="4" fill="#00A8E8"/>
+                <circle cx="120" cy="80" r="4" fill="#00A8E8"/>
+                <circle cx="80" cy="120" r="4" fill="#00A8E8"/>
+                <circle cx="40" cy="120" r="4" fill="#00A8E8"/>
+                <circle cx="80" cy="110" r="4" fill="#00A8E8"/>
+                <circle cx="50" cy="150" r="4" fill="#00A8E8"/>
+            </svg>
+        </div>
+        <div class="logo">
+            <img src="logo.png" alt="HipAAsynth">
+        </div>
+        <h1>HipAAsynth</h1>
+        <p class="tagline">Deterministic Synthetic EHR Datasets</p>
+        <p class="subtext">Reproducible synthetic patient cohorts for testing, validation, and ML training.</p>
+        <div class="button-group">
+            <a href="#" class="btn btn-primary">Browse Data Packs</a>
+            <a href="#" class="btn btn-secondary">Request Cohort</a>
+        </div>
+    </header>
+
+    <!-- Things We Don't Sell -->
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Things We Don't Sell</h2>
+            </div>
+            <ul class="feature-list negative-list fade-in">
+                <li>Real patient data</li>
+                <li>Black box synthetic data</li>
+                <li>AI generated data to train your AI</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- What We Provide -->
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>What We Provide</h2>
+            </div>
+            <ul class="feature-list fade-in">
+                <li>Deterministic cohorts</li>
+                <li>Reproducible seeds</li>
+                <li>Longitudinal patients</li>
+                <li>Domain specific packs</li>
+                <li>Validation datasets</li>
+                <li>Twin cohorts</li>
+                <li>Configurable demographics</li>
+                <li>Structured EHR output</li>
+                <li>Zero PHI risk</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Available Datasets -->
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Available Datasets</h2>
+            </div>
+            <div class="grid-3 fade-in">
+                <div class="grid-item"><span>Cardiology</span></div>
+                <div class="grid-item"><span>Diabetes</span></div>
+                <div class="grid-item"><span>Hospital Operations</span></div>
+                <div class="grid-item"><span>Clinical Trial Cohorts</span></div>
+                <div class="grid-item"><span>ICU Populations</span></div>
+                <div class="grid-item"><span>Oncology</span></div>
+                <div class="grid-item"><span>Rare Disease</span></div>
+                <div class="grid-item"><span>Longitudinal Patients</span></div>
+                <div class="grid-item"><span>Matched Counterfactual Cohorts</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Use Cases</h2>
+            </div>
+            <div class="grid-3 fade-in">
+                <div class="grid-item"><span>ML Model Training</span></div>
+                <div class="grid-item"><span>Pipeline Testing</span></div>
+                <div class="grid-item"><span>Analytics Validation</span></div>
+                <div class="grid-item"><span>Clinical Trial Simulation</span></div>
+                <div class="grid-item"><span>Benchmarking</span></div>
+                <div class="grid-item"><span>Stress Testing</span></div>
+                <div class="grid-item"><span>EHR Testing</span></div>
+                <div class="grid-item"><span>AI Validation</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Properties -->
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Technical Properties</h2>
+            </div>
+            <ul class="feature-list fade-in">
+                <li>Deterministic generation</li>
+                <li>Same seed equals identical patients</li>
+                <li>Auditable generation</li>
+                <li>Distribution controlled cohorts</li>
+                <li>Reproducible datasets</li>
+                <li>Longitudinal timeline support</li>
+                <li>Modular pack architecture</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section circuit-bg">
+        <div class="container">
+            <h2 class="fade-in">Generate reproducible synthetic patient cohorts on demand.</h2>
+            <div class="button-group fade-in">
+                <a href="#" class="btn btn-primary">Browse HuggingFace</a>
+                <a href="#" class="btn btn-secondary">View GitHub</a>
+                <a href="#" class="btn btn-secondary">Request Dataset</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">HipAAsynth</div>
+                <p class="footer-tagline">Deterministic synthetic healthcare data</p>
+                <div class="footer-badges">
+                    <span class="badge">Zero PHI</span>
+                    <span class="badge">Reproducible</span>
+                    <span class="badge">Auditable</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
