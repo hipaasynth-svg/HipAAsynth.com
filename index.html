@@ -361,6 +361,88 @@
             }
         }
 
+        /* Pack Cards */
+        .pack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .pack-card {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.2s ease;
+        }
+
+        .pack-card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .pack-card .pack-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pack-card .pack-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .pack-card .pack-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .pack-card .pack-badge {
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            border: 1px solid rgba(0, 168, 232, 0.25);
+            padding: 3px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.03em;
+        }
+
+        .pack-card .pack-size {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .pack-card .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: auto;
+            padding: 10px 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: white;
+            background-color: var(--accent-red);
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .pack-card .btn-download:hover {
+            background-color: #c92f3a;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 640px) {
+            .pack-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Selection */
         ::selection {
             background-color: rgba(0, 168, 232, 0.3);
@@ -458,16 +540,61 @@
             <div class="section-header fade-in">
                 <h2>Available Datasets</h2>
             </div>
-            <div class="grid-3 fade-in">
-                <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr" target="_blank" class="grid-item" style="text-decoration:none;color:inherit;"><span>Cardiology</span></a>
-                <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr" target="_blank" class="grid-item" style="text-decoration:none;color:inherit;"><span>Diabetes</span></a>
-                <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations" target="_blank" class="grid-item" style="text-decoration:none;color:inherit;"><span>Hospital Operations</span></a>
-                <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts" target="_blank" class="grid-item" style="text-decoration:none;color:inherit;"><span>Clinical Trial Cohorts</span></a>
-                <div class="grid-item"><span>ICU Populations</span></div>
-                <div class="grid-item"><span>Oncology</span></div>
-                <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr" target="_blank" class="grid-item" style="text-decoration:none;color:inherit;"><span>Rare Disease</span></a>
-                <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients" target="_blank" class="grid-item" style="text-decoration:none;color:inherit;"><span>Longitudinal Patients</span></a>
-                <div class="grid-item"><span>Matched Counterfactual Cohorts</span></div>
+            <div class="pack-grid fade-in">
+                <div class="pack-card">
+                    <div class="pack-title">Cardiology EHR</div>
+                    <div class="pack-desc">Synthetic cardiac patient records with vitals, labs, and diagnoses.</div>
+                    <div class="pack-meta">
+                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-size">100 patients</span>
+                    </div>
+                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr" target="_blank" class="btn-download">Download Pack</a>
+                </div>
+                <div class="pack-card">
+                    <div class="pack-title">Diabetes EHR</div>
+                    <div class="pack-desc">Synthetic diabetic cohort with A1C, glucose, and comorbidity data.</div>
+                    <div class="pack-meta">
+                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-size">100 patients</span>
+                    </div>
+                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr" target="_blank" class="btn-download">Download Pack</a>
+                </div>
+                <div class="pack-card">
+                    <div class="pack-title">Hospital Operations</div>
+                    <div class="pack-desc">General hospital encounter data for operational analytics and testing.</div>
+                    <div class="pack-meta">
+                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-size">100 patients</span>
+                    </div>
+                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations" target="_blank" class="btn-download">Download Pack</a>
+                </div>
+                <div class="pack-card">
+                    <div class="pack-title">Clinical Trial Cohorts</div>
+                    <div class="pack-desc">Structured trial-ready patient cohorts with eligibility profiles.</div>
+                    <div class="pack-meta">
+                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-size">100 patients</span>
+                    </div>
+                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts" target="_blank" class="btn-download">Download Pack</a>
+                </div>
+                <div class="pack-card">
+                    <div class="pack-title">Longitudinal Patients</div>
+                    <div class="pack-desc">Multi-visit patient timelines with progressive clinical history.</div>
+                    <div class="pack-meta">
+                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-size">100 patients</span>
+                    </div>
+                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients" target="_blank" class="btn-download">Download Pack</a>
+                </div>
+                <div class="pack-card">
+                    <div class="pack-title">Rare Disease EHR</div>
+                    <div class="pack-desc">Synthetic rare disease cohort with low-prevalence condition profiles.</div>
+                    <div class="pack-meta">
+                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-size">100 patients</span>
+                    </div>
+                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr" target="_blank" class="btn-download">Download Pack</a>
+                </div>
             </div>
         </div>
     </section>
