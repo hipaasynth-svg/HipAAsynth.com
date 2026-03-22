@@ -628,6 +628,50 @@
             background-color: #c92f3a;
         }
 
+        .capability-card {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 28px 24px;
+            transition: border-color 0.2s ease;
+        }
+
+        .capability-card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .capability-card .cap-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .capability-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .capability-card ul li {
+            position: relative;
+            padding-left: 18px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.9;
+        }
+
+        .capability-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 11px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-blue);
+            border-radius: 1px;
+        }
+
         .pricing-tiers {
             display: flex;
             gap: 10px;
@@ -863,6 +907,65 @@
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
                     <button class="btn-generate" onclick="openModal('Rare Disease')">Generate Custom Cohort</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Capabilities</h2>
+            </div>
+            <div class="grid-3 fade-in">
+                <div class="capability-card">
+                    <div class="cap-title">Deterministic Cohorts</div>
+                    <ul>
+                        <li>Same seed identical output</li>
+                        <li>Reproducible populations</li>
+                        <li>Zero PHI</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">ML Ready Datasets</div>
+                    <ul>
+                        <li>Train/validation/test splits</li>
+                        <li>Large cohort sizes</li>
+                        <li>Controlled distributions</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Longitudinal Simulation</div>
+                    <ul>
+                        <li>Time progression</li>
+                        <li>Disease evolution</li>
+                        <li>Outcomes over time</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Clinical Trial Simulation</div>
+                    <ul>
+                        <li>Inclusion criteria cohorts</li>
+                        <li>Control/treatment arms</li>
+                        <li>Endpoint modeling</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Multi Site Simulation</div>
+                    <ul>
+                        <li>Twin hospitals</li>
+                        <li>Regional variation</li>
+                        <li>Referral networks</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Auditable Generation</div>
+                    <ul>
+                        <li>Validation artifacts</li>
+                        <li>Schema definitions</li>
+                        <li>Reproducibility commands</li>
+                    </ul>
                 </div>
             </div>
         </div>
