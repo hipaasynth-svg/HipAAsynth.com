@@ -776,17 +776,12 @@
             <img src="logo.png" alt="HipAAsynth">
         </div>
         <h1>HipAAsynth</h1>
-        <p class="tagline">Deterministic Synthetic EHR Datasets</p>
-        <p class="subtext">Reproducible synthetic patient cohorts for testing, validation, and ML training.</p>
+        <p class="tagline">Deterministic synthetic healthcare populations for ML, testing, and research</p>
+        <p class="subtext">Reproducible cohorts. Auditable generation. Zero PHI risk.<br>Generate controlled patient populations with identical seed regeneration.</p>
         <div class="button-group">
-    <a href="https://huggingface.co/HipAAsynth" target="_blank" class="btn btn-primary">
-        Browse Data Packs
-    </a>
-
-    <a href="mailto:contact@hipaasynth.com" class="btn btn-secondary">
-        Request Cohort
-    </a>
-</div>
+            <a href="#datasets" class="btn btn-primary">Explore Data Packs</a>
+            <button class="btn btn-secondary" onclick="openModal('Cardiology')">Generate Custom Cohort</button>
+        </div>
     </header>
 
     <!-- Things We Don't Sell -->
@@ -824,7 +819,7 @@
     </section>
 
     <!-- Available Datasets -->
-    <section>
+    <section id="datasets">
         <div class="container">
             <div class="section-header fade-in">
                 <h2>Available Datasets</h2>
