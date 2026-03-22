@@ -991,20 +991,32 @@
 
         function submitForm(e) {
             e.preventDefault();
-            var data = {
-                domain: document.getElementById('domain').value,
-                cohortSize: document.getElementById('cohortSize').value,
-                seed: document.getElementById('seed').value || null,
-                ageRange: document.getElementById('ageRange').value || null,
-                sexDistribution: document.getElementById('sexDist').value || null,
-                includeOutcomes: document.getElementById('includeOutcomes').checked,
-                includeLongitudinal: document.getElementById('includeLongitudinal').checked,
-                outputFormat: document.getElementById('outputFormat').value,
-                email: document.getElementById('email').value,
-                notes: document.getElementById('notes').value || null
-            };
-            console.log('Cohort Request:', JSON.stringify(data, null, 2));
-            alert('Request submitted. Check console for details.');
+            var domain = document.getElementById('domain').value;
+            var cohortSize = document.getElementById('cohortSize').value;
+            var seed = document.getElementById('seed').value || 'Not specified';
+            var ageRange = document.getElementById('ageRange').value || 'Not specified';
+            var sexDist = document.getElementById('sexDist').value || 'Not specified';
+            var includeOutcomes = document.getElementById('includeOutcomes').checked ? 'Yes' : 'No';
+            var includeLongitudinal = document.getElementById('includeLongitudinal').checked ? 'Yes' : 'No';
+            var outputFormat = document.getElementById('outputFormat').value;
+            var email = document.getElementById('email').value;
+            var notes = document.getElementById('notes').value || 'None';
+
+            var subject = encodeURIComponent('HipAAsynth Custom Cohort Request');
+            var body = encodeURIComponent(
+                'Domain: ' + domain + '\n' +
+                'Cohort Size: ' + cohortSize + '\n' +
+                'Seed: ' + seed + '\n' +
+                'Age Range: ' + ageRange + '\n' +
+                'Sex Distribution: ' + sexDist + '\n' +
+                'Include Outcomes: ' + includeOutcomes + '\n' +
+                'Include Longitudinal: ' + includeLongitudinal + '\n' +
+                'Output Format: ' + outputFormat + '\n' +
+                'Email: ' + email + '\n' +
+                'Notes: ' + notes
+            );
+
+            window.location.href = 'mailto:hipaasynth@gmail.com?subject=' + subject + '&body=' + body;
             closeModal();
             document.getElementById('cohortForm').reset();
         }
