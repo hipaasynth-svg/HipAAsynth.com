@@ -628,6 +628,51 @@
             background-color: #c92f3a;
         }
 
+        .pricing-tiers {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .pricing-tier {
+            flex: 1;
+            padding: 14px 10px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pricing-tier:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .pricing-tier.selected {
+            border-color: var(--accent-blue);
+            background-color: rgba(0, 168, 232, 0.08);
+        }
+
+        .pricing-tier .tier-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .pricing-tier .tier-size {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .pricing-tier .tier-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
         @media (max-width: 640px) {
             .pack-grid {
                 grid-template-columns: 1fr;
@@ -905,6 +950,26 @@
                         <option value="Rare Disease">Rare Disease</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Pricing Tier</label>
+                    <div class="pricing-tiers">
+                        <div class="pricing-tier" onclick="selectTier(this, 5000)">
+                            <div class="tier-name">Pilot</div>
+                            <div class="tier-size">up to 5,000 patients</div>
+                            <div class="tier-price">$250</div>
+                        </div>
+                        <div class="pricing-tier" onclick="selectTier(this, 25000)">
+                            <div class="tier-name">Standard</div>
+                            <div class="tier-size">up to 25,000 patients</div>
+                            <div class="tier-price">$750</div>
+                        </div>
+                        <div class="pricing-tier" onclick="selectTier(this, 100000)">
+                            <div class="tier-name">Extended</div>
+                            <div class="tier-size">up to 100,000 patients</div>
+                            <div class="tier-price">$1,500</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="cohortSize">Cohort Size</label>
@@ -972,8 +1037,23 @@
             observer.observe(el);
         });
 
+        var selectedTier = '';
+
+        function selectTier(el, size) {
+            document.querySelectorAll('.pricing-tier').forEach(function(t) {
+                t.classList.remove('selected');
+            });
+            el.classList.add('selected');
+            document.getElementById('cohortSize').value = size;
+            selectedTier = el.querySelector('.tier-name').textContent + ' (' + el.querySelector('.tier-price').textContent + ')';
+        }
+
         function openModal(domain) {
             document.getElementById('domain').value = domain;
+            selectedTier = '';
+            document.querySelectorAll('.pricing-tier').forEach(function(t) {
+                t.classList.remove('selected');
+            });
             document.getElementById('cohortModal').classList.add('active');
         }
 
@@ -1003,7 +1083,10 @@
             var notes = document.getElementById('notes').value || 'None';
 
             var subject = encodeURIComponent('HipAAsynth Custom Cohort Request');
+            var tier = selectedTier || 'Custom';
+
             var body = encodeURIComponent(
+                'Pricing Tier: ' + tier + '\n' +
                 'Domain: ' + domain + '\n' +
                 'Cohort Size: ' + cohortSize + '\n' +
                 'Seed: ' + seed + '\n' +
