@@ -22,9 +22,10 @@
             --bg-tertiary: #1a1a1a;
             --text-primary: #f0f0f0;
             --text-secondary: #888888;
-            --accent-blue: #00A8E8;
-            --accent-red: #E63946;
+            --accent-indigo: #6366f1;
+            --accent-indigo-hover: #4f46e5;
             --border-subtle: #222222;
+            --section-gap: 6rem;
         }
 
         html {
@@ -52,8 +53,8 @@
             right: 0;
             bottom: 0;
             background-image:
-                linear-gradient(90deg, transparent 49%, rgba(0, 168, 232, 0.03) 50%, transparent 51%),
-                linear-gradient(0deg, transparent 49%, rgba(0, 168, 232, 0.03) 50%, transparent 51%);
+                linear-gradient(90deg, transparent 49%, rgba(99, 102, 241, 0.03) 50%, transparent 51%),
+                linear-gradient(0deg, transparent 49%, rgba(99, 102, 241, 0.03) 50%, transparent 51%);
             background-size: 60px 60px;
             pointer-events: none;
         }
@@ -79,7 +80,7 @@
         }
 
         .container {
-            max-width: 960px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -94,19 +95,28 @@
             background-color: rgba(10, 10, 10, 0.92);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-subtle);
+            border-top: 3px solid transparent;
             padding: 0 24px;
+            transition: border-top-color 0.3s ease;
+        }
+
+        .site-nav.scrolled {
+            border-top-color: var(--accent-indigo);
         }
 
         .site-nav .nav-inner {
-            max-width: 960px;
+            max-width: 1100px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 52px;
+            height: 56px;
         }
 
         .site-nav .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 1rem;
             font-weight: 700;
             color: var(--text-primary);
@@ -114,10 +124,17 @@
             letter-spacing: -0.01em;
         }
 
+        .site-nav .nav-brand img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
         .site-nav .nav-links {
             display: flex;
             gap: 28px;
             list-style: none;
+            align-items: center;
         }
 
         .site-nav .nav-links a {
@@ -132,6 +149,24 @@
             color: var(--text-primary);
         }
 
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
         /* Hero */
         .hero {
             min-height: 100vh;
@@ -140,7 +175,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 80px 24px;
+            padding: 100px 24px 80px;
             position: relative;
         }
 
@@ -161,21 +196,14 @@
             font-size: clamp(2.5rem, 8vw, 4rem);
             font-weight: 700;
             letter-spacing: -0.02em;
-            margin-bottom: 8px;
+            margin-bottom: 20px;
             color: var(--text-primary);
         }
 
-        .hero .tagline {
-            font-size: clamp(1.1rem, 3vw, 1.4rem);
-            color: var(--accent-blue);
-            font-weight: 500;
-            margin-bottom: 24px;
-        }
-
         .hero .subtext {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
-            max-width: 540px;
+            max-width: 620px;
             margin-bottom: 40px;
             line-height: 1.7;
         }
@@ -199,63 +227,67 @@
             border-radius: 6px;
             transition: all 0.2s ease;
             cursor: pointer;
-            border: none;
         }
 
         .btn-primary {
-            background-color: var(--accent-red);
+            background-color: var(--accent-indigo);
             color: white;
+            border: 1px solid var(--accent-indigo);
         }
 
         .btn-primary:hover {
-            background-color: #c92f3a;
+            background-color: var(--accent-indigo-hover);
+            border-color: var(--accent-indigo-hover);
             transform: translateY(-1px);
         }
 
         .btn-secondary {
             background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-subtle);
+            color: var(--accent-indigo);
+            border: 1px solid var(--accent-indigo);
         }
 
         .btn-secondary:hover {
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
+            background-color: rgba(99, 102, 241, 0.08);
+            transform: translateY(-1px);
         }
 
+        /* Trust badges / stat pills */
         .trust-badges {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 16px;
             margin-top: 48px;
-            flex-wrap: wrap;
-            justify-content: center;
+            width: 100%;
+            max-width: 700px;
         }
 
         .trust-badge {
             background-color: var(--bg-tertiary);
             border: 1px solid var(--border-subtle);
             border-radius: 6px;
-            padding: 14px 20px;
+            padding: 20px 12px;
             text-align: center;
-            min-width: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trust-badge .tb-icon {
+            font-size: 1.4rem;
+            line-height: 1;
         }
 
         .trust-badge .tb-title {
             font-size: 0.85rem;
             font-weight: 600;
-            color: var(--accent-blue);
-            margin-bottom: 4px;
-        }
-
-        .trust-badge .tb-desc {
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            line-height: 1.4;
+            color: var(--accent-indigo);
         }
 
         /* Sections */
         section {
-            padding: 100px 0;
+            padding: var(--section-gap) 0;
             position: relative;
         }
 
@@ -279,70 +311,291 @@
         .section-header p {
             color: var(--text-secondary);
             font-size: 1rem;
-            max-width: 560px;
+            max-width: 620px;
             margin: 0 auto;
         }
 
-        /* Lists */
-        .feature-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px 40px;
-        }
-
-        .feature-list li {
+        /* How It Works Steps */
+        .steps-wrapper {
             position: relative;
-            padding-left: 24px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            line-height: 1.8;
         }
 
-        .feature-list li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 11px;
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-blue);
-            border-radius: 1px;
+        .steps-line {
+            display: none;
         }
 
-        .negative-list li::before {
-            background-color: var(--accent-red);
-            transform: rotate(45deg);
-            width: 6px;
-            height: 6px;
-        }
-
-        /* Grids */
-        .grid-3 {
+        .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            position: relative;
         }
 
-        .grid-item {
+        .step {
             background-color: var(--bg-tertiary);
-            padding: 20px 24px;
-            border-radius: 8px;
             border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 32px 20px 28px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: border-color 0.2s ease;
+        }
+
+        .step:hover {
+            border-color: var(--accent-indigo);
+        }
+
+        .step-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-indigo);
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+
+        .step-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .steps-connector {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-subtle);
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+
+        @media (min-width: 769px) {
+            .steps-connector {
+                display: block;
+                left: calc(25% / 2);
+                right: calc(25% / 2);
+            }
+            .step {
+                position: relative;
+                z-index: 1;
+            }
+        }
+
+        /* Code Block */
+        .code-block {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 24px;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .code-block .code-comment { color: #555; }
+        .code-block .code-key { color: var(--accent-indigo); }
+        .code-block .code-string { color: #98c379; }
+        .code-block .code-number { color: #d19a66; }
+        .code-block .code-bool { color: #c678dd; }
+
+        /* Format Cards */
+        .format-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .format-card {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: border-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .format-card:hover {
+            border-color: var(--accent-indigo);
+        }
+
+        .format-card .format-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .format-card .format-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .format-card .format-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Pack Cards */
+        .pack-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .pack-card {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.2s ease;
+        }
+
+        .pack-card:hover {
+            border-color: var(--accent-indigo);
+        }
+
+        .pack-card .pack-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pack-card .pack-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .pack-card .pack-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .pack-card .pack-tags {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+        }
+
+        .pack-card .pack-badge {
+            font-size: 0.75rem;
+            color: var(--accent-indigo);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            padding: 3px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.03em;
+        }
+
+        .pack-card .pack-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .pack-card .btn-preview,
+        .pack-card .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 5px;
+            text-decoration: none;
             transition: all 0.2s ease;
         }
 
-        .grid-item:hover {
-            border-color: var(--accent-blue);
+        .pack-card .btn-preview {
+            color: var(--accent-indigo);
+            background-color: transparent;
+            border: 1px solid var(--accent-indigo);
         }
 
-        .grid-item span {
+        .pack-card .btn-preview:hover {
+            background-color: rgba(99, 102, 241, 0.08);
+        }
+
+        .pack-card .btn-download {
+            color: white;
+            background-color: var(--accent-indigo);
+            border: 1px solid var(--accent-indigo);
+        }
+
+        .pack-card .btn-download:hover {
+            background-color: var(--accent-indigo-hover);
+            transform: translateY(-1px);
+        }
+
+        .section-cta {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        .section-cta p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Condition Tags */
+        .condition-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .condition-tag {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 14px 12px;
+            font-size: 0.85rem;
             color: var(--text-primary);
-            font-size: 0.95rem;
-            font-weight: 500;
+            text-align: center;
+            transition: border-color 0.2s ease;
+        }
+
+        .condition-tag:hover {
+            border-color: var(--accent-indigo);
         }
 
         /* Capability Cards */
+        .grid-3x2 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
         .capability-card {
             background-color: var(--bg-tertiary);
             border: 1px solid var(--border-subtle);
@@ -352,7 +605,7 @@
         }
 
         .capability-card:hover {
-            border-color: var(--accent-blue);
+            border-color: var(--accent-indigo);
         }
 
         .capability-card .cap-title {
@@ -383,138 +636,8 @@
             top: 11px;
             width: 6px;
             height: 6px;
-            background-color: var(--accent-blue);
+            background-color: var(--accent-indigo);
             border-radius: 1px;
-        }
-
-        /* How It Works Steps */
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            counter-reset: step-counter;
-        }
-
-        .step {
-            text-align: center;
-            position: relative;
-            counter-increment: step-counter;
-        }
-
-        .step-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background-color: var(--bg-tertiary);
-            border: 2px solid var(--accent-blue);
-            color: var(--accent-blue);
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .step-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .step-desc {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Code Block */
-        .code-block {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 24px;
-            overflow-x: auto;
-            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-            font-size: 0.82rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
-        }
-
-        .code-block .code-comment {
-            color: #555;
-        }
-
-        .code-block .code-key {
-            color: var(--accent-blue);
-        }
-
-        .code-block .code-string {
-            color: #98c379;
-        }
-
-        .code-block .code-number {
-            color: #d19a66;
-        }
-
-        .code-block .code-bool {
-            color: #c678dd;
-        }
-
-        /* Format Cards */
-        .format-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .format-card {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 28px 24px;
-            text-align: center;
-            transition: border-color 0.2s ease;
-        }
-
-        .format-card:hover {
-            border-color: var(--accent-blue);
-        }
-
-        .format-card .format-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .format-card .format-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Condition Tags */
-        .condition-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .condition-tag {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 4px;
-            padding: 8px 16px;
-            font-size: 0.85rem;
-            color: var(--text-primary);
-            transition: border-color 0.2s ease;
-        }
-
-        .condition-tag:hover {
-            border-color: var(--accent-blue);
         }
 
         /* API Section */
@@ -531,18 +654,31 @@
             gap: 16px;
         }
 
-        .api-info .endpoint-label {
+        .api-card {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 20px;
+            transition: border-color 0.2s ease;
+        }
+
+        .api-card:hover {
+            border-color: var(--accent-indigo);
+        }
+
+        .api-card .endpoint-label {
             font-size: 0.8rem;
             font-weight: 500;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.06em;
+            margin-bottom: 8px;
         }
 
-        .api-info .endpoint-method {
+        .api-card .endpoint-method {
             display: inline-block;
-            background-color: rgba(0, 168, 232, 0.12);
-            color: var(--accent-blue);
+            background-color: rgba(99, 102, 241, 0.12);
+            color: var(--accent-indigo);
             font-size: 0.78rem;
             font-weight: 600;
             padding: 3px 8px;
@@ -551,34 +687,34 @@
             font-family: 'SF Mono', monospace;
         }
 
-        .api-info .endpoint-path {
+        .api-card .endpoint-path {
             font-family: 'SF Mono', monospace;
             font-size: 0.9rem;
             color: var(--text-primary);
         }
 
-        .api-feature-list {
+        .api-card .api-feature-list {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin: 12px 0 0;
         }
 
-        .api-feature-list li {
+        .api-card .api-feature-list li {
             position: relative;
             padding-left: 18px;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
             line-height: 2;
         }
 
-        .api-feature-list li::before {
+        .api-card .api-feature-list li::before {
             content: '';
             position: absolute;
             left: 0;
             top: 11px;
             width: 6px;
             height: 6px;
-            background-color: var(--accent-blue);
+            background-color: var(--accent-indigo);
             border-radius: 1px;
         }
 
@@ -588,132 +724,12 @@
             padding: 120px 0;
         }
 
-        .cta-section h2 {
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            font-weight: 600;
-            margin-bottom: 40px;
-            color: var(--text-primary);
-        }
-
-        /* Pack Cards */
-        .pack-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .pack-card {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 28px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: border-color 0.2s ease;
-        }
-
-        .pack-card:hover {
-            border-color: var(--accent-blue);
-        }
-
-        .pack-card .pack-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .pack-card .pack-desc {
-            font-size: 0.9rem;
+        .cta-section p.cta-text {
+            font-size: clamp(1.1rem, 3vw, 1.35rem);
             color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .pack-card .pack-meta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-        }
-
-        .pack-card .pack-badge {
-            font-size: 0.75rem;
-            color: var(--accent-blue);
-            border: 1px solid rgba(0, 168, 232, 0.25);
-            padding: 3px 10px;
-            border-radius: 4px;
-            letter-spacing: 0.03em;
-        }
-
-        .pack-card .pack-size {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .pack-card .pack-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: auto;
-        }
-
-        .pack-card .btn-preview,
-        .pack-card .btn-download {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-            padding: 10px 0;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .pack-card .btn-preview {
-            color: var(--text-primary);
-            background-color: transparent;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .pack-card .btn-preview:hover {
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-        }
-
-        .pack-card .btn-download {
-            color: white;
-            background-color: var(--accent-red);
-            border: 1px solid var(--accent-red);
-        }
-
-        .pack-card .btn-download:hover {
-            background-color: #c92f3a;
-            transform: translateY(-1px);
-        }
-
-        .pack-card .btn-generate {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 10px 0;
-            margin-top: 8px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--accent-blue);
-            background-color: transparent;
-            border: 1px solid rgba(0, 168, 232, 0.25);
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .pack-card .btn-generate:hover {
-            border-color: var(--accent-blue);
-            background-color: rgba(0, 168, 232, 0.08);
+            max-width: 640px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
         }
 
         /* Footer */
@@ -725,7 +741,7 @@
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 40px;
             margin-bottom: 40px;
         }
@@ -753,7 +769,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: var(--accent-blue);
+            color: var(--accent-indigo);
             font-size: 0.82rem;
             font-weight: 500;
         }
@@ -762,7 +778,7 @@
             content: '';
             width: 6px;
             height: 6px;
-            background-color: var(--accent-blue);
+            background-color: var(--accent-indigo);
             border-radius: 50%;
         }
 
@@ -821,12 +837,12 @@
         }
 
         .pricing-tier:hover {
-            border-color: var(--accent-blue);
+            border-color: var(--accent-indigo);
         }
 
         .pricing-tier.selected {
-            border-color: var(--accent-blue);
-            background-color: rgba(0, 168, 232, 0.08);
+            border-color: var(--accent-indigo);
+            background-color: rgba(99, 102, 241, 0.08);
         }
 
         .pricing-tier .tier-name {
@@ -845,7 +861,7 @@
         .pricing-tier .tier-price {
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--accent-blue);
+            color: var(--accent-indigo);
         }
 
         /* Modal */
@@ -935,7 +951,7 @@
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--accent-indigo);
         }
 
         .form-group textarea {
@@ -967,7 +983,7 @@
         .form-check input[type="checkbox"] {
             width: 16px;
             height: 16px;
-            accent-color: var(--accent-blue);
+            accent-color: var(--accent-indigo);
         }
 
         .form-check label {
@@ -984,7 +1000,7 @@
             font-size: 0.95rem;
             font-weight: 500;
             color: white;
-            background-color: var(--accent-red);
+            background-color: var(--accent-indigo);
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -992,7 +1008,7 @@
         }
 
         .btn-submit:hover {
-            background-color: #c92f3a;
+            background-color: var(--accent-indigo-hover);
         }
 
         /* Scroll Animation */
@@ -1009,25 +1025,73 @@
 
         /* Selection */
         ::selection {
-            background-color: rgba(0, 168, 232, 0.3);
+            background-color: rgba(99, 102, 241, 0.3);
             color: var(--text-primary);
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .grid-5 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
             .site-nav .nav-links {
+                display: none;
+                position: absolute;
+                top: 56px;
+                left: 0;
+                right: 0;
+                background-color: rgba(10, 10, 10, 0.96);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                padding: 20px 24px;
                 gap: 16px;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+
+            .site-nav .nav-links.open {
+                display: flex;
             }
 
             .site-nav .nav-links a {
-                font-size: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .trust-badges {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .steps {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps-connector {
+                display: none !important;
             }
 
             .format-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .pack-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .condition-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-3x2 {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-5 {
                 grid-template-columns: 1fr;
             }
 
@@ -1043,11 +1107,11 @@
 
         @media (max-width: 640px) {
             section {
-                padding: 60px 0;
+                padding: calc(var(--section-gap) * 0.65) 0;
             }
 
             .hero {
-                padding: 80px 20px 60px;
+                padding: 100px 20px 60px;
             }
 
             .button-group {
@@ -1060,25 +1124,7 @@
             }
 
             .trust-badges {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .trust-badge {
-                width: 100%;
-                max-width: 280px;
-            }
-
-            .feature-list {
-                grid-template-columns: 1fr;
-            }
-
-            .grid-3 {
-                grid-template-columns: 1fr;
-            }
-
-            .pack-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .steps {
@@ -1093,19 +1139,23 @@
             .modal {
                 padding: 24px 20px;
             }
-
-            .site-nav .nav-links {
-                display: none;
-            }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="site-nav">
+    <nav class="site-nav" id="siteNav">
         <div class="nav-inner">
-            <a href="#" class="nav-brand">HipAAsynth</a>
-            <ul class="nav-links">
+            <a href="#" class="nav-brand">
+                <img src="https://hipaasynth.com/logo.png" alt="HipAAsynth logo">
+                HipAAsynth
+            </a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#datasets">Data Packs</a></li>
                 <li><a href="#formats">Formats</a></li>
@@ -1120,77 +1170,62 @@
     <header class="hero circuit-bg">
         <div class="circuit-lines left">
             <svg viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 300V200H60V150H100V100" stroke="#00A8E8" stroke-width="1.5"/>
-                <path d="M40 300V220H80V180H140V80" stroke="#00A8E8" stroke-width="1.5"/>
-                <path d="M60 300V240H120V200H160V120" stroke="#00A8E8" stroke-width="1.5"/>
-                <path d="M80 300V260H140V220H180V140" stroke="#00A8E8" stroke-width="1.5"/>
-                <circle cx="60" cy="150" r="4" fill="#00A8E8"/>
-                <circle cx="100" cy="100" r="4" fill="#00A8E8"/>
-                <circle cx="80" cy="180" r="4" fill="#00A8E8"/>
-                <circle cx="140" cy="80" r="4" fill="#00A8E8"/>
-                <circle cx="120" cy="200" r="4" fill="#00A8E8"/>
-                <circle cx="160" cy="120" r="4" fill="#00A8E8"/>
-                <circle cx="180" cy="140" r="4" fill="#00A8E8"/>
+                <path d="M20 300V200H60V150H100V100" stroke="#6366f1" stroke-width="1.5"/>
+                <path d="M40 300V220H80V180H140V80" stroke="#6366f1" stroke-width="1.5"/>
+                <path d="M60 300V240H120V200H160V120" stroke="#6366f1" stroke-width="1.5"/>
+                <path d="M80 300V260H140V220H180V140" stroke="#6366f1" stroke-width="1.5"/>
+                <circle cx="60" cy="150" r="4" fill="#6366f1"/>
+                <circle cx="100" cy="100" r="4" fill="#6366f1"/>
+                <circle cx="80" cy="180" r="4" fill="#6366f1"/>
+                <circle cx="140" cy="80" r="4" fill="#6366f1"/>
+                <circle cx="120" cy="200" r="4" fill="#6366f1"/>
+                <circle cx="160" cy="120" r="4" fill="#6366f1"/>
+                <circle cx="180" cy="140" r="4" fill="#6366f1"/>
             </svg>
         </div>
         <div class="circuit-lines right">
             <svg viewBox="0 0 150 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M150 20H100V60H60V100H20" stroke="#00A8E8" stroke-width="1.5"/>
-                <path d="M150 50H120V80H80V120H40" stroke="#00A8E8" stroke-width="1.5"/>
-                <path d="M150 80H80V110H50V150" stroke="#00A8E8" stroke-width="1.5"/>
-                <circle cx="100" cy="60" r="4" fill="#00A8E8"/>
-                <circle cx="60" cy="100" r="4" fill="#00A8E8"/>
-                <circle cx="20" cy="100" r="4" fill="#00A8E8"/>
-                <circle cx="120" cy="80" r="4" fill="#00A8E8"/>
-                <circle cx="80" cy="120" r="4" fill="#00A8E8"/>
-                <circle cx="40" cy="120" r="4" fill="#00A8E8"/>
-                <circle cx="80" cy="110" r="4" fill="#00A8E8"/>
-                <circle cx="50" cy="150" r="4" fill="#00A8E8"/>
+                <path d="M150 20H100V60H60V100H20" stroke="#6366f1" stroke-width="1.5"/>
+                <path d="M150 50H120V80H80V120H40" stroke="#6366f1" stroke-width="1.5"/>
+                <path d="M150 80H80V110H50V150" stroke="#6366f1" stroke-width="1.5"/>
+                <circle cx="100" cy="60" r="4" fill="#6366f1"/>
+                <circle cx="60" cy="100" r="4" fill="#6366f1"/>
+                <circle cx="20" cy="100" r="4" fill="#6366f1"/>
+                <circle cx="120" cy="80" r="4" fill="#6366f1"/>
+                <circle cx="80" cy="120" r="4" fill="#6366f1"/>
+                <circle cx="40" cy="120" r="4" fill="#6366f1"/>
+                <circle cx="80" cy="110" r="4" fill="#6366f1"/>
+                <circle cx="50" cy="150" r="4" fill="#6366f1"/>
             </svg>
         </div>
         <div class="logo">
-            <img src="logo.png" alt="HipAAsynth">
+            <img src="https://hipaasynth.com/logo.png" alt="HipAAsynth">
         </div>
-        <h1>HipAAsynth</h1>
-        <p class="tagline">Deterministic synthetic healthcare populations for ML, testing, and research</p>
-        <p class="subtext">Reproducible cohorts. Auditable generation. Zero PHI risk.<br>Generate controlled patient populations with identical seed regeneration.</p>
+        <h1>Your Seed Is Your Dataset.</h1>
+        <p class="subtext">HipAAsynth generates deterministic, auditable, FHIR R5-validated synthetic patient cohorts. Prevalence rates sourced from CDC, NHANES, AHA, and ADA. No real patient data. No PHI. Ever.</p>
         <div class="button-group">
             <a href="#datasets" class="btn btn-primary">Explore Data Packs</a>
-            <button class="btn btn-secondary" onclick="openModal('Cardiology')">Generate Custom Cohort</button>
+            <button class="btn btn-secondary" onclick="openModal('Cardiology')">Request a Cohort</button>
         </div>
         <div class="trust-badges">
             <div class="trust-badge">
+                <div class="tb-icon">&#x1F3AF;</div>
                 <div class="tb-title">Deterministic</div>
-                <div class="tb-desc">Same seed identical output</div>
             </div>
             <div class="trust-badge">
+                <div class="tb-icon">&#x1F50D;</div>
                 <div class="tb-title">Auditable</div>
-                <div class="tb-desc">Reproducible generation pipeline</div>
             </div>
             <div class="trust-badge">
+                <div class="tb-icon">&#x1F6E1;</div>
                 <div class="tb-title">Zero PHI</div>
-                <div class="tb-desc">Fully synthetic populations</div>
             </div>
             <div class="trust-badge">
+                <div class="tb-icon">&#x2699;</div>
                 <div class="tb-title">ML Ready</div>
-                <div class="tb-desc">Train validation test cohorts</div>
             </div>
         </div>
     </header>
-
-    <!-- Things We Don't Sell -->
-    <section>
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Things We Don't Sell</h2>
-            </div>
-            <ul class="feature-list negative-list fade-in">
-                <li>Real patient data</li>
-                <li>Black box synthetic data</li>
-                <li>AI generated data to train your AI</li>
-            </ul>
-        </div>
-    </section>
 
     <!-- How It Works -->
     <section id="how-it-works">
@@ -1199,26 +1234,29 @@
                 <h2>How It Works</h2>
                 <p>Four steps from seed to dataset. Every run is deterministic and auditable.</p>
             </div>
-            <div class="steps fade-in">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-title">Choose a Domain</div>
-                    <div class="step-desc">Cardiology, diabetes, rare disease, clinical trials, or general population</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Set a Seed</div>
-                    <div class="step-desc">Pick any integer. Same seed always produces the same patients, byte for byte</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Configure</div>
-                    <div class="step-desc">Cohort size, age range, sex ratio, ethnicity weights, visit count, conditions</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-title">Export</div>
-                    <div class="step-desc">Get CSV, JSON, or FHIR R5 bundles with anchor hash for verification</div>
+            <div class="steps-wrapper">
+                <div class="steps-connector"></div>
+                <div class="steps fade-in">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Choose a Domain</div>
+                        <div class="step-desc">Cardiology, diabetes, rare disease, clinical trials, or general population</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Set a Seed</div>
+                        <div class="step-desc">Pick any integer. Same seed always produces the same patients, byte for byte</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Configure</div>
+                        <div class="step-desc">Cohort size, age range, sex ratio, ethnicity weights, visit count, conditions</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Export</div>
+                        <div class="step-desc">Get CSV, JSON, or FHIR R5 bundles with anchor hash for verification</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1228,7 +1266,7 @@
     <section>
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Sample Output</h2>
+                <h2>Sample Patient Record</h2>
                 <p>Every patient record includes demographics, anthropometrics, conditions, visits, and labs.</p>
             </div>
             <div class="code-block fade-in">
@@ -1276,14 +1314,17 @@
             </div>
             <div class="format-cards fade-in">
                 <div class="format-card">
+                    <div class="format-icon">&#x1F4CA;</div>
                     <div class="format-name">CSV</div>
                     <div class="format-desc">Flat tabular format for pandas, R, Excel, and database import</div>
                 </div>
                 <div class="format-card">
+                    <div class="format-icon">&#x1F4C4;</div>
                     <div class="format-name">JSON</div>
                     <div class="format-desc">Nested structured records with full patient hierarchy and metadata</div>
                 </div>
                 <div class="format-card">
+                    <div class="format-icon">&#x1F3E5;</div>
                     <div class="format-name">FHIR R5</div>
                     <div class="format-desc">HL7 FHIR R5 bundles for EHR integration, interoperability testing, and health system workflows</div>
                 </div>
@@ -1291,92 +1332,90 @@
         </div>
     </section>
 
-    <!-- Available Datasets -->
+    <!-- Available Data Packs -->
     <section id="datasets">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Available Data Packs</h2>
-                <p>Free 100-patient sample packs on HuggingFace. Download instantly or request a larger cohort.</p>
+                <h2>Synthetic Data Packs &mdash; Free on HuggingFace</h2>
+                <p>100-patient sample cohorts. Download instantly. Request larger cohorts made to spec.</p>
             </div>
             <div class="pack-grid fade-in">
                 <div class="pack-card">
                     <div class="pack-title">Cardiology EHR</div>
                     <div class="pack-desc">Synthetic cardiac patient records with vitals, labs, and diagnoses.</div>
                     <div class="pack-meta">
-                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
-                        <span class="pack-size">100 patients</span>
+                        <span class="pack-tags">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-badge">100 patients</span>
                     </div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
-                    <button class="btn-generate" onclick="openModal('Cardiology')">Generate Custom Cohort</button>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Diabetes EHR</div>
                     <div class="pack-desc">Synthetic diabetic cohort with A1C, glucose, and comorbidity data.</div>
                     <div class="pack-meta">
-                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
-                        <span class="pack-size">100 patients</span>
+                        <span class="pack-tags">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-badge">100 patients</span>
                     </div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
-                    <button class="btn-generate" onclick="openModal('Diabetes')">Generate Custom Cohort</button>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Hospital Operations</div>
                     <div class="pack-desc">General hospital encounter data for operational analytics and testing.</div>
                     <div class="pack-meta">
-                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
-                        <span class="pack-size">100 patients</span>
+                        <span class="pack-tags">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-badge">100 patients</span>
                     </div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
-                    <button class="btn-generate" onclick="openModal('Hospital Operations')">Generate Custom Cohort</button>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Clinical Trial Cohorts</div>
                     <div class="pack-desc">Structured trial-ready patient cohorts with eligibility profiles.</div>
                     <div class="pack-meta">
-                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
-                        <span class="pack-size">100 patients</span>
+                        <span class="pack-tags">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-badge">100 patients</span>
                     </div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
-                    <button class="btn-generate" onclick="openModal('Clinical Trial')">Generate Custom Cohort</button>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Longitudinal Patients</div>
                     <div class="pack-desc">Multi-visit patient timelines with progressive clinical history.</div>
                     <div class="pack-meta">
-                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
-                        <span class="pack-size">100 patients</span>
+                        <span class="pack-tags">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-badge">100 patients</span>
                     </div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
-                    <button class="btn-generate" onclick="openModal('Longitudinal')">Generate Custom Cohort</button>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Rare Disease EHR</div>
                     <div class="pack-desc">SMA, DMD, and Fabry disease cohorts with low-prevalence condition profiles.</div>
                     <div class="pack-meta">
-                        <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
-                        <span class="pack-size">100 patients</span>
+                        <span class="pack-tags">Deterministic &bull; Seeded &bull; Synthetic</span>
+                        <span class="pack-badge">100 patients</span>
                     </div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
-                    <button class="btn-generate" onclick="openModal('Rare Disease')">Generate Custom Cohort</button>
                 </div>
+            </div>
+            <div class="section-cta fade-in">
+                <p>Need a larger cohort or custom configuration? Request one made to spec.</p>
+                <button class="btn btn-primary" onclick="openModal('Cardiology')">Request a Cohort</button>
             </div>
         </div>
     </section>
@@ -1386,9 +1425,9 @@
         <div class="container">
             <div class="section-header fade-in">
                 <h2>Supported Conditions</h2>
-                <p>Ten clinical conditions with CDC/NHANES-sourced prevalence rates, age-adjusted onset, and comorbidity correlation.</p>
+                <p>Prevalence rates sourced from CDC, NHANES, AHA, and ADA published data. Age-adjusted onset. Comorbidity correlation included.</p>
             </div>
-            <div class="condition-tags fade-in">
+            <div class="condition-grid fade-in">
                 <span class="condition-tag">Type 2 Diabetes</span>
                 <span class="condition-tag">Hypertension</span>
                 <span class="condition-tag">Hyperlipidemia</span>
@@ -1403,14 +1442,14 @@
         </div>
     </section>
 
-    <!-- Configuration -->
+    <!-- Configurable Parameters -->
     <section>
         <div class="container">
             <div class="section-header fade-in">
                 <h2>Configurable Parameters</h2>
                 <p>Full control over every axis of your synthetic population.</p>
             </div>
-            <div class="grid-3 fade-in">
+            <div class="grid-3x2 fade-in">
                 <div class="capability-card">
                     <div class="cap-title">Demographics</div>
                     <ul>
@@ -1463,31 +1502,35 @@
         </div>
     </section>
 
-    <!-- API Access -->
+    <!-- REST API -->
     <section id="api">
         <div class="container">
             <div class="section-header fade-in">
                 <h2>REST API</h2>
-                <p>Generate cohorts programmatically. One endpoint, deterministic output.</p>
+                <p>Programmatic cohort generation. Deterministic output. Anchor hash verification on every response.</p>
             </div>
             <div class="api-example fade-in">
                 <div class="api-info">
-                    <div>
+                    <div class="api-card">
                         <div class="endpoint-label">Health Check</div>
                         <div><span class="endpoint-method">GET</span><span class="endpoint-path">/health</span></div>
+                        <ul class="api-feature-list">
+                            <li>Engine version and status</li>
+                            <li>Schema version confirmation</li>
+                        </ul>
                     </div>
-                    <div>
+                    <div class="api-card">
                         <div class="endpoint-label">Generate Cohort</div>
                         <div><span class="endpoint-method">POST</span><span class="endpoint-path">/generate</span></div>
+                        <ul class="api-feature-list">
+                            <li>JSON or CSV response format</li>
+                            <li>Seed parameter for deterministic output</li>
+                            <li>Population profile selection</li>
+                            <li>Cohort size up to 10,000 per request</li>
+                            <li>Summary statistics included in response</li>
+                            <li>Anchor hash for verification</li>
+                        </ul>
                     </div>
-                    <ul class="api-feature-list">
-                        <li>JSON or CSV response format</li>
-                        <li>Seed parameter for deterministic output</li>
-                        <li>Population profile selection</li>
-                        <li>Cohort size up to 10,000 per request</li>
-                        <li>Summary statistics included in response</li>
-                        <li>Anchor hash for verification</li>
-                    </ul>
                 </div>
                 <div class="code-block">
 <span class="code-comment">// POST /generate</span>
@@ -1512,13 +1555,13 @@
         </div>
     </section>
 
-    <!-- Who This Is For -->
+    <!-- Built For -->
     <section id="who">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Who This Is For</h2>
+                <h2>Built For</h2>
             </div>
-            <div class="grid-3 fade-in">
+            <div class="grid-5 fade-in">
                 <div class="capability-card">
                     <div class="cap-title">Machine Learning Teams</div>
                     <ul>
@@ -1568,15 +1611,15 @@
         </div>
     </section>
 
-    <!-- Why HipAAsynth -->
+    <!-- What Makes HipAAsynth Different -->
     <section>
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Why HipAAsynth</h2>
+                <h2>What Makes HipAAsynth Different</h2>
             </div>
-            <div class="grid-3 fade-in">
+            <div class="grid-3x2 fade-in">
                 <div class="capability-card">
-                    <div class="cap-title">Deterministic Not AI Generated</div>
+                    <div class="cap-title">Deterministic, Not Generative</div>
                     <ul>
                         <li>Same seed identical dataset</li>
                         <li>Reproducible cohorts</li>
@@ -1627,14 +1670,14 @@
         </div>
     </section>
 
-    <!-- CTA -->
+    <!-- Footer CTA -->
     <section class="cta-section circuit-bg">
         <div class="container">
-            <h2 class="fade-in">Generate reproducible synthetic patient cohorts on demand.</h2>
+            <p class="cta-text fade-in">Reproducible synthetic patient cohorts. Built for research, AI development, and clinical data infrastructure.</p>
             <div class="button-group fade-in">
                 <a href="https://huggingface.co/HipAAsynth" target="_blank" class="btn btn-primary">Browse HuggingFace</a>
                 <a href="https://github.com/hipaasynth-svg/HipAAsynth" target="_blank" class="btn btn-secondary">View GitHub</a>
-                <a href="mailto:HipAAsynth@gmail.com" class="btn btn-secondary">Request Dataset</a>
+                <button class="btn btn-secondary" onclick="openModal('Cardiology')">Request Dataset</button>
             </div>
         </div>
     </section>
@@ -1788,6 +1831,27 @@
     </div>
 
     <script>
+        var siteNav = document.getElementById('siteNav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 10) {
+                siteNav.classList.add('scrolled');
+            } else {
+                siteNav.classList.remove('scrolled');
+            }
+        });
+
+        var hamburgerBtn = document.getElementById('hamburgerBtn');
+        var navLinks = document.getElementById('navLinks');
+        hamburgerBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('open');
+            });
+        });
+
         var observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
