@@ -417,19 +417,41 @@
             color: var(--text-secondary);
         }
 
+        .pack-card .pack-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .pack-card .btn-preview,
         .pack-card .btn-download {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin-top: auto;
+            flex: 1;
             padding: 10px 0;
             font-size: 0.85rem;
             font-weight: 500;
-            color: white;
-            background-color: var(--accent-red);
             border-radius: 5px;
             text-decoration: none;
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            transition: all 0.2s ease;
+        }
+
+        .pack-card .btn-preview {
+            color: var(--text-primary);
+            background-color: transparent;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .pack-card .btn-preview:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .pack-card .btn-download {
+            color: white;
+            background-color: var(--accent-red);
+            border: 1px solid var(--accent-red);
         }
 
         .pack-card .btn-download:hover {
@@ -548,7 +570,10 @@
                         <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
                         <span class="pack-size">100 patients</span>
                     </div>
-                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr" target="_blank" class="btn-download">Download Pack</a>
+                    <div class="pack-buttons">
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr" target="_blank" class="btn-preview">Preview</a>
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
+                    </div>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Diabetes EHR</div>
@@ -557,7 +582,10 @@
                         <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
                         <span class="pack-size">100 patients</span>
                     </div>
-                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr" target="_blank" class="btn-download">Download Pack</a>
+                    <div class="pack-buttons">
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr" target="_blank" class="btn-preview">Preview</a>
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
+                    </div>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Hospital Operations</div>
@@ -566,7 +594,10 @@
                         <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
                         <span class="pack-size">100 patients</span>
                     </div>
-                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations" target="_blank" class="btn-download">Download Pack</a>
+                    <div class="pack-buttons">
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations" target="_blank" class="btn-preview">Preview</a>
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
+                    </div>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Clinical Trial Cohorts</div>
@@ -575,7 +606,10 @@
                         <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
                         <span class="pack-size">100 patients</span>
                     </div>
-                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts" target="_blank" class="btn-download">Download Pack</a>
+                    <div class="pack-buttons">
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts" target="_blank" class="btn-preview">Preview</a>
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
+                    </div>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Longitudinal Patients</div>
@@ -584,7 +618,10 @@
                         <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
                         <span class="pack-size">100 patients</span>
                     </div>
-                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients" target="_blank" class="btn-download">Download Pack</a>
+                    <div class="pack-buttons">
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients" target="_blank" class="btn-preview">Preview</a>
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
+                    </div>
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Rare Disease EHR</div>
@@ -593,7 +630,10 @@
                         <span class="pack-badge">Deterministic &bull; Seeded &bull; Synthetic</span>
                         <span class="pack-size">100 patients</span>
                     </div>
-                    <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr" target="_blank" class="btn-download">Download Pack</a>
+                    <div class="pack-buttons">
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr" target="_blank" class="btn-preview">Preview</a>
+                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
+                    </div>
                 </div>
             </div>
         </div>
