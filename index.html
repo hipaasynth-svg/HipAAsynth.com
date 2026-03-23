@@ -3,1267 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HipAAsynth — Deterministic Synthetic Healthcare Populations</title>
-    <meta name="description" content="Deterministic synthetic healthcare populations for ML, testing, and research. Reproducible cohorts with zero PHI risk.">
-    <meta property="og:title" content="HipAAsynth — Deterministic Synthetic Healthcare Populations">
-    <meta property="og:description" content="Reproducible cohorts. Auditable generation. Zero PHI risk. Generate controlled patient populations with identical seed regeneration.">
+    <title>HipAAsynth — Deterministic Synthetic Patient Data</title>
+    <meta name="description" content="Deterministic synthetic patient data for testing, benchmarking, and validation. Reproducible, auditable cohorts with structured EHR-style outputs and zero PHI.">
+    <meta property="og:title" content="HipAAsynth — Deterministic Synthetic Patient Data">
+    <meta property="og:description" content="Reproducible, auditable synthetic cohorts with structured EHR-style outputs and zero PHI.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hipaasynth.com">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --text-primary: #f0f0f0;
-            --text-secondary: #888888;
-            --accent-indigo: #6366f1;
-            --accent-indigo-hover: #4f46e5;
-            --border-subtle: #222222;
-            --section-gap: 6rem;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .circuit-bg {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .circuit-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                linear-gradient(90deg, transparent 49%, rgba(99, 102, 241, 0.03) 50%, transparent 51%),
-                linear-gradient(0deg, transparent 49%, rgba(99, 102, 241, 0.03) 50%, transparent 51%);
-            background-size: 60px 60px;
-            pointer-events: none;
-        }
-
-        .circuit-lines {
-            position: absolute;
-            pointer-events: none;
-            opacity: 0.08;
-        }
-
-        .circuit-lines.left {
-            left: 0;
-            bottom: 0;
-            width: 200px;
-            height: 300px;
-        }
-
-        .circuit-lines.right {
-            right: 0;
-            top: 0;
-            width: 150px;
-            height: 200px;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Sticky Nav */
-        .site-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 900;
-            background-color: rgba(10, 10, 10, 0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-subtle);
-            border-top: 3px solid transparent;
-            padding: 0 24px;
-            transition: border-top-color 0.3s ease;
-        }
-
-        .site-nav.scrolled {
-            border-top-color: var(--accent-indigo);
-        }
-
-        .site-nav .nav-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 56px;
-        }
-
-        .site-nav .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            text-decoration: none;
-            letter-spacing: -0.01em;
-        }
-
-        .site-nav .nav-brand img {
-            width: 28px;
-            height: 28px;
-            object-fit: contain;
-        }
-
-        .site-nav .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-            align-items: center;
-        }
-
-        .site-nav .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.82rem;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .site-nav .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 22px;
-            height: 2px;
-            background-color: var(--text-primary);
-            transition: all 0.3s ease;
-        }
-
-        /* Hero */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 100px 24px 80px;
-            position: relative;
-        }
-
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 40px;
-            position: relative;
-        }
-
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .hero .subtext {
-            font-size: 1.05rem;
-            color: var(--text-secondary);
-            max-width: 620px;
-            margin-bottom: 40px;
-            line-height: 1.7;
-        }
-
-        /* Buttons */
-        .button-group {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 32px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-indigo);
-            color: white;
-            border: 1px solid var(--accent-indigo);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent-indigo-hover);
-            border-color: var(--accent-indigo-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--accent-indigo);
-            border: 1px solid var(--accent-indigo);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(99, 102, 241, 0.08);
-            transform: translateY(-1px);
-        }
-
-        /* Trust badges / stat pills */
-        .trust-badges {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-top: 48px;
-            width: 100%;
-            max-width: 700px;
-        }
-
-        .trust-badge {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            padding: 20px 12px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .trust-badge .tb-icon {
-            font-size: 1.4rem;
-            line-height: 1;
-        }
-
-        .trust-badge .tb-title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--accent-indigo);
-        }
-
-        /* Sections */
-        section {
-            padding: var(--section-gap) 0;
-            position: relative;
-        }
-
-        section:nth-child(even) {
-            background-color: var(--bg-secondary);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-
-        .section-header p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            max-width: 620px;
-            margin: 0 auto;
-        }
-
-        /* How It Works Steps */
-        .steps-wrapper {
-            position: relative;
-        }
-
-        .steps-line {
-            display: none;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            position: relative;
-        }
-
-        .step {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 32px 20px 28px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: border-color 0.2s ease;
-        }
-
-        .step:hover {
-            border-color: var(--accent-indigo);
-        }
-
-        .step-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-indigo);
-            margin-bottom: 16px;
-            line-height: 1;
-        }
-
-        .step-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .step-desc {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .steps-connector {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--border-subtle);
-            z-index: 0;
-            transform: translateY(-50%);
-        }
-
-        @media (min-width: 769px) {
-            .steps-connector {
-                display: block;
-                left: calc(25% / 2);
-                right: calc(25% / 2);
-            }
-            .step {
-                position: relative;
-                z-index: 1;
-            }
-        }
-
-        /* Code Block */
-        .code-block {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 24px;
-            overflow-x: auto;
-            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-            font-size: 0.82rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
-        }
-
-        .code-block .code-comment { color: #555; }
-        .code-block .code-key { color: var(--accent-indigo); }
-        .code-block .code-string { color: #98c379; }
-        .code-block .code-number { color: #d19a66; }
-        .code-block .code-bool { color: #c678dd; }
-
-        /* Format Cards */
-        .format-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .format-card {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 32px 24px;
-            text-align: center;
-            transition: border-color 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .format-card:hover {
-            border-color: var(--accent-indigo);
-        }
-
-        .format-card .format-icon {
-            font-size: 2rem;
-            margin-bottom: 16px;
-        }
-
-        .format-card .format-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .format-card .format-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Pack Cards */
-        .pack-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .pack-card {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 28px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: border-color 0.2s ease;
-        }
-
-        .pack-card:hover {
-            border-color: var(--accent-indigo);
-        }
-
-        .pack-card .pack-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .pack-card .pack-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .pack-card .pack-meta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-        }
-
-        .pack-card .pack-tags {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.03em;
-        }
-
-        .pack-card .pack-badge {
-            font-size: 0.75rem;
-            color: var(--accent-indigo);
-            border: 1px solid rgba(99, 102, 241, 0.25);
-            padding: 3px 10px;
-            border-radius: 4px;
-            letter-spacing: 0.03em;
-        }
-
-        .pack-card .pack-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: auto;
-        }
-
-        .pack-card .btn-preview,
-        .pack-card .btn-download {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 0;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .pack-card .btn-preview {
-            color: var(--accent-indigo);
-            background-color: transparent;
-            border: 1px solid var(--accent-indigo);
-        }
-
-        .pack-card .btn-preview:hover {
-            background-color: rgba(99, 102, 241, 0.08);
-        }
-
-        .pack-card .btn-download {
-            color: white;
-            background-color: var(--accent-indigo);
-            border: 1px solid var(--accent-indigo);
-        }
-
-        .pack-card .btn-download:hover {
-            background-color: var(--accent-indigo-hover);
-            transform: translateY(-1px);
-        }
-
-        .section-cta {
-            text-align: center;
-            margin-top: 48px;
-        }
-
-        .section-cta p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            margin-bottom: 20px;
-        }
-
-        /* Condition Tags */
-        .condition-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-        }
-
-        .condition-tag {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            padding: 14px 12px;
-            font-size: 0.85rem;
-            color: var(--text-primary);
-            text-align: center;
-            transition: border-color 0.2s ease;
-        }
-
-        .condition-tag:hover {
-            border-color: var(--accent-indigo);
-        }
-
-        /* Capability Cards */
-        .grid-3x2 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .grid-5 {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-        }
-
-        .capability-card {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 28px 24px;
-            transition: border-color 0.2s ease;
-        }
-
-        .capability-card:hover {
-            border-color: var(--accent-indigo);
-        }
-
-        .capability-card .cap-title {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-
-        .capability-card ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .capability-card ul li {
-            position: relative;
-            padding-left: 18px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.9;
-        }
-
-        .capability-card ul li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 11px;
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent-indigo);
-            border-radius: 1px;
-        }
-
-        /* API Section */
-        .api-example {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            align-items: start;
-        }
-
-        .api-info {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .api-card {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 20px;
-            transition: border-color 0.2s ease;
-        }
-
-        .api-card:hover {
-            border-color: var(--accent-indigo);
-        }
-
-        .api-card .endpoint-label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 8px;
-        }
-
-        .api-card .endpoint-method {
-            display: inline-block;
-            background-color: rgba(99, 102, 241, 0.12);
-            color: var(--accent-indigo);
-            font-size: 0.78rem;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 3px;
-            margin-right: 6px;
-            font-family: 'SF Mono', monospace;
-        }
-
-        .api-card .endpoint-path {
-            font-family: 'SF Mono', monospace;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-        }
-
-        .api-card .api-feature-list {
-            list-style: none;
-            padding: 0;
-            margin: 12px 0 0;
-        }
-
-        .api-card .api-feature-list li {
-            position: relative;
-            padding-left: 18px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 2;
-        }
-
-        .api-card .api-feature-list li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 11px;
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent-indigo);
-            border-radius: 1px;
-        }
-
-        /* CTA */
-        .cta-section {
-            text-align: center;
-            padding: 120px 0;
-        }
-
-        .cta-section p.cta-text {
-            font-size: clamp(1.1rem, 3vw, 1.35rem);
-            color: var(--text-secondary);
-            max-width: 640px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--bg-primary);
-            padding: 60px 0;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-brand-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .footer-tagline {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-        }
-
-        .footer-badges {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--accent-indigo);
-            font-size: 0.82rem;
-            font-weight: 500;
-        }
-
-        .badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent-indigo);
-            border-radius: 50%;
-        }
-
-        .footer-col-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 16px;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.88rem;
-            transition: color 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 24px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            width: 100%;
-            max-width: 520px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 32px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .modal-header h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 4px 8px;
-            line-height: 1;
-        }
-
-        .modal-close:hover {
-            color: var(--text-primary);
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 12px;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 5px;
-            outline: none;
-            font-family: inherit;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--accent-indigo);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 70px;
-        }
-
-        .form-group select option {
-            background-color: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        .form-row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .form-check {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .form-check input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--accent-indigo);
-        }
-
-        .form-check label {
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            margin-bottom: 0;
-            cursor: pointer;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: white;
-            background-color: var(--accent-indigo);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--accent-indigo-hover);
-        }
-
-        /* Scroll Animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Selection */
-        ::selection {
-            background-color: rgba(99, 102, 241, 0.3);
-            color: var(--text-primary);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .grid-5 {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-
-            .site-nav .nav-links {
-                display: none;
-                position: absolute;
-                top: 56px;
-                left: 0;
-                right: 0;
-                background-color: rgba(10, 10, 10, 0.96);
-                backdrop-filter: blur(12px);
-                flex-direction: column;
-                padding: 20px 24px;
-                gap: 16px;
-                border-bottom: 1px solid var(--border-subtle);
-            }
-
-            .site-nav .nav-links.open {
-                display: flex;
-            }
-
-            .site-nav .nav-links a {
-                font-size: 0.9rem;
-            }
-
-            .trust-badges {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .steps {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .steps-connector {
-                display: none !important;
-            }
-
-            .format-cards {
-                grid-template-columns: 1fr;
-            }
-
-            .pack-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .condition-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .grid-3x2 {
-                grid-template-columns: 1fr;
-            }
-
-            .grid-5 {
-                grid-template-columns: 1fr;
-            }
-
-            .api-example {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            section {
-                padding: calc(var(--section-gap) * 0.65) 0;
-            }
-
-            .hero {
-                padding: 100px 20px 60px;
-            }
-
-            .button-group {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .trust-badges {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-
-            .modal {
-                padding: 24px 20px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="site-nav" id="siteNav">
         <div class="nav-inner">
-            <a href="#" class="nav-brand">
+            <a href="/" class="nav-brand">
                 <img src="https://hipaasynth.com/logo.png" alt="HipAAsynth logo">
                 HipAAsynth
             </a>
             <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#datasets">Data Packs</a></li>
-                <li><a href="#formats">Formats</a></li>
-                <li><a href="#conditions">Conditions</a></li>
-                <li><a href="#api">API</a></li>
                 <li><a href="#who">Who It's For</a></li>
+                <li><a href="#deliverables">Deliverables</a></li>
+                <li><a href="#datasets">Data Packs</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="request.html">Request a Cohort</a></li>
+                <li><a href="mailto:HipAAsynth@gmail.com">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Hero -->
     <header class="hero circuit-bg">
         <div class="circuit-lines left">
             <svg viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 300V200H60V150H100V100" stroke="#6366f1" stroke-width="1.5"/>
                 <path d="M40 300V220H80V180H140V80" stroke="#6366f1" stroke-width="1.5"/>
                 <path d="M60 300V240H120V200H160V120" stroke="#6366f1" stroke-width="1.5"/>
-                <path d="M80 300V260H140V220H180V140" stroke="#6366f1" stroke-width="1.5"/>
                 <circle cx="60" cy="150" r="4" fill="#6366f1"/>
                 <circle cx="100" cy="100" r="4" fill="#6366f1"/>
-                <circle cx="80" cy="180" r="4" fill="#6366f1"/>
                 <circle cx="140" cy="80" r="4" fill="#6366f1"/>
-                <circle cx="120" cy="200" r="4" fill="#6366f1"/>
                 <circle cx="160" cy="120" r="4" fill="#6366f1"/>
-                <circle cx="180" cy="140" r="4" fill="#6366f1"/>
             </svg>
         </div>
         <div class="circuit-lines right">
             <svg viewBox="0 0 150 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M150 20H100V60H60V100H20" stroke="#6366f1" stroke-width="1.5"/>
                 <path d="M150 50H120V80H80V120H40" stroke="#6366f1" stroke-width="1.5"/>
-                <path d="M150 80H80V110H50V150" stroke="#6366f1" stroke-width="1.5"/>
                 <circle cx="100" cy="60" r="4" fill="#6366f1"/>
                 <circle cx="60" cy="100" r="4" fill="#6366f1"/>
-                <circle cx="20" cy="100" r="4" fill="#6366f1"/>
-                <circle cx="120" cy="80" r="4" fill="#6366f1"/>
                 <circle cx="80" cy="120" r="4" fill="#6366f1"/>
-                <circle cx="40" cy="120" r="4" fill="#6366f1"/>
-                <circle cx="80" cy="110" r="4" fill="#6366f1"/>
-                <circle cx="50" cy="150" r="4" fill="#6366f1"/>
             </svg>
         </div>
         <div class="logo">
             <img src="https://hipaasynth.com/logo.png" alt="HipAAsynth">
         </div>
-        <h1>Your Seed Is Your Dataset.</h1>
-        <p class="subtext">HipAAsynth generates deterministic, auditable, FHIR R5-validated synthetic patient cohorts. Prevalence rates sourced from CDC, NHANES, AHA, and ADA. No real patient data. No PHI. Ever.</p>
+        <h1>Deterministic synthetic patient data for testing, benchmarking, and validation.</h1>
+        <p class="subtext">HipAAsynth delivers reproducible synthetic cohorts for healthcare ML, pipeline testing, product development, and validation workflows &mdash; without PHI risk.</p>
         <div class="button-group">
-            <a href="#datasets" class="btn btn-primary">Explore Data Packs</a>
-            <button class="btn btn-secondary" onclick="openModal('Cardiology')">Request a Cohort</button>
+            <a href="#products" class="btn btn-primary">View Products</a>
+            <a href="request.html" class="btn btn-secondary">Request a Cohort</a>
         </div>
         <div class="trust-badges">
             <div class="trust-badge">
                 <div class="tb-icon">&#x1F3AF;</div>
-                <div class="tb-title">Deterministic</div>
-            </div>
-            <div class="trust-badge">
-                <div class="tb-icon">&#x1F50D;</div>
-                <div class="tb-title">Auditable</div>
+                <div class="tb-title">Same Seed = Identical Output</div>
             </div>
             <div class="trust-badge">
                 <div class="tb-icon">&#x1F6E1;</div>
+                <div class="tb-title">Synthetic Only</div>
+            </div>
+            <div class="trust-badge">
+                <div class="tb-icon">&#x1F512;</div>
                 <div class="tb-title">Zero PHI</div>
             </div>
             <div class="trust-badge">
-                <div class="tb-icon">&#x2699;</div>
-                <div class="tb-title">ML Ready</div>
+                <div class="tb-icon">&#x2705;</div>
+                <div class="tb-title">Validation Included</div>
+            </div>
+            <div class="trust-badge">
+                <div class="tb-icon">&#x1F4CB;</div>
+                <div class="tb-title">Structured EHR Outputs</div>
             </div>
         </div>
     </header>
 
-    <!-- How It Works -->
-    <section id="how-it-works">
+    <section id="who">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>How It Works</h2>
-                <p>Four steps from seed to dataset. Every run is deterministic and auditable.</p>
+                <h2>Who This Is For</h2>
+                <p>Deterministic synthetic cohorts for teams that need reproducible, auditable healthcare data.</p>
             </div>
-            <div class="steps-wrapper">
-                <div class="steps-connector"></div>
-                <div class="steps fade-in">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-title">Choose a Domain</div>
-                        <div class="step-desc">Cardiology, diabetes, rare disease, clinical trials, or general population</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-title">Set a Seed</div>
-                        <div class="step-desc">Pick any integer. Same seed always produces the same patients, byte for byte</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-title">Configure</div>
-                        <div class="step-desc">Cohort size, age range, sex ratio, ethnicity weights, visit count, conditions</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-title">Export</div>
-                        <div class="step-desc">Get CSV, JSON, or FHIR R5 bundles with anchor hash for verification</div>
-                    </div>
+            <div class="grid-5 fade-in">
+                <div class="capability-card">
+                    <div class="cap-title">AI Researchers</div>
+                    <ul><li>Controlled benchmark cohorts for repeatable model evaluation</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">ML Engineers</div>
+                    <ul><li>Synthetic test data for deterministic pipeline and model validation</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Healthcare Startups</div>
+                    <ul><li>Safe development datasets without exposing patient records</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Product Testing Teams</div>
+                    <ul><li>Reproducible scenarios for QA, regression testing, and demos</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Analytics &amp; Validation</div>
+                    <ul><li>Auditable synthetic cohorts for benchmarking and workflow validation</li></ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sample Output -->
-    <section>
+    <section id="deliverables">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Sample Patient Record</h2>
-                <p>Every patient record includes demographics, anthropometrics, conditions, visits, and labs.</p>
+                <h2>What You Receive</h2>
+                <p>Customers receive inspectable outputs and validation artifacts. The engine is proprietary, but deliverables are transparent, structured, and auditable.</p>
             </div>
-            <div class="code-block fade-in">
-<span class="code-comment">// seed=42 &mdash; same seed always produces the same cohort</span>
-{
-  <span class="code-key">"patient_id"</span>: <span class="code-string">"SYN-a1b2c3d4"</span>,
-  <span class="code-key">"age"</span>: <span class="code-number">58</span>,
-  <span class="code-key">"sex"</span>: <span class="code-string">"female"</span>,
-  <span class="code-key">"conditions"</span>: [ <span class="code-string">"hypertension"</span>, <span class="code-string">"hyperlipidemia"</span> ],
-  <span class="code-key">"synthetic"</span>: <span class="code-bool">true</span>,
-  <span class="code-comment">// ... demographics, anthropometrics, visits, labs included</span>
-}</div>
-        </div>
-    </section>
-
-    <!-- Output Formats -->
-    <section id="formats">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Output Formats</h2>
-                <p>Export in the format your pipeline needs.</p>
-            </div>
-            <div class="format-cards fade-in">
-                <div class="format-card">
-                    <div class="format-icon">&#x1F4CA;</div>
-                    <div class="format-name">CSV</div>
-                    <div class="format-desc">Flat tabular format for pandas, R, Excel, and database import</div>
+            <div class="deliverables-grid fade-in">
+                <div class="deliverable-item">
+                    <span class="deliverable-icon">&#x1F4CA;</span>
+                    <span class="deliverable-name">sample_100_patients.csv</span>
                 </div>
-                <div class="format-card">
-                    <div class="format-icon">&#x1F4C4;</div>
-                    <div class="format-name">JSON</div>
-                    <div class="format-desc">Nested structured records with full patient hierarchy and metadata</div>
+                <div class="deliverable-item">
+                    <span class="deliverable-icon">&#x1F4C4;</span>
+                    <span class="deliverable-name">schema.json</span>
                 </div>
-                <div class="format-card">
-                    <div class="format-icon">&#x1F3E5;</div>
-                    <div class="format-name">FHIR R5</div>
-                    <div class="format-desc">HL7 FHIR R5 bundles for EHR integration, interoperability testing, and health system workflows</div>
+                <div class="deliverable-item">
+                    <span class="deliverable-icon">&#x2705;</span>
+                    <span class="deliverable-name">validation.txt</span>
+                </div>
+                <div class="deliverable-item">
+                    <span class="deliverable-icon">&#x1F4D6;</span>
+                    <span class="deliverable-name">README.md</span>
+                </div>
+                <div class="deliverable-item">
+                    <span class="deliverable-icon">&#x1F4CB;</span>
+                    <span class="deliverable-name">Cohort definition summary</span>
+                </div>
+                <div class="deliverable-item">
+                    <span class="deliverable-icon">&#x1F50D;</span>
+                    <span class="deliverable-name">Reproducibility statement</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Available Data Packs -->
+    <section id="why">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Why HipAAsynth</h2>
+            </div>
+            <div class="grid-3x2 fade-in">
+                <div class="capability-card">
+                    <div class="cap-title">Deterministic, Not Stochastic</div>
+                    <ul><li>Fixed seed inputs produce identical outputs every time. No randomness, no guesswork.</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Reproducible Across Runs</div>
+                    <ul><li>Regenerate the exact same cohort on any machine, any time, with the same seed.</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Synthetic Only, Zero PHI</div>
+                    <ul><li>No real patient records. No de-identification. No PHI risk. Ever.</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Validation-Ready Outputs</div>
+                    <ul><li>Every delivery includes validation artifacts for testing, benchmarking, and auditing.</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">No AI or ML Generation</div>
+                    <ul><li>Not generated by neural networks, GANs, or language models. Deterministic computation only.</li></ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Proprietary Engine, Transparent Deliverables</div>
+                    <ul><li>Implementation is proprietary. Outputs are structured, inspectable, and auditable.</li></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="datasets">
         <div class="container">
             <div class="section-header fade-in">
@@ -1346,252 +268,115 @@
             </div>
             <div class="section-cta fade-in">
                 <p>Need a larger cohort or custom configuration? Request one made to spec.</p>
-                <button class="btn btn-primary" onclick="openModal('Cardiology')">Request a Cohort</button>
+                <a href="request.html" class="btn btn-primary">Request a Cohort</a>
             </div>
         </div>
     </section>
 
-    <!-- Supported Conditions -->
-    <section id="conditions">
+    <section id="products">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Supported Conditions</h2>
-                <p>Prevalence rates sourced from CDC, NHANES, AHA, and ADA published data. Age-adjusted onset. Comorbidity correlation included.</p>
+                <h2>Products</h2>
             </div>
-            <div class="condition-grid fade-in">
-                <span class="condition-tag">Type 2 Diabetes</span>
-                <span class="condition-tag">Hypertension</span>
-                <span class="condition-tag">Hyperlipidemia</span>
-                <span class="condition-tag">Chronic Kidney Disease</span>
-                <span class="condition-tag">COPD</span>
-                <span class="condition-tag">Depression</span>
-                <span class="condition-tag">Asthma</span>
-                <span class="condition-tag">Congestive Heart Failure</span>
-                <span class="condition-tag">Atrial Fibrillation</span>
-                <span class="condition-tag">Coronary Artery Disease</span>
+            <div class="product-card fade-in">
+                <div class="product-header">
+                    <div>
+                        <div class="product-title">Cohort Request Template</div>
+                        <div class="product-subtitle">A reusable request format for deterministic synthetic cohort orders</div>
+                    </div>
+                    <div class="product-price">$49</div>
+                </div>
+                <p class="product-desc">Standardize how your team defines synthetic cohort needs for testing, benchmarking, and validation.</p>
+                <div class="product-includes">
+                    <div class="product-includes-title">What's included:</div>
+                    <div class="product-includes-grid">
+                        <span>cohort_request.yaml</span>
+                        <span>Example requests</span>
+                        <span>README</span>
+                        <span>Delivery checklist</span>
+                        <span>Validation expectations</span>
+                        <span>Commercial license</span>
+                        <span>Legal disclaimer</span>
+                    </div>
+                </div>
+                <div class="product-includes" style="margin-top: 20px;">
+                    <div class="product-includes-title">Who it's for:</div>
+                    <div class="product-includes-grid">
+                        <span>AI researchers</span>
+                        <span>ML engineers</span>
+                        <span>Healthcare startups</span>
+                        <span>Product testing teams</span>
+                        <span>Analytics teams</span>
+                    </div>
+                </div>
+                <div class="product-includes" style="margin-top: 20px;">
+                    <div class="product-includes-title">Why teams buy it:</div>
+                    <div class="product-includes-grid">
+                        <span>Reduce ambiguity in synthetic data requests</span>
+                        <span>Improve repeatability</span>
+                        <span>Align stakeholders on scope</span>
+                        <span>Document required deliverables</span>
+                        <span>Accelerate procurement and delivery</span>
+                    </div>
+                </div>
+                <div class="product-includes" style="margin-top: 20px;">
+                    <div class="product-includes-title">Use cases:</div>
+                    <div class="product-includes-grid">
+                        <span>Benchmark cohort requests</span>
+                        <span>Regression testing requests</span>
+                        <span>Product demo cohort requests</span>
+                        <span>Model validation requests</span>
+                        <span>Internal QA dataset requests</span>
+                    </div>
+                </div>
+                <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Cohort%20Request%20Template" class="btn btn-primary" style="margin-top: 28px;">Buy Template</a>
+                <p class="product-note">This product does not include the HipAAsynth engine, source code, or proprietary implementation.</p>
+                <p class="product-note" style="margin-top: 8px;">For custom cohorts, <a href="request.html">contact HipAAsynth directly</a>.</p>
             </div>
         </div>
     </section>
 
-    <!-- Configurable Parameters -->
-    <section>
+    <section id="contact">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Configurable Parameters</h2>
-                <p>Full control over every axis of your synthetic population.</p>
+                <h2>Contact &amp; Sales</h2>
             </div>
             <div class="grid-3x2 fade-in">
                 <div class="capability-card">
-                    <div class="cap-title">Demographics</div>
+                    <div class="cap-title">What We Sell</div>
                     <ul>
-                        <li>Age, sex, and ethnicity control</li>
-                        <li>Population-level distribution tuning</li>
+                        <li>Packaged synthetic data products</li>
+                        <li>Cohort request templates</li>
+                        <li>Custom cohort generation</li>
+                        <li>Validation-ready deliverables</li>
                     </ul>
                 </div>
                 <div class="capability-card">
-                    <div class="cap-title">Clinical</div>
+                    <div class="cap-title">How to Reach Us</div>
                     <ul>
-                        <li>Condition and comorbidity control</li>
-                        <li>Visit and lab generation</li>
+                        <li><a href="mailto:HipAAsynth@gmail.com">HipAAsynth@gmail.com</a></li>
+                        <li>Website, email, and direct outreach</li>
+                        <li><a href="request.html">Request a Cohort form</a></li>
                     </ul>
                 </div>
                 <div class="capability-card">
-                    <div class="cap-title">Population Profiles</div>
+                    <div class="cap-title">Order Confirmation</div>
                     <ul>
-                        <li>National and regional profiles</li>
-                        <li>Custom profile support</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Output</div>
-                    <ul>
-                        <li>CSV, JSON, FHIR R5</li>
-                        <li>Dataset splits available</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Reproducibility</div>
-                    <ul>
-                        <li>Seed-based deterministic generation</li>
-                        <li>Verification hash included</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Scale</div>
-                    <ul>
-                        <li>Cohorts from 1 to 100,000 patients</li>
-                        <li>Longitudinal timelines supported</li>
+                        <li>Orders discussed by phone, email, or in person are governed by HipAAsynth <a href="license.html">license</a>, <a href="terms.html">terms</a>, and <a href="disclaimer.html">disclaimer</a> once confirmed in writing.</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- REST API -->
-    <section id="api">
+    <section class="safety-section">
         <div class="container">
-            <div class="section-header fade-in">
-                <h2>REST API</h2>
-                <p>Programmatic cohort generation with deterministic output. API access available on request.</p>
-            </div>
-            <div class="grid-3x2 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">Deterministic Output</div>
-                    <ul>
-                        <li>Same seed, same dataset every time</li>
-                        <li>Verification hash on every response</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Multiple Formats</div>
-                    <ul>
-                        <li>JSON, CSV, and FHIR R5</li>
-                        <li>Population profile selection</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Ready to Integrate</div>
-                    <ul>
-                        <li>RESTful endpoints</li>
-                        <li>Full documentation provided with access</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="section-cta fade-in">
-                <p>API documentation and access keys provided upon request.</p>
-                <a href="mailto:HipAAsynth@gmail.com?subject=API%20Access%20Request" class="btn btn-primary">Request API Access</a>
+            <div class="safety-box fade-in">
+                <p>HipAAsynth outputs are synthetic and contain no real patient data or PHI. Products and datasets are intended for testing, development, research, and benchmarking. They are not intended for clinical decision-making, diagnosis, treatment, or patient care.</p>
             </div>
         </div>
     </section>
 
-    <!-- Built For -->
-    <section id="who">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Built For</h2>
-            </div>
-            <div class="grid-5 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">Machine Learning Teams</div>
-                    <ul>
-                        <li>Reproducible training cohorts</li>
-                        <li>Deterministic validation sets</li>
-                        <li>Bias and fairness testing</li>
-                        <li>Large population simulation</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Digital Health / Startups</div>
-                    <ul>
-                        <li>Test environments without PHI</li>
-                        <li>Realistic EHR payloads</li>
-                        <li>API integration testing</li>
-                        <li>Demo populations</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Clinical Research</div>
-                    <ul>
-                        <li>Trial population simulation</li>
-                        <li>Inclusion criteria cohorts</li>
-                        <li>Longitudinal outcomes</li>
-                        <li>Control arm generation</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Health Systems / Vendors</div>
-                    <ul>
-                        <li>Multi hospital populations</li>
-                        <li>FHIR R5 integration testing</li>
-                        <li>Workflow testing</li>
-                        <li>Regional population profiles</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">AI Model Developers</div>
-                    <ul>
-                        <li>Pretraining datasets</li>
-                        <li>Temporal patient timelines</li>
-                        <li>Evaluation benchmarks</li>
-                        <li>Stress test cohorts</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- What Makes HipAAsynth Different -->
-    <section>
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>What Makes HipAAsynth Different</h2>
-            </div>
-            <div class="grid-3x2 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">Deterministic, Not Generative</div>
-                    <ul>
-                        <li>Same seed identical dataset</li>
-                        <li>Reproducible cohorts</li>
-                        <li>No black box generation</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Auditable Pipeline</div>
-                    <ul>
-                        <li>Generation command included</li>
-                        <li>Schema definitions</li>
-                        <li>Validation artifacts</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Zero PHI Risk</div>
-                    <ul>
-                        <li>Fully synthetic population</li>
-                        <li>No de identification</li>
-                        <li>No patient derived data</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">ML Ready Structure</div>
-                    <ul>
-                        <li>Structured EHR format</li>
-                        <li>Temporal patient timelines</li>
-                        <li>Controlled distributions</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Configurable Populations</div>
-                    <ul>
-                        <li>Demographics control</li>
-                        <li>Comorbidity tuning</li>
-                        <li>Outcome simulation</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Regeneratable Datasets</div>
-                    <ul>
-                        <li>Recreate exact cohort anytime</li>
-                        <li>Share seed with collaborators</li>
-                        <li>Reproducible research</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer CTA -->
-    <section class="cta-section circuit-bg">
-        <div class="container">
-            <p class="cta-text fade-in">Reproducible synthetic patient cohorts. Built for research, AI development, and clinical data infrastructure.</p>
-            <div class="button-group fade-in">
-                <a href="https://huggingface.co/HipAAsynth" target="_blank" class="btn btn-primary">Browse HuggingFace</a>
-                <a href="mailto:HipAAsynth@gmail.com?subject=GitHub%20Access%20Request" class="btn btn-secondary">Request GitHub Access</a>
-                <button class="btn btn-secondary" onclick="openModal('Cardiology')">Request Dataset</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-grid">
@@ -1599,228 +384,56 @@
                     <div class="footer-brand-name">HipAAsynth</div>
                     <p class="footer-tagline">Deterministic synthetic healthcare data</p>
                     <div class="footer-badges">
+                        <span class="badge">Synthetic Only</span>
                         <span class="badge">Zero PHI</span>
-                        <span class="badge">Reproducible</span>
-                        <span class="badge">Auditable</span>
+                        <span class="badge">Deterministic</span>
                     </div>
                 </div>
                 <div>
                     <div class="footer-col-title">Resources</div>
                     <ul class="footer-links">
-                        <li><a href="mailto:HipAAsynth@gmail.com?subject=GitHub%20Access%20Request">GitHub (Coming Soon)</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="request.html">Request a Cohort</a></li>
                         <li><a href="https://huggingface.co/HipAAsynth" target="_blank">HuggingFace</a></li>
-                        <li><a href="#datasets">Data Packs</a></li>
-                        <li><a href="#api">API Reference</a></li>
+                        <li><a href="mailto:HipAAsynth@gmail.com">Contact</a></li>
                     </ul>
                 </div>
                 <div>
-                    <div class="footer-col-title">Contact</div>
+                    <div class="footer-col-title">Legal</div>
                     <ul class="footer-links">
-                        <li><a href="mailto:HipAAsynth@gmail.com">HipAAsynth@gmail.com</a></li>
-                        <li><a href="#" onclick="openModal('Cardiology'); return false;">Request Custom Cohort</a></li>
+                        <li><a href="license.html">License</a></li>
+                        <li><a href="terms.html">Terms</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="ip-notice.html">IP Notice</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                HipAAsynth v1.0.0 &mdash; Engine: Apache 2.0 &nbsp;|&nbsp; Data Packs: CC BY-NC 4.0
+                Synthetic only. No PHI. Deterministic outputs for testing, benchmarking, and validation.
             </div>
         </div>
     </footer>
 
-    <!-- Modal -->
-    <div class="modal-overlay" id="cohortModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Request a Custom Cohort</h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            <form id="cohortForm" onsubmit="submitForm(event)">
-                <div class="form-group">
-                    <label for="domain">Domain</label>
-                    <select id="domain" required>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Diabetes">Diabetes</option>
-                        <option value="Hospital Operations">Hospital Operations</option>
-                        <option value="Clinical Trial">Clinical Trial</option>
-                        <option value="Longitudinal">Longitudinal</option>
-                        <option value="Rare Disease">Rare Disease</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="cohortSize">Cohort Size</label>
-                        <input type="number" id="cohortSize" min="1" max="100000" value="100" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="seed">Seed (optional)</label>
-                        <input type="number" id="seed" placeholder="Random if blank">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="ageRange">Age Range (optional)</label>
-                        <input type="text" id="ageRange" placeholder="e.g. 18-65">
-                    </div>
-                    <div class="form-group">
-                        <label for="sexDist">Sex Distribution (optional)</label>
-                        <input type="text" id="sexDist" placeholder="e.g. 50/50 or 60F/40M">
-                    </div>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="includeOutcomes">
-                    <label for="includeOutcomes">Include Outcomes</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="includeLongitudinal">
-                    <label for="includeLongitudinal">Include Longitudinal</label>
-                </div>
-                <div class="form-group">
-                    <label for="datasetSplit">Dataset Split</label>
-                    <select id="datasetSplit" onchange="toggleCustomSplit()" required>
-                        <option value="None">None</option>
-                        <option value="70/15/15">Train/Validation/Test (70/15/15)</option>
-                        <option value="80/20">Train/Test (80/20)</option>
-                        <option value="Custom">Custom</option>
-                    </select>
-                </div>
-                <div class="form-row" id="customSplitRow" style="display:none;">
-                    <div class="form-group">
-                        <label for="splitTrain">Train %</label>
-                        <input type="number" id="splitTrain" min="1" max="98" placeholder="70">
-                    </div>
-                    <div class="form-group">
-                        <label for="splitVal">Validation %</label>
-                        <input type="number" id="splitVal" min="0" max="98" placeholder="15">
-                    </div>
-                    <div class="form-group">
-                        <label for="splitTest">Test %</label>
-                        <input type="number" id="splitTest" min="1" max="98" placeholder="15">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="outputFormat">Output Format</label>
-                    <select id="outputFormat" required>
-                        <option value="CSV">CSV</option>
-                        <option value="JSON">JSON</option>
-                        <option value="FHIR">FHIR R5</option>
-                        <option value="All">All Formats</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required placeholder="you@example.com">
-                </div>
-                <div class="form-group">
-                    <label for="notes">Notes (optional)</label>
-                    <textarea id="notes" placeholder="Any special requirements or details..."></textarea>
-                </div>
-                <button type="submit" class="btn-submit">Send Request</button>
-            </form>
-        </div>
-    </div>
-
     <script>
         var siteNav = document.getElementById('siteNav');
         window.addEventListener('scroll', function() {
-            if (window.scrollY > 10) {
-                siteNav.classList.add('scrolled');
-            } else {
-                siteNav.classList.remove('scrolled');
-            }
+            siteNav.classList.toggle('scrolled', window.scrollY > 10);
         });
-
         var hamburgerBtn = document.getElementById('hamburgerBtn');
         var navLinks = document.getElementById('navLinks');
         hamburgerBtn.addEventListener('click', function() {
             navLinks.classList.toggle('open');
         });
-
         navLinks.querySelectorAll('a').forEach(function(link) {
-            link.addEventListener('click', function() {
-                navLinks.classList.remove('open');
-            });
+            link.addEventListener('click', function() { navLinks.classList.remove('open'); });
         });
-
-        var observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
         var observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(function(el) {
-            observer.observe(el);
-        });
-
-        function toggleCustomSplit() {
-            var val = document.getElementById('datasetSplit').value;
-            document.getElementById('customSplitRow').style.display = val === 'Custom' ? 'flex' : 'none';
-        }
-
-        function openModal(domain) {
-            document.getElementById('domain').value = domain;
-            document.getElementById('cohortModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('cohortModal').classList.remove('active');
-        }
-
-        document.getElementById('cohortModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        function submitForm(e) {
-            e.preventDefault();
-            var domain = document.getElementById('domain').value;
-            var cohortSize = document.getElementById('cohortSize').value;
-            var seed = document.getElementById('seed').value || 'Not specified';
-            var ageRange = document.getElementById('ageRange').value || 'Not specified';
-            var sexDist = document.getElementById('sexDist').value || 'Not specified';
-            var includeOutcomes = document.getElementById('includeOutcomes').checked ? 'Yes' : 'No';
-            var includeLongitudinal = document.getElementById('includeLongitudinal').checked ? 'Yes' : 'No';
-            var outputFormat = document.getElementById('outputFormat').value;
-            var email = document.getElementById('email').value;
-            var notes = document.getElementById('notes').value || 'None';
-            var splitVal = document.getElementById('datasetSplit').value;
-            var splitInfo = splitVal;
-            if (splitVal === 'Custom') {
-                var t = document.getElementById('splitTrain').value || '0';
-                var v = document.getElementById('splitVal').value || '0';
-                var te = document.getElementById('splitTest').value || '0';
-                splitInfo = 'Custom (' + t + '/' + v + '/' + te + ')';
-            }
-
-            var subject = encodeURIComponent('HipAAsynth Custom Cohort Request');
-
-            var body = encodeURIComponent(
-                'Domain: ' + domain + '\n' +
-                'Cohort Size: ' + cohortSize + '\n' +
-                'Seed: ' + seed + '\n' +
-                'Age Range: ' + ageRange + '\n' +
-                'Sex Distribution: ' + sexDist + '\n' +
-                'Include Outcomes: ' + includeOutcomes + '\n' +
-                'Include Longitudinal: ' + includeLongitudinal + '\n' +
-                'Dataset Split: ' + splitInfo + '\n' +
-                'Output Format: ' + outputFormat + '\n' +
-                'Email: ' + email + '\n' +
-                'Notes: ' + notes
-            );
-
-            window.location.href = 'mailto:HipAAsynth@gmail.com?subject=' + subject + '&body=' + body;
-            closeModal();
-            document.getElementById('cohortForm').reset();
-        }
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
     </script>
 </body>
 </html>

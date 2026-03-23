@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a Cohort — HipAAsynth</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="site-nav scrolled">
+        <div class="nav-inner">
+            <a href="/" class="nav-brand">
+                <img src="https://hipaasynth.com/logo.png" alt="HipAAsynth logo">
+                HipAAsynth
+            </a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/#products">Products</a></li>
+                <li><a href="mailto:HipAAsynth@gmail.com">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-content">
+        <h1>Request a Cohort</h1>
+        <p>Customers can specify desired cohort characteristics and delivery requirements without seeing proprietary engine details. HipAAsynth generation logic and implementation remain proprietary.</p>
+
+        <h2>Request format</h2>
+        <p>Define what you need using a structured request like this:</p>
+
+        <div class="code-block" style="margin: 24px 0 32px;">
+cohort:
+  name: "example_request"
+  size: 1000
+  seed: 42
+
+demographics:
+  age_mean: 58
+  age_std: 12
+  sex:
+    male: 0.52
+    female: 0.48
+
+conditions:
+  diabetes_prevalence: 0.22
+  hypertension_prevalence: 0.48
+
+time:
+  follow_up_years: 5
+
+delivery:
+  include_sample_csv: true
+  include_schema: true
+  include_validation: true
+  include_readme: true</div>
+
+        <p>This request format defines desired cohort characteristics and delivery requirements. HipAAsynth generation logic and implementation remain proprietary.</p>
+
+        <h2>What you can specify</h2>
+        <ul>
+            <li>Cohort size</li>
+            <li>Requested seed</li>
+            <li>Age distribution</li>
+            <li>Sex mix</li>
+            <li>Condition prevalence</li>
+            <li>Follow-up duration</li>
+            <li>Requested outputs</li>
+            <li>Validation artifacts requested</li>
+        </ul>
+
+        <h2>Ready to request?</h2>
+        <p>Send your cohort requirements by email. Include as much or as little detail as you have.</p>
+        <div style="margin-top: 20px;">
+            <a href="mailto:HipAAsynth@gmail.com?subject=Cohort%20Request" class="btn btn-primary">Send Request</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand-name">HipAAsynth</div>
+                    <p class="footer-tagline">Deterministic synthetic healthcare data</p>
+                </div>
+                <div>
+                    <div class="footer-col-title">Resources</div>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/#products">Products</a></li>
+                        <li><a href="https://huggingface.co/HipAAsynth" target="_blank">HuggingFace</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-col-title">Legal</div>
+                    <ul class="footer-links">
+                        <li><a href="license.html">License</a></li>
+                        <li><a href="terms.html">Terms</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="ip-notice.html">IP Notice</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                Synthetic only. No PHI. Deterministic outputs for testing, benchmarking, and validation.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        var hamburgerBtn = document.getElementById('hamburgerBtn');
+        var navLinks = document.getElementById('navLinks');
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', function() { navLinks.classList.toggle('open'); });
+    </script>
+</body>
+</html>
