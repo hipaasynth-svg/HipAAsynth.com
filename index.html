@@ -1224,37 +1224,14 @@
                 <p>Every patient record includes demographics, anthropometrics, conditions, visits, and labs.</p>
             </div>
             <div class="code-block fade-in">
-<span class="code-comment">// seed=42, patient_count=1 &mdash; this exact output regenerates every time</span>
+<span class="code-comment">// seed=42 &mdash; same seed always produces the same cohort</span>
 {
-  <span class="code-key">"demographics"</span>: {
-    <span class="code-key">"patient_id"</span>: <span class="code-string">"SYN-a1b2c3d4"</span>,
-    <span class="code-key">"seed"</span>: <span class="code-number">42</span>,
-    <span class="code-key">"age"</span>: <span class="code-number">58</span>,
-    <span class="code-key">"sex"</span>: <span class="code-string">"female"</span>,
-    <span class="code-key">"ethnicity"</span>: <span class="code-string">"white"</span>
-  },
-  <span class="code-key">"anthropometrics"</span>: {
-    <span class="code-key">"height_cm"</span>: <span class="code-number">164.3</span>,
-    <span class="code-key">"weight_kg"</span>: <span class="code-number">78.1</span>,
-    <span class="code-key">"bmi"</span>: <span class="code-number">28.9</span>,
-    <span class="code-key">"bmi_category"</span>: <span class="code-string">"overweight"</span>
-  },
-  <span class="code-key">"conditions"</span>: [
-    { <span class="code-key">"name"</span>: <span class="code-string">"hypertension"</span>, <span class="code-key">"onset_age"</span>: <span class="code-number">44</span>, <span class="code-key">"active"</span>: <span class="code-bool">true</span> },
-    { <span class="code-key">"name"</span>: <span class="code-string">"hyperlipidemia"</span>, <span class="code-key">"onset_age"</span>: <span class="code-number">51</span>, <span class="code-key">"active"</span>: <span class="code-bool">true</span> }
-  ],
-  <span class="code-key">"visits"</span>: [
-    {
-      <span class="code-key">"visit_id"</span>: <span class="code-string">"VIS-00a1"</span>,
-      <span class="code-key">"visit_type"</span>: <span class="code-string">"outpatient"</span>,
-      <span class="code-key">"visit_date"</span>: <span class="code-string">"2025-03-12"</span>,
-      <span class="code-key">"labs"</span>: [
-        { <span class="code-key">"lab_name"</span>: <span class="code-string">"LDL"</span>, <span class="code-key">"value"</span>: <span class="code-number">142.0</span>, <span class="code-key">"unit"</span>: <span class="code-string">"mg/dL"</span> }
-      ]
-    }
-  ],
+  <span class="code-key">"patient_id"</span>: <span class="code-string">"SYN-a1b2c3d4"</span>,
+  <span class="code-key">"age"</span>: <span class="code-number">58</span>,
+  <span class="code-key">"sex"</span>: <span class="code-string">"female"</span>,
+  <span class="code-key">"conditions"</span>: [ <span class="code-string">"hypertension"</span>, <span class="code-string">"hyperlipidemia"</span> ],
   <span class="code-key">"synthetic"</span>: <span class="code-bool">true</span>,
-  <span class="code-key">"engine_version"</span>: <span class="code-string">"1.0.0"</span>
+  <span class="code-comment">// ... demographics, anthropometrics, visits, labs included</span>
 }</div>
         </div>
     </section>
@@ -1407,49 +1384,43 @@
                 <div class="capability-card">
                     <div class="cap-title">Demographics</div>
                     <ul>
-                        <li>Age range and band weighting</li>
-                        <li>Sex ratio control</li>
-                        <li>Ethnicity distribution weights</li>
+                        <li>Age, sex, and ethnicity control</li>
+                        <li>Population-level distribution tuning</li>
                     </ul>
                 </div>
                 <div class="capability-card">
                     <div class="cap-title">Clinical</div>
                     <ul>
-                        <li>Required condition forcing</li>
-                        <li>Comorbidity correlation</li>
-                        <li>Visit count range</li>
+                        <li>Condition and comorbidity control</li>
+                        <li>Visit and lab generation</li>
                     </ul>
                 </div>
                 <div class="capability-card">
                     <div class="cap-title">Population Profiles</div>
                     <ul>
-                        <li>US national default</li>
-                        <li>Regional profiles (Fargo ND, Minot ND)</li>
-                        <li>Custom profile JSON support</li>
+                        <li>National and regional profiles</li>
+                        <li>Custom profile support</li>
                     </ul>
                 </div>
                 <div class="capability-card">
                     <div class="cap-title">Output</div>
                     <ul>
                         <li>CSV, JSON, FHIR R5</li>
-                        <li>Train/validation/test splits</li>
-                        <li>Anchor hash verification</li>
+                        <li>Dataset splits available</li>
                     </ul>
                 </div>
                 <div class="capability-card">
                     <div class="cap-title">Reproducibility</div>
                     <ul>
-                        <li>Integer seed control</li>
-                        <li>SHA-256 anchor hashing</li>
-                        <li>Generation manifest included</li>
+                        <li>Seed-based deterministic generation</li>
+                        <li>Verification hash included</li>
                     </ul>
                 </div>
                 <div class="capability-card">
                     <div class="cap-title">Scale</div>
                     <ul>
-                        <li>1 to 100,000 patients per cohort</li>
-                        <li>Longitudinal multi-visit timelines</li>
-                        <li>Labs per visit with reference ranges</li>
+                        <li>Cohorts from 1 to 100,000 patients</li>
+                        <li>Longitudinal timelines supported</li>
                     </ul>
                 </div>
             </div>
@@ -1461,50 +1432,34 @@
         <div class="container">
             <div class="section-header fade-in">
                 <h2>REST API</h2>
-                <p>Programmatic cohort generation. Deterministic output. Anchor hash verification on every response.</p>
+                <p>Programmatic cohort generation with deterministic output. API access available on request.</p>
             </div>
-            <div class="api-example fade-in">
-                <div class="api-info">
-                    <div class="api-card">
-                        <div class="endpoint-label">Health Check</div>
-                        <div><span class="endpoint-method">GET</span><span class="endpoint-path">/health</span></div>
-                        <ul class="api-feature-list">
-                            <li>Engine version and status</li>
-                            <li>Schema version confirmation</li>
-                        </ul>
-                    </div>
-                    <div class="api-card">
-                        <div class="endpoint-label">Generate Cohort</div>
-                        <div><span class="endpoint-method">POST</span><span class="endpoint-path">/generate</span></div>
-                        <ul class="api-feature-list">
-                            <li>JSON or CSV response format</li>
-                            <li>Seed parameter for deterministic output</li>
-                            <li>Population profile selection</li>
-                            <li>Cohort size up to 10,000 per request</li>
-                            <li>Summary statistics included in response</li>
-                            <li>Anchor hash for verification</li>
-                        </ul>
-                    </div>
+            <div class="grid-3x2 fade-in">
+                <div class="capability-card">
+                    <div class="cap-title">Deterministic Output</div>
+                    <ul>
+                        <li>Same seed, same dataset every time</li>
+                        <li>Verification hash on every response</li>
+                    </ul>
                 </div>
-                <div class="code-block">
-<span class="code-comment">// POST /generate</span>
-{
-  <span class="code-key">"n_patients"</span>: <span class="code-number">500</span>,
-  <span class="code-key">"seed"</span>: <span class="code-number">42</span>,
-  <span class="code-key">"format"</span>: <span class="code-string">"json"</span>,
-  <span class="code-key">"profile"</span>: <span class="code-string">"profiles/us_default.json"</span>
-}
-
-<span class="code-comment">// Response includes:</span>
-{
-  <span class="code-key">"metadata"</span>: {
-    <span class="code-key">"anchor_hash"</span>: <span class="code-string">"a7f3..."</span>,
-    <span class="code-key">"rows"</span>: <span class="code-number">500</span>,
-    <span class="code-key">"deterministic"</span>: <span class="code-bool">true</span>
-  },
-  <span class="code-key">"summary"</span>: { <span class="code-comment">...</span> },
-  <span class="code-key">"records"</span>: [ <span class="code-comment">...</span> ]
-}</div>
+                <div class="capability-card">
+                    <div class="cap-title">Multiple Formats</div>
+                    <ul>
+                        <li>JSON, CSV, and FHIR R5</li>
+                        <li>Population profile selection</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Ready to Integrate</div>
+                    <ul>
+                        <li>RESTful endpoints</li>
+                        <li>Full documentation provided with access</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="section-cta fade-in">
+                <p>API documentation and access keys provided upon request.</p>
+                <a href="mailto:HipAAsynth@gmail.com?subject=API%20Access%20Request" class="btn btn-primary">Request API Access</a>
             </div>
         </div>
     </section>
@@ -1630,7 +1585,7 @@
             <p class="cta-text fade-in">Reproducible synthetic patient cohorts. Built for research, AI development, and clinical data infrastructure.</p>
             <div class="button-group fade-in">
                 <a href="https://huggingface.co/HipAAsynth" target="_blank" class="btn btn-primary">Browse HuggingFace</a>
-                <a href="https://github.com/hipaasynth-svg/HipAAsynth" target="_blank" class="btn btn-secondary">View GitHub</a>
+                <a href="mailto:HipAAsynth@gmail.com?subject=GitHub%20Access%20Request" class="btn btn-secondary">Request GitHub Access</a>
                 <button class="btn btn-secondary" onclick="openModal('Cardiology')">Request Dataset</button>
             </div>
         </div>
@@ -1652,7 +1607,7 @@
                 <div>
                     <div class="footer-col-title">Resources</div>
                     <ul class="footer-links">
-                        <li><a href="https://github.com/hipaasynth-svg/HipAAsynth" target="_blank">GitHub</a></li>
+                        <li><a href="mailto:HipAAsynth@gmail.com?subject=GitHub%20Access%20Request">GitHub (Coming Soon)</a></li>
                         <li><a href="https://huggingface.co/HipAAsynth" target="_blank">HuggingFace</a></li>
                         <li><a href="#datasets">Data Packs</a></li>
                         <li><a href="#api">API Reference</a></li>
