@@ -141,7 +141,13 @@ section:nth-child(even) { background-color: var(--bg-secondary); }
 
 /* Grids */
 .grid-3x2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+
+.section-note {
+    text-align: center; margin-top: 24px; font-size: 0.9rem;
+    color: var(--text-secondary); font-style: italic;
+}
 
 /* Capability cards */
 .capability-card {
@@ -321,6 +327,7 @@ footer {
     .site-nav .nav-links.open { display: flex; }
     .hamburger { display: flex; }
     .trust-badges { grid-template-columns: repeat(2, 1fr); }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
     .grid-5 { grid-template-columns: 1fr; }
     .grid-3x2 { grid-template-columns: 1fr; }
     .deliverables-grid { grid-template-columns: 1fr; }
