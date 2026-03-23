@@ -24,9 +24,9 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#who">Who It's For</a></li>
                 <li><a href="#domains">Domains</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#production">Production</a></li>
                 <li><a href="#products">Products</a></li>
+                <li><a href="#validation">Validation</a></li>
+                <li><a href="#datasets">Samples</a></li>
                 <li><a href="request.html">Request a Cohort</a></li>
                 <li><a href="mailto:HipAAsynth@gmail.com">Contact</a></li>
             </ul>
@@ -223,84 +223,243 @@
         </div>
     </section>
 
-    <section id="features">
+    <section id="products">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Optional Generation Features</h2>
+                <h2>Products &amp; Pricing</h2>
+                <p>Deterministic synthetic cohorts at every scale. Click any product for details.</p>
             </div>
-            <div class="grid-3x2 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">Twin Cohorts</div>
-                    <ul><li>Matched populations</li></ul>
+            <div class="pricing-table fade-in">
+
+                <div class="pricing-row" onclick="this.classList.toggle('open')">
+                    <div class="pricing-summary">
+                        <div class="pricing-name">HuggingFace Samples</div>
+                        <div class="pricing-brief">6 sample packs, 100 patients each. Download instantly.</div>
+                        <div class="pricing-amount">Free</div>
+                    </div>
+                    <div class="pricing-details">
+                        <div class="pricing-details-inner">
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">Included Packs</div>
+                                <ul>
+                                    <li>Cardiology EHR</li>
+                                    <li>Diabetes EHR</li>
+                                    <li>Hospital Operations</li>
+                                    <li>Clinical Trials</li>
+                                    <li>Longitudinal Patients</li>
+                                    <li>Rare Disease EHR</li>
+                                </ul>
+                            </div>
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">Details</div>
+                                <ul>
+                                    <li>100 patients per pack</li>
+                                    <li>13-column structured CSV</li>
+                                    <li>CC BY-NC 4.0 license</li>
+                                    <li>See the format before you buy</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="#datasets" class="btn btn-primary">Browse Samples</a>
+                    </div>
                 </div>
-                <div class="capability-card">
-                    <div class="cap-title">Longitudinal Progression</div>
+
+                <div class="pricing-row" onclick="this.classList.toggle('open')">
+                    <div class="pricing-summary">
+                        <div class="pricing-name">Starter Pack</div>
+                        <div class="pricing-brief">Request template + 500-patient starter cohort</div>
+                        <div class="pricing-amount">$149</div>
+                    </div>
+                    <div class="pricing-details">
+                        <div class="pricing-details-inner">
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">What's Included</div>
+                                <ul>
+                                    <li>Cohort request template (YAML format)</li>
+                                    <li>Example cohort specifications</li>
+                                    <li>One starter cohort (up to 500 patients)</li>
+                                    <li>sample_500_patients.csv</li>
+                                    <li>schema.json + validation.txt + README.md</li>
+                                    <li>Reproducible cohort definition</li>
+                                </ul>
+                            </div>
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">Notes</div>
+                                <ul>
+                                    <li>Starter cohort is for structure and format preview</li>
+                                    <li>Production cohorts start at 1,000+ patients for statistical stability</li>
+                                    <li>Larger cohorts available separately</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Starter%20Pack" class="btn btn-primary">Buy Starter Pack</a>
+                    </div>
                 </div>
-                <div class="capability-card">
-                    <div class="cap-title">Treatment vs Control Cohorts</div>
+
+                <div class="pricing-row" onclick="this.classList.toggle('open')">
+                    <div class="pricing-summary">
+                        <div class="pricing-name">Domain Pack</div>
+                        <div class="pricing-brief">1,000-patient cohort in a specific clinical domain</div>
+                        <div class="pricing-amount">$499</div>
+                    </div>
+                    <div class="pricing-details">
+                        <div class="pricing-details-inner">
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">What's Included</div>
+                                <ul>
+                                    <li>1,000-patient production cohort</li>
+                                    <li>Domain-specific clinical depth</li>
+                                    <li>Schema + validation artifacts</li>
+                                    <li>Reproducibility guarantee</li>
+                                </ul>
+                            </div>
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">Available Domains</div>
+                                <ul>
+                                    <li>Cardiology</li>
+                                    <li>Diabetes</li>
+                                    <li>Oncology</li>
+                                    <li>Skilled Nursing Facility (SNF)</li>
+                                    <li>Rare Disease (SMA, DMD, Fabry)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Domain%20Pack" class="btn btn-primary">Buy Domain Pack</a>
+                    </div>
                 </div>
-                <div class="capability-card">
-                    <div class="cap-title">Multi-Site Simulation</div>
-                    <ul><li>Twin hospitals</li></ul>
+
+                <div class="pricing-row" onclick="this.classList.toggle('open')">
+                    <div class="pricing-summary">
+                        <div class="pricing-name">Production Cohort</div>
+                        <div class="pricing-brief">Scaled cohorts from 1,000 to 10,000+ patients</div>
+                        <div class="pricing-amount">$999+</div>
+                    </div>
+                    <div class="pricing-details">
+                        <div class="pricing-details-inner">
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">Sizes &amp; Pricing</div>
+                                <ul>
+                                    <li>1,000 patients &mdash; $999</li>
+                                    <li>5,000 patients &mdash; $1,499</li>
+                                    <li>10,000 patients &mdash; $2,499</li>
+                                    <li>Custom sizes available on request</li>
+                                </ul>
+                            </div>
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">Includes</div>
+                                <ul>
+                                    <li>Any available domain</li>
+                                    <li>Demographic targeting</li>
+                                    <li>Schema + validation artifacts</li>
+                                    <li>Reproducibility guarantee</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Production%20Cohort" class="btn btn-primary">Request Production Cohort</a>
+                    </div>
                 </div>
-                <div class="capability-card">
-                    <div class="cap-title">Demographic Targeting</div>
+
+                <div class="pricing-row" onclick="this.classList.toggle('open')">
+                    <div class="pricing-summary">
+                        <div class="pricing-name">Twin Hospital Pack</div>
+                        <div class="pricing-brief">Two matched 1,000-patient cohorts with controlled variation</div>
+                        <div class="pricing-amount">$1,999</div>
+                    </div>
+                    <div class="pricing-details">
+                        <div class="pricing-details-inner">
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">What's Included</div>
+                                <ul>
+                                    <li>Two matched hospital cohorts (1,000 each)</li>
+                                    <li>Controlled demographic variation</li>
+                                    <li>Twin validation report</li>
+                                    <li>Matched schemas</li>
+                                </ul>
+                            </div>
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">Use Cases</div>
+                                <ul>
+                                    <li>Model comparison across populations</li>
+                                    <li>Bias testing</li>
+                                    <li>Multi-site deployment simulation</li>
+                                    <li>A/B evaluation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Twin%20Hospital%20Pack" class="btn btn-primary">Buy Twin Hospital Pack</a>
+                    </div>
                 </div>
-                <div class="capability-card">
-                    <div class="cap-title">Biomarker Inclusion</div>
-                    <ul><li>Domain dependent</li></ul>
+
+                <div class="pricing-row" onclick="this.classList.toggle('open')">
+                    <div class="pricing-summary">
+                        <div class="pricing-name">Custom Engagement</div>
+                        <div class="pricing-brief">Multi-domain, longitudinal, treatment arms, ongoing generation</div>
+                        <div class="pricing-amount">$5,000+</div>
+                    </div>
+                    <div class="pricing-details">
+                        <div class="pricing-details-inner">
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">Available Features</div>
+                                <ul>
+                                    <li>Multiple domains combined</li>
+                                    <li>Longitudinal progression</li>
+                                    <li>Treatment vs. control arms</li>
+                                    <li>Multi-site twin simulation</li>
+                                </ul>
+                            </div>
+                            <div class="pricing-col">
+                                <div class="pricing-col-title">&nbsp;</div>
+                                <ul>
+                                    <li>Demographic targeting</li>
+                                    <li>Outcomes and medication exposure</li>
+                                    <li>Biomarker inclusion (domain dependent)</li>
+                                    <li>Ongoing quarterly refreshes</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="mailto:HipAAsynth@gmail.com?subject=Custom%20Engagement%20Inquiry" class="btn btn-primary">Contact for Custom Quote</a>
+                    </div>
                 </div>
-                <div class="capability-card">
-                    <div class="cap-title">Outcomes Simulation</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Medication Exposure</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Validation Benchmark Reports</div>
-                </div>
+
             </div>
-            <p class="section-note fade-in">Features available per domain. Implementation remains proprietary.</p>
+            <p class="section-note fade-in" style="margin-top: 32px;">All products include validation artifacts. Implementation remains proprietary.<br>This product does not include the HipAAsynth engine, source code, or proprietary implementation.</p>
         </div>
     </section>
 
-    <section id="production">
+    <section id="validation">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Production Cohorts</h2>
+                <h2>Validation</h2>
+                <p>Every cohort is generated with validation artifacts. Outputs are inspectable and auditable.</p>
             </div>
-            <div class="grid-4 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">1,000+ patients</div>
+            <div class="stats-grid fade-in">
+                <div class="stat-card">
+                    <div class="stat-number">19/19</div>
+                    <div class="stat-label">CMS quality measures validated (SNF domain)</div>
                 </div>
-                <div class="capability-card">
-                    <div class="cap-title">5,000+ patients</div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Deterministic reproducibility across runs</div>
                 </div>
-                <div class="capability-card">
-                    <div class="cap-title">10,000+ patients</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Custom sizes available</div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Real patient records used. Zero PHI. Ever.</div>
                 </div>
             </div>
-            <p class="section-note fade-in">Production cohorts include schema and validation artifacts.</p>
+            <p class="section-note fade-in" style="margin-top: 32px;">Validation confirms output properties. It does not describe generation implementation.</p>
         </div>
     </section>
 
     <section id="datasets">
         <div class="container">
             <div class="section-header fade-in">
-                <h2>Sample Cohorts Available on HuggingFace</h2>
-                <p>100-patient sample cohorts. Download instantly. Request larger cohorts made to spec.</p>
+                <h2>Free Samples on HuggingFace</h2>
+                <p>100-patient sample cohorts. Download instantly. See the format before you buy.</p>
             </div>
             <div class="pack-grid fade-in">
                 <div class="pack-card">
                     <div class="pack-title">Cardiology EHR</div>
-                    <div class="pack-desc">Cardiology EHR cohort with vitals, labs, and diagnoses.</div>
-                    <div class="pack-meta">
-                        <span class="pack-tags">Deterministic &bull; Reproducible &bull; Synthetic</span>
-                        <span class="pack-badge">100 patients</span>
-                    </div>
+                    <div class="pack-desc">Vitals, labs, and diagnoses.</div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
@@ -308,11 +467,7 @@
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Diabetes EHR</div>
-                    <div class="pack-desc">Diabetes EHR cohort with A1C, glucose, and comorbidity data.</div>
-                    <div class="pack-meta">
-                        <span class="pack-tags">Deterministic &bull; Reproducible &bull; Synthetic</span>
-                        <span class="pack-badge">100 patients</span>
-                    </div>
+                    <div class="pack-desc">A1C, glucose, and comorbidity data.</div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
@@ -320,47 +475,31 @@
                 </div>
                 <div class="pack-card">
                     <div class="pack-title">Hospital Operations</div>
-                    <div class="pack-desc">Hospital operations cohort for operational analytics and testing.</div>
-                    <div class="pack-meta">
-                        <span class="pack-tags">Deterministic &bull; Reproducible &bull; Synthetic</span>
-                        <span class="pack-badge">100 patients</span>
-                    </div>
+                    <div class="pack-desc">Operational analytics and testing.</div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
                 </div>
                 <div class="pack-card">
-                    <div class="pack-title">Clinical Trial Cohorts</div>
-                    <div class="pack-desc">Clinical trial cohort with structured eligibility profiles.</div>
-                    <div class="pack-meta">
-                        <span class="pack-tags">Deterministic &bull; Reproducible &bull; Synthetic</span>
-                        <span class="pack-badge">100 patients</span>
-                    </div>
+                    <div class="pack-title">Clinical Trials</div>
+                    <div class="pack-desc">Structured eligibility profiles.</div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
                 </div>
                 <div class="pack-card">
-                    <div class="pack-title">Longitudinal Patients</div>
-                    <div class="pack-desc">Longitudinal cohort with multi-visit timelines and progressive history.</div>
-                    <div class="pack-meta">
-                        <span class="pack-tags">Deterministic &bull; Reproducible &bull; Synthetic</span>
-                        <span class="pack-badge">100 patients</span>
-                    </div>
+                    <div class="pack-title">Longitudinal</div>
+                    <div class="pack-desc">Multi-visit timelines and progression.</div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
                     </div>
                 </div>
                 <div class="pack-card">
-                    <div class="pack-title">Rare Disease EHR</div>
-                    <div class="pack-desc">Rare disease cohort covering SMA, DMD, and Fabry with low-prevalence profiles.</div>
-                    <div class="pack-meta">
-                        <span class="pack-tags">Deterministic &bull; Reproducible &bull; Synthetic</span>
-                        <span class="pack-badge">100 patients</span>
-                    </div>
+                    <div class="pack-title">Rare Disease</div>
+                    <div class="pack-desc">SMA, DMD, and Fabry profiles.</div>
                     <div class="pack-buttons">
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr" target="_blank" class="btn-preview">Preview</a>
                         <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
@@ -370,79 +509,6 @@
             <div class="section-cta fade-in">
                 <p>Need a larger cohort or custom configuration? Request one made to spec.</p>
                 <a href="request.html" class="btn btn-primary">Request a Cohort</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="products">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Products</h2>
-            </div>
-            <div class="product-card fade-in">
-                <div class="product-header">
-                    <div>
-                        <div class="product-title">Cohort Request Template</div>
-                        <div class="product-subtitle">A reusable request format for deterministic synthetic cohort orders</div>
-                    </div>
-                    <div class="product-price">$149</div>
-                </div>
-                <p class="product-desc">Structured request template for deterministic synthetic cohort generation. Define population, conditions, and outputs. Receive reproducible datasets with validation artifacts.</p>
-                <div class="product-includes">
-                    <div class="product-includes-title">What's Included:</div>
-                    <div class="product-includes-grid">
-                        <span>Cohort request template (YAML format)</span>
-                        <span>Example cohort specifications</span>
-                        <span>One starter deterministic cohort (up to 500 patients)</span>
-                        <span>sample_500_patients.csv</span>
-                        <span>schema.json</span>
-                        <span>validation.txt</span>
-                        <span>README.md</span>
-                        <span>Reproducible cohort definition</span>
-                    </div>
-                </div>
-                <p class="product-note" style="margin-top: 12px;">Starter cohort limited to 500 patients. Larger cohorts available separately.</p>
-                <p class="product-note" style="margin-top: 6px;">Template defines cohort requests. Generation implementation remains proprietary.</p>
-                <div class="product-includes" style="margin-top: 20px;">
-                    <div class="product-includes-title">Statistical Note:</div>
-                    <p class="product-note">The included starter cohort is provided for structure and format preview.</p>
-                    <p class="product-note">For statistically stable distributions and reduced sampling noise, production cohorts typically start at 1,000 patients or larger.</p>
-                    <p class="product-note">Smaller cohorts may show minor variation in prevalence and distributions.</p>
-                    <p class="product-note">This does not affect determinism, only sample stability.</p>
-                </div>
-                <div class="product-includes" style="margin-top: 20px;">
-                    <div class="product-includes-title">Who it's for:</div>
-                    <div class="product-includes-grid">
-                        <span>AI researchers</span>
-                        <span>ML engineers</span>
-                        <span>Healthcare startups</span>
-                        <span>Product testing teams</span>
-                        <span>Analytics teams</span>
-                    </div>
-                </div>
-                <div class="product-includes" style="margin-top: 20px;">
-                    <div class="product-includes-title">Why teams buy it:</div>
-                    <div class="product-includes-grid">
-                        <span>Reduce ambiguity in synthetic data requests</span>
-                        <span>Improve repeatability</span>
-                        <span>Align stakeholders on scope</span>
-                        <span>Document required deliverables</span>
-                        <span>Accelerate procurement and delivery</span>
-                    </div>
-                </div>
-                <div class="product-includes" style="margin-top: 20px;">
-                    <div class="product-includes-title">Use cases:</div>
-                    <div class="product-includes-grid">
-                        <span>Benchmark cohort requests</span>
-                        <span>Regression testing requests</span>
-                        <span>Product demo cohort requests</span>
-                        <span>Model validation requests</span>
-                        <span>Internal QA dataset requests</span>
-                    </div>
-                </div>
-                <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Cohort%20Request%20Template" class="btn btn-primary" style="margin-top: 28px;">Buy Template</a>
-                <p class="product-note">This product does not include the HipAAsynth engine, source code, or proprietary implementation.</p>
-                <p class="product-note" style="margin-top: 8px;">For custom cohorts, <a href="request.html">contact HipAAsynth directly</a>.</p>
             </div>
         </div>
     </section>
