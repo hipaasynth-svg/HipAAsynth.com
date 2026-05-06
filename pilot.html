@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Directional Pilot — HipAAsynth</title>
-    <meta name="description" content="Find out if your clinical AI model holds up on a population it wasn't built for — before it reaches a patient.">
+    <meta name="description" content="Limited paid pilot program. We don't touch your model. You point your API at a cohort. We observe the outputs.">
     <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,32 +17,34 @@
     <div class="h-small">H</div>
 
     <h1 class="page-heading">Directional Pilot</h1>
-    <p class="page-sub">Evaluate how your model performs across a population it wasn't built for — and know what to adjust before deployment.</p>
+    <p class="page-sub">We are on our second paid pilot. Three spots remain at 70% of the standard rate.</p>
 
     <div class="frosted-chip">
-        Teams preparing a clinical AI for deployment, regulatory filing, or institutional review. You have a model. You need a clear evaluation before it goes further.
+        We don't touch your model.<br>
+        We don't send you data.<br>
+        You point your API at a synthetic patient cohort. We observe the outputs.
     </div>
 
     <div class="steps-card">
         <div class="step">
             <div class="step-num">1</div>
             <div class="step-content">
-                <div class="step-title">You send model outputs. We send you the cohort.</div>
-                <div class="step-body">50 patients, one population archetype — calibrated to federal health data, not generic benchmarks. You run your model. You send back answers. No patient data. No model access.</div>
+                <div class="step-title">Population scope</div>
+                <div class="step-body">We define a target population archetype. You point your API at the cohort. No model access required. No patient data exchanged.</div>
             </div>
         </div>
         <div class="step">
             <div class="step-num">2</div>
             <div class="step-content">
-                <div class="step-title">We evaluate performance across stress conditions.</div>
-                <div class="step-body">Structured evaluation across missingness, noise, and population shift. Every result is deterministic — reproducible from a SHA-256 anchor hash. We surface specific performance gaps by axis, not just an accuracy number.</div>
+                <div class="step-title">Drift assessment</div>
+                <div class="step-body">We observe your model's outputs across the cohort and look for directional signal — where performance shifts across population conditions.</div>
             </div>
         </div>
         <div class="step">
             <div class="step-num">3</div>
             <div class="step-content">
-                <div class="step-title">You get a clear signal — and a path forward.</div>
-                <div class="step-body">A signed report with pass rates by axis, guardrail deviations, clinical edge cases, and the specific patient profiles where calibration is needed. Enough to make a deployment decision — or know exactly what to adjust first.</div>
+                <div class="step-title">Phase 2 drift test, if warranted</div>
+                <div class="step-body">If drift is found, a structured Phase 2 test follows. You get a signed, reproducible result with a clear direction for what to do next.</div>
             </div>
         </div>
     </div>
@@ -52,11 +54,11 @@
     </div>
 
     <div class="price-box">
-        <div class="price-label">Pilot Engagement</div>
+        <div class="price-label">Pilot Rate</div>
         <div class="price-amount">$2,500</div>
-        <div class="price-detail">One population · One condition · Signed report</div>
-        <div class="price-detail">5–7 day turnaround · No patient data required · No model access needed</div>
-        <div class="price-result">You'll know how your model performs on that population — and exactly what to adjust if it needs it.</div>
+        <div class="price-detail">3 spots remaining · 70% of standard rate</div>
+        <div class="price-detail">No model access · No patient data · Signed report</div>
+        <div class="price-result">A directional signal — before you commit to wider deployment.</div>
     </div>
 
     <div class="btn-group-center">
@@ -71,12 +73,6 @@
 </div>
 
 <div class="no-data">This site collects no data. No cookies. No tracking. No analytics.</div>
-
-<script>
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) { if (e.isIntersecting) e.target.style.opacity = 1; });
-    }, { threshold: 0.08 });
-</script>
 
 </body>
 </html>
