@@ -3,619 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HipAAsynth — Deterministic Synthetic Patient Data</title>
-    <meta name="description" content="Deterministic synthetic patient data for testing, benchmarking, and validation. Reproducible, auditable cohorts with structured EHR-style outputs and zero PHI.">
-    <meta property="og:title" content="HipAAsynth — Deterministic Synthetic Patient Data">
-    <meta property="og:description" content="Reproducible, auditable synthetic cohorts with structured EHR-style outputs and zero PHI.">
+    <title>HipAAsynth — Clinical AI Testing</title>
+    <meta name="description" content="We test clinical AI before patients do. Deterministic, reproducible population-robustness evaluation for teams deploying AI in hospitals and health systems.">
+    <meta property="og:title" content="HipAAsynth — Clinical AI Testing">
+    <meta property="og:description" content="Find out where your model fails — across the populations it will actually serve.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hipaasynth.com">
-    <link rel="stylesheet" href="style.css">
-<script>function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");
-o.src="https://assets.apollo.io/micro/website-tracker/tracker.iife.js?nocache="+n,o.async=!0,o.defer=!0,
-o.onload=function(){window.trackingFunctions.onLoad({appId:"69c41c11f0ae56001d157f60"})},
-document.head.appendChild(o)}initApollo();</script>
+    <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%;
+            font-family: Georgia, 'Times New Roman', serif;
+            overflow: hidden;
+        }
+
+        /* ── FULL-SCREEN PHOTO BACKGROUND ── */
+        .sky-scene {
+            position: fixed;
+            inset: 0;
+            background: url('sky.png') center center / cover no-repeat;
+            z-index: 0;
+        }
+
+        /* Dark gradients top (stars) and bottom (text readability) */
+        .sky-scene::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(4, 10, 24, 0.52) 0%,
+                rgba(4, 10, 24, 0.10) 30%,
+                rgba(4, 10, 24, 0.0)  55%,
+                rgba(4, 10, 24, 0.55) 85%,
+                rgba(4, 10, 24, 0.78) 100%
+            );
+        }
+
+        /* ── STARS (top portion only) ── */
+        .stars { position: absolute; inset: 0; pointer-events: none; }
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--d, 2.8s) ease-in-out infinite var(--del, 0s);
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0%,100% { opacity: 0; }
+            50%      { opacity: 0.85; }
+        }
+
+        /* ── SCARLET H (behind clouds) ── */
+        .h-wrap {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -58%);
+            pointer-events: none;
+            z-index: 2;
+            animation: hIn 2.5s ease forwards;
+            opacity: 0;
+        }
+        .h-letter {
+            font-family: Georgia, serif;
+            font-size: clamp(260px, 50vw, 500px);
+            font-weight: bold;
+            color: #C41E3A;
+            line-height: 1;
+            user-select: none;
+            text-shadow:
+                0 0 60px rgba(196,30,58,0.5),
+                0 0 140px rgba(196,30,58,0.22),
+                0 6px 30px rgba(0,0,0,0.25);
+        }
+        @keyframes hIn {
+            from { opacity: 0; transform: translate(-50%,-58%) scale(0.96); }
+            to   { opacity: 1; transform: translate(-50%,-58%) scale(1); }
+        }
+
+        /* ── CSS CLOUDS ── */
+        .clouds { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+
+        .cloud {
+            position: absolute;
+            animation: drift linear infinite;
+            animation-duration: var(--spd, 70s);
+            animation-delay: var(--del, 0s);
+        }
+
+        /* Each cloud is built from several divs with rounded corners */
+        .cloud .body {
+            position: relative;
+        }
+        .cloud .puff {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+        /* Main base of every cloud */
+        .cloud .base {
+            position: relative;
+            background: white;
+            border-radius: 60px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+        }
+
+        @keyframes drift {
+            from { transform: translateX(var(--from, -350px)); }
+            to   { transform: translateX(calc(110vw)); }
+        }
+
+        /* ── PAGE LAYER (content sits on top of everything) ── */
+        .page {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+        .page a, .page button { pointer-events: auto; }
+
+        /* Wordmark */
+        .brand {
+            margin-top: 44px;
+            font-size: clamp(0.62rem, 1vw, 0.8rem);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.62);
+            animation: up 1s ease 0.4s both;
+        }
+
+        /* Bottom content block */
+        .content {
+            padding: 0 24px 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .headline {
+            font-size: clamp(1.25rem, 2.8vw, 1.85rem);
+            font-weight: normal;
+            color: rgba(255,255,255,0.96);
+            line-height: 1.3;
+            margin-bottom: 13px;
+            text-shadow: 0 1px 12px rgba(0,0,0,0.35);
+        }
+
+        .sub {
+            font-size: clamp(0.78rem, 1.4vw, 0.93rem);
+            color: rgba(255,255,255,0.58);
+            max-width: 460px;
+            line-height: 1.7;
+            margin-bottom: 9px;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+        }
+
+        .for-line {
+            font-size: clamp(0.65rem, 1.1vw, 0.78rem);
+            color: rgba(255,255,255,0.44);
+            max-width: 400px;
+            line-height: 1.6;
+            margin-bottom: 26px;
+        }
+
+        /* Frosted proof strip */
+        .proof {
+            background: rgba(8,18,38,0.42);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.11);
+            border-radius: 6px;
+            padding: 10px 22px;
+            font-size: clamp(0.6rem, 1vw, 0.73rem);
+            color: rgba(255,255,255,0.48);
+            line-height: 1.65;
+            max-width: 660px;
+            margin-bottom: 32px;
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 13px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 52px;
+        }
+
+        .btn {
+            font-family: Georgia, serif;
+            font-size: clamp(0.75rem, 1.2vw, 0.87rem);
+            color: rgba(255,255,255,0.72);
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 6px;
+            padding: 11px 26px;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: rgba(255,255,255,0.34);
+            color: rgba(255,255,255,0.96);
+        }
+
+        /* No-data notice */
+        .no-data {
+            position: fixed;
+            bottom: 12px; right: 16px;
+            font-size: 9px;
+            color: rgba(255,255,255,0.25);
+            font-family: Georgia, serif;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        @keyframes up {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .btn-row { flex-direction: column; align-items: center; }
+            .btn { width: 220px; text-align: center; }
+        }
+    </style>
 </head>
 <body>
-    <nav class="site-nav" id="siteNav">
-        <div class="nav-inner">
-            <a href="/" class="nav-brand">
-                <img src="https://hipaasynth.com/logo.png" alt="HipAAsynth logo">
-                HipAAsynth
-            </a>
-            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
-                <span></span><span></span><span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#who">Who It's For</a></li>
-                <li><a href="#domains">Domains</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#validation">Validation</a></li>
-                <li><a href="#datasets">Samples</a></li>
-                <li><a href="request.html">Request a Cohort</a></li>
-                <li><a href="mailto:HipAAsynth@gmail.com">Contact</a></li>
-            </ul>
+
+<!-- Photo background -->
+<div class="sky-scene">
+    <div class="stars" id="stars"></div>
+</div>
+
+<!-- Scarlet H (behind clouds) -->
+<div class="h-wrap" aria-hidden="true">
+    <div class="h-letter">H</div>
+</div>
+
+<!-- Content layer -->
+<div class="page">
+    <div class="brand">HIPAASYNTH</div>
+
+    <div class="content">
+        <h1 class="headline">We test clinical AI before patients do.</h1>
+        <p class="sub">Find out where your model fails — across the populations it will actually serve.</p>
+        <p class="for-line">For teams deploying clinical AI in hospitals, health systems, and IHS facilities.</p>
+
+        <div class="proof">
+            Pre-registered Phase 2 study (OSF) &nbsp;&middot;&nbsp; Stroke &amp; sepsis evaluation underway &nbsp;&middot;&nbsp; Clinically reviewed by ER and ICU specialists &nbsp;&middot;&nbsp; 49/49 test gate passing &nbsp;&middot;&nbsp; SHA-256 reproducible
         </div>
-    </nav>
 
-    <header class="hero circuit-bg">
-        <div class="circuit-lines left">
-            <svg viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 300V200H60V150H100V100" stroke="#6366f1" stroke-width="1.5"/>
-                <path d="M40 300V220H80V180H140V80" stroke="#6366f1" stroke-width="1.5"/>
-                <path d="M60 300V240H120V200H160V120" stroke="#6366f1" stroke-width="1.5"/>
-                <circle cx="60" cy="150" r="4" fill="#6366f1"/>
-                <circle cx="100" cy="100" r="4" fill="#6366f1"/>
-                <circle cx="140" cy="80" r="4" fill="#6366f1"/>
-                <circle cx="160" cy="120" r="4" fill="#6366f1"/>
-            </svg>
+        <div class="btn-row">
+            <a href="pilot.html" class="btn">See How It Works</a>
+            <a href="pricing.html" class="btn">Pricing</a>
+            <a href="mailto:hipaasynth@gmail.com?subject=20-Min%20Call%20Request" class="btn">Book a 20-Min Call</a>
         </div>
-        <div class="circuit-lines right">
-            <svg viewBox="0 0 150 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M150 20H100V60H60V100H20" stroke="#6366f1" stroke-width="1.5"/>
-                <path d="M150 50H120V80H80V120H40" stroke="#6366f1" stroke-width="1.5"/>
-                <circle cx="100" cy="60" r="4" fill="#6366f1"/>
-                <circle cx="60" cy="100" r="4" fill="#6366f1"/>
-                <circle cx="80" cy="120" r="4" fill="#6366f1"/>
-            </svg>
-        </div>
-        <div class="logo">
-            <img src="https://hipaasynth.com/logo.png" alt="HipAAsynth">
-        </div>
-        <h1>Deterministic synthetic patient data for testing, benchmarking, and validation.</h1>
-        <p class="subtext">Reproducible synthetic cohorts for testing, benchmarking, and validation &mdash; without PHI.</p>
-        <div class="button-group">
-            <a href="#products" class="btn btn-primary">View Products</a>
-            <a href="request.html" class="btn btn-secondary">Request a Cohort</a>
-        </div>
-        <div class="trust-badges">
-            <div class="trust-badge">
-                <div class="tb-icon">&#x1F3AF;</div>
-                <div class="tb-title">Deterministic = Identical Output</div>
-            </div>
-            <div class="trust-badge">
-                <div class="tb-icon">&#x1F6E1;</div>
-                <div class="tb-title">Synthetic Only</div>
-            </div>
-            <div class="trust-badge">
-                <div class="tb-icon">&#x1F512;</div>
-                <div class="tb-title">Zero PHI</div>
-            </div>
-            <div class="trust-badge">
-                <div class="tb-icon">&#x2705;</div>
-                <div class="tb-title">Validation Included</div>
-            </div>
-            <div class="trust-badge">
-                <div class="tb-icon">&#x1F4CB;</div>
-                <div class="tb-title">Structured EHR Outputs</div>
-            </div>
-        </div>
-    </header>
+    </div>
+</div>
 
-    <section id="who">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Who This Is For</h2>
-                <p>Deterministic synthetic cohorts for teams that need reproducible, auditable healthcare data.</p>
-            </div>
-            <div class="grid-5 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">AI Researchers</div>
-                    <ul><li>Controlled benchmark cohorts for repeatable model evaluation</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">ML Engineers</div>
-                    <ul><li>Synthetic test data for deterministic pipeline and model validation</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Healthcare Startups</div>
-                    <ul><li>Safe development datasets without exposing patient records</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Product Testing Teams</div>
-                    <ul><li>Reproducible scenarios for QA, regression testing, and demos</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Analytics &amp; Validation</div>
-                    <ul><li>Auditable synthetic cohorts for benchmarking and workflow validation</li></ul>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="no-data">This site collects no data. No cookies. No tracking. No analytics.</div>
 
-    <section id="deliverables">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>What You Receive</h2>
-                <p>Customers receive inspectable outputs and validation artifacts. The engine is proprietary, but deliverables are transparent, structured, and auditable.</p>
-                <p style="margin-top: 8px; font-size: 0.9rem; color: #888;">Deliverables are inspectable and reproducible. Engine implementation remains proprietary.</p>
-            </div>
-            <div class="deliverables-grid fade-in">
-                <div class="deliverable-item">
-                    <span class="deliverable-icon">&#x1F4CA;</span>
-                    <span class="deliverable-name">sample_100_patients.csv</span>
-                </div>
-                <div class="deliverable-item">
-                    <span class="deliverable-icon">&#x1F4C4;</span>
-                    <span class="deliverable-name">schema.json</span>
-                </div>
-                <div class="deliverable-item">
-                    <span class="deliverable-icon">&#x2705;</span>
-                    <span class="deliverable-name">validation.txt</span>
-                </div>
-                <div class="deliverable-item">
-                    <span class="deliverable-icon">&#x1F4D6;</span>
-                    <span class="deliverable-name">README.md</span>
-                </div>
-                <div class="deliverable-item">
-                    <span class="deliverable-icon">&#x1F4CB;</span>
-                    <span class="deliverable-name">Cohort definition summary</span>
-                </div>
-                <div class="deliverable-item">
-                    <span class="deliverable-icon">&#x1F50D;</span>
-                    <span class="deliverable-name">Reproducibility statement</span>
-                </div>
-            </div>
-        </div>
-    </section>
+<script>
+(function() {
+    var el = document.getElementById('stars');
+    var pts = [
+        [7,3],[14,9],[23,2],[33,6],[41,12],[49,3],[57,8],[65,2],[73,11],[80,5],
+        [87,9],[93,3],[4,17],[11,20],[19,15],[27,22],[36,17],[44,24],[52,18],
+        [60,14],[68,20],[76,16],[83,23],[90,14],[2,28],[9,26],[17,30],[25,27]
+    ];
+    pts.forEach(function(p, i) {
+        var s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = p[0] + '%';
+        s.style.top = p[1] + '%';
+        s.style.setProperty('--d', (2 + (i % 5) * 0.4) + 's');
+        s.style.setProperty('--del', (i * 0.35) + 's');
+        el.appendChild(s);
+    });
+})();
+</script>
 
-    <section id="why">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Why HipAAsynth</h2>
-            </div>
-            <div class="grid-3x2 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">Deterministic, Not Stochastic</div>
-                    <ul><li>Controlled deterministic generation.</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Reproducible Across Runs</div>
-                    <ul><li>Deterministic generation produces identical output across runs.</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Synthetic Only, Zero PHI</div>
-                    <ul><li>No real patient records. No de-identification. No PHI risk. Ever.</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Validation-Ready Outputs</div>
-                    <ul><li>Every delivery includes validation artifacts for testing, benchmarking, and auditing.</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">No AI or ML Generation</div>
-                    <ul><li>Deterministic generation. No AI or ML models used.</li></ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Proprietary Engine, Transparent Deliverables</div>
-                    <ul><li>Proprietary implementation. Structured, inspectable, auditable outputs.</li></ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="domains">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Available Cohort Domains</h2>
-            </div>
-            <div class="grid-4 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">Cardiology Cohorts</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Diabetes Cohorts</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Oncology Cohorts</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Skilled Nursing Facility (SNF) Cohorts</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Rare Disease Cohorts (SMA, DMD, Fabry)</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Longitudinal Multi-Visit Cohorts</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Hospital Operations Cohorts</div>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Validation Benchmark Cohorts</div>
-                </div>
-            </div>
-            <p class="section-note fade-in">Domains generated deterministically with configurable cohort size and outputs.</p>
-        </div>
-    </section>
-
-    <section id="products">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Products &amp; Pricing</h2>
-                <p>Deterministic synthetic cohorts at every scale. Click any product for details.</p>
-            </div>
-            <div class="pricing-table fade-in">
-
-                <div class="pricing-row" onclick="this.classList.toggle('open')">
-                    <div class="pricing-summary">
-                        <div class="pricing-name">HuggingFace Samples</div>
-                        <div class="pricing-brief">6 sample packs, 100 patients each. Download instantly.</div>
-                        <div class="pricing-amount">Free</div>
-                    </div>
-                    <div class="pricing-details">
-                        <div class="pricing-details-inner">
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">Included Packs</div>
-                                <ul>
-                                    <li>Cardiology EHR</li>
-                                    <li>Diabetes EHR</li>
-                                    <li>Hospital Operations</li>
-                                    <li>Clinical Trials</li>
-                                    <li>Longitudinal Patients</li>
-                                    <li>Rare Disease EHR</li>
-                                </ul>
-                            </div>
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">Details</div>
-                                <ul>
-                                    <li>100 patients per pack</li>
-                                    <li>13-column structured CSV</li>
-                                    <li>CC BY-NC 4.0 license</li>
-                                    <li>See the format before you buy</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <a href="#datasets" class="btn btn-primary">Browse Samples</a>
-                    </div>
-                </div>
-
-                <div class="pricing-row" onclick="this.classList.toggle('open')">
-                    <div class="pricing-summary">
-                        <div class="pricing-name">Starter Pack</div>
-                        <div class="pricing-brief">Request template + 500-patient starter cohort</div>
-                        <div class="pricing-amount">$149</div>
-                    </div>
-                    <div class="pricing-details">
-                        <div class="pricing-details-inner">
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">What's Included</div>
-                                <ul>
-                                    <li>Cohort request template (YAML format)</li>
-                                    <li>Example cohort specifications</li>
-                                    <li>One starter cohort (up to 500 patients)</li>
-                                    <li>sample_500_patients.csv</li>
-                                    <li>schema.json + validation.txt + README.md</li>
-                                    <li>Reproducible cohort definition</li>
-                                </ul>
-                            </div>
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">Notes</div>
-                                <ul>
-                                    <li>Starter cohort is for structure and format preview</li>
-                                    <li>Production cohorts start at 1,000+ patients for statistical stability</li>
-                                    <li>Larger cohorts available separately</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Starter%20Pack" class="btn btn-primary">Buy Starter Pack</a>
-                    </div>
-                </div>
-
-                <div class="pricing-row" onclick="this.classList.toggle('open')">
-                    <div class="pricing-summary">
-                        <div class="pricing-name">Domain Pack</div>
-                        <div class="pricing-brief">1,000-patient cohort in a specific clinical domain</div>
-                        <div class="pricing-amount">$499</div>
-                    </div>
-                    <div class="pricing-details">
-                        <div class="pricing-details-inner">
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">What's Included</div>
-                                <ul>
-                                    <li>1,000-patient production cohort</li>
-                                    <li>Domain-specific clinical depth</li>
-                                    <li>Schema + validation artifacts</li>
-                                    <li>Reproducibility guarantee</li>
-                                </ul>
-                            </div>
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">Available Domains</div>
-                                <ul>
-                                    <li>Cardiology</li>
-                                    <li>Diabetes</li>
-                                    <li>Oncology</li>
-                                    <li>Skilled Nursing Facility (SNF)</li>
-                                    <li>Rare Disease (SMA, DMD, Fabry)</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Domain%20Pack" class="btn btn-primary">Buy Domain Pack</a>
-                    </div>
-                </div>
-
-                <div class="pricing-row" onclick="this.classList.toggle('open')">
-                    <div class="pricing-summary">
-                        <div class="pricing-name">Production Cohort</div>
-                        <div class="pricing-brief">Scaled cohorts from 1,000 to 10,000+ patients</div>
-                        <div class="pricing-amount">$999+</div>
-                    </div>
-                    <div class="pricing-details">
-                        <div class="pricing-details-inner">
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">Sizes &amp; Pricing</div>
-                                <ul>
-                                    <li>1,000 patients &mdash; $999</li>
-                                    <li>5,000 patients &mdash; $1,499</li>
-                                    <li>10,000 patients &mdash; $2,499</li>
-                                    <li>Custom sizes available on request</li>
-                                </ul>
-                            </div>
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">Includes</div>
-                                <ul>
-                                    <li>Any available domain</li>
-                                    <li>Demographic targeting</li>
-                                    <li>Schema + validation artifacts</li>
-                                    <li>Reproducibility guarantee</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Production%20Cohort" class="btn btn-primary">Request Production Cohort</a>
-                    </div>
-                </div>
-
-                <div class="pricing-row" onclick="this.classList.toggle('open')">
-                    <div class="pricing-summary">
-                        <div class="pricing-name">Twin Hospital Pack</div>
-                        <div class="pricing-brief">Two matched 1,000-patient cohorts with controlled variation</div>
-                        <div class="pricing-amount">$1,999</div>
-                    </div>
-                    <div class="pricing-details">
-                        <div class="pricing-details-inner">
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">What's Included</div>
-                                <ul>
-                                    <li>Two matched hospital cohorts (1,000 each)</li>
-                                    <li>Controlled demographic variation</li>
-                                    <li>Twin validation report</li>
-                                    <li>Matched schemas</li>
-                                </ul>
-                            </div>
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">Use Cases</div>
-                                <ul>
-                                    <li>Model comparison across populations</li>
-                                    <li>Bias testing</li>
-                                    <li>Multi-site deployment simulation</li>
-                                    <li>A/B evaluation</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <a href="mailto:HipAAsynth@gmail.com?subject=Purchase%3A%20Twin%20Hospital%20Pack" class="btn btn-primary">Buy Twin Hospital Pack</a>
-                    </div>
-                </div>
-
-                <div class="pricing-row" onclick="this.classList.toggle('open')">
-                    <div class="pricing-summary">
-                        <div class="pricing-name">Custom Engagement</div>
-                        <div class="pricing-brief">Multi-domain, longitudinal, treatment arms, ongoing generation</div>
-                        <div class="pricing-amount">$5,000+</div>
-                    </div>
-                    <div class="pricing-details">
-                        <div class="pricing-details-inner">
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">Available Features</div>
-                                <ul>
-                                    <li>Multiple domains combined</li>
-                                    <li>Longitudinal progression</li>
-                                    <li>Treatment vs. control arms</li>
-                                    <li>Multi-site twin simulation</li>
-                                </ul>
-                            </div>
-                            <div class="pricing-col">
-                                <div class="pricing-col-title">&nbsp;</div>
-                                <ul>
-                                    <li>Demographic targeting</li>
-                                    <li>Outcomes and medication exposure</li>
-                                    <li>Biomarker inclusion (domain dependent)</li>
-                                    <li>Ongoing quarterly refreshes</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <a href="mailto:HipAAsynth@gmail.com?subject=Custom%20Engagement%20Inquiry" class="btn btn-primary">Contact for Custom Quote</a>
-                    </div>
-                </div>
-
-            </div>
-            <p class="section-note fade-in" style="margin-top: 32px;">All products include validation artifacts. Implementation remains proprietary.<br>This product does not include the HipAAsynth engine, source code, or proprietary implementation.</p>
-        </div>
-    </section>
-
-    <section id="validation">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Validation</h2>
-                <p>Every cohort is generated with validation artifacts. Outputs are inspectable and auditable.</p>
-            </div>
-            <div class="stats-grid fade-in">
-                <div class="stat-card">
-                    <div class="stat-number">19/19</div>
-                    <div class="stat-label">CMS quality measures validated (SNF domain)</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Deterministic reproducibility across runs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">Real patient records used. Zero PHI. Ever.</div>
-                </div>
-            </div>
-            <p class="section-note fade-in" style="margin-top: 32px;">Validation confirms output properties. It does not describe generation implementation.</p>
-        </div>
-    </section>
-
-    <section id="datasets">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Free Samples on HuggingFace</h2>
-                <p>100-patient sample cohorts. Download instantly. See the format before you buy.</p>
-            </div>
-            <div class="pack-grid fade-in">
-                <div class="pack-card">
-                    <div class="pack-title">Cardiology EHR</div>
-                    <div class="pack-desc">Vitals, labs, and diagnoses.</div>
-                    <div class="pack-buttons">
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr" target="_blank" class="btn-preview">Preview</a>
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-cardiology-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
-                    </div>
-                </div>
-                <div class="pack-card">
-                    <div class="pack-title">Diabetes EHR</div>
-                    <div class="pack-desc">A1C, glucose, and comorbidity data.</div>
-                    <div class="pack-buttons">
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr" target="_blank" class="btn-preview">Preview</a>
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-diabetes-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
-                    </div>
-                </div>
-                <div class="pack-card">
-                    <div class="pack-title">Hospital Operations</div>
-                    <div class="pack-desc">Operational analytics and testing.</div>
-                    <div class="pack-buttons">
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations" target="_blank" class="btn-preview">Preview</a>
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-hospital-operations/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
-                    </div>
-                </div>
-                <div class="pack-card">
-                    <div class="pack-title">Clinical Trials</div>
-                    <div class="pack-desc">Structured eligibility profiles.</div>
-                    <div class="pack-buttons">
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts" target="_blank" class="btn-preview">Preview</a>
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-clinical-trial-cohorts/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
-                    </div>
-                </div>
-                <div class="pack-card">
-                    <div class="pack-title">Longitudinal</div>
-                    <div class="pack-desc">Multi-visit timelines and progression.</div>
-                    <div class="pack-buttons">
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients" target="_blank" class="btn-preview">Preview</a>
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-longitudinal-patients/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
-                    </div>
-                </div>
-                <div class="pack-card">
-                    <div class="pack-title">Rare Disease</div>
-                    <div class="pack-desc">SMA, DMD, and Fabry profiles.</div>
-                    <div class="pack-buttons">
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr" target="_blank" class="btn-preview">Preview</a>
-                        <a href="https://huggingface.co/datasets/HipAAsynth/synthetic-rare-disease-ehr/resolve/main/sample_100_patients.csv" target="_blank" class="btn-download">Download CSV</a>
-                    </div>
-                </div>
-            </div>
-            <div class="section-cta fade-in">
-                <p>Need a larger cohort or custom configuration? Request one made to spec.</p>
-                <a href="request.html" class="btn btn-primary">Request a Cohort</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Contact &amp; Sales</h2>
-            </div>
-            <div class="grid-3x2 fade-in">
-                <div class="capability-card">
-                    <div class="cap-title">What We Sell</div>
-                    <ul>
-                        <li>Packaged synthetic data products</li>
-                        <li>Cohort request templates</li>
-                        <li>Custom cohort generation</li>
-                        <li>Validation-ready deliverables</li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">How to Reach Us</div>
-                    <ul>
-                        <li><a href="mailto:HipAAsynth@gmail.com">HipAAsynth@gmail.com</a></li>
-                        <li>Website, email, and direct outreach</li>
-                        <li><a href="request.html">Request a Cohort form</a></li>
-                    </ul>
-                </div>
-                <div class="capability-card">
-                    <div class="cap-title">Order Confirmation</div>
-                    <ul>
-                        <li>Orders confirmed by phone, email, or in person become binding once confirmed in writing and are governed by HipAAsynth <a href="license.html">license</a>, <a href="terms.html">terms</a>, and <a href="disclaimer.html">disclaimer</a>.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="safety-section">
-        <div class="container">
-            <div class="safety-box fade-in">
-                <p>HipAAsynth outputs are synthetic and contain no real patient data or PHI. Products and datasets are intended for testing, development, research, and benchmarking. They are not intended for clinical decision-making, diagnosis, treatment, or patient care.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <div class="footer-brand-name">HipAAsynth</div>
-                    <p class="footer-tagline">Deterministic synthetic healthcare data</p>
-                    <div class="footer-badges">
-                        <span class="badge">Synthetic Only</span>
-                        <span class="badge">Zero PHI</span>
-                        <span class="badge">Deterministic</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="footer-col-title">Resources</div>
-                    <ul class="footer-links">
-                        <li><a href="#products">Products</a></li>
-                        <li><a href="request.html">Request a Cohort</a></li>
-                        <li><a href="https://huggingface.co/HipAAsynth" target="_blank">HuggingFace</a></li>
-                        <li><a href="mailto:HipAAsynth@gmail.com">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="footer-col-title">Legal</div>
-                    <ul class="footer-links">
-                        <li><a href="license.html">License</a></li>
-                        <li><a href="terms.html">Terms</a></li>
-                        <li><a href="disclaimer.html">Disclaimer</a></li>
-                        <li><a href="privacy.html">Privacy</a></li>
-                        <li><a href="ip-notice.html">IP Notice</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                Synthetic only. No PHI. Deterministic outputs for testing, benchmarking, and validation.
-                <br>Commercial license and usage terms apply.
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        var siteNav = document.getElementById('siteNav');
-        window.addEventListener('scroll', function() {
-            siteNav.classList.toggle('scrolled', window.scrollY > 10);
-        });
-        var hamburgerBtn = document.getElementById('hamburgerBtn');
-        var navLinks = document.getElementById('navLinks');
-        hamburgerBtn.addEventListener('click', function() {
-            navLinks.classList.toggle('open');
-        });
-        navLinks.querySelectorAll('a').forEach(function(link) {
-            link.addEventListener('click', function() { navLinks.classList.remove('open'); });
-        });
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
-    </script>
 </body>
 </html>
