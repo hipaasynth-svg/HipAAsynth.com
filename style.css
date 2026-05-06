@@ -239,7 +239,7 @@ body {
 
 /* Pricing page uses night.png as background */
 .pricing-page {
-    background: url('night.png') center center / cover no-repeat;
+    background: url('night.jpg') center center / cover no-repeat;
     background-attachment: fixed;
     position: relative;
 }
