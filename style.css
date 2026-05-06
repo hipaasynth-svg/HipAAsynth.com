@@ -240,13 +240,20 @@ body {
 /* Pricing page uses night.png as background */
 .pricing-page {
     background: url('night.png') center center / cover no-repeat;
+    background-attachment: fixed;
     position: relative;
 }
 .pricing-page::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.72);
+    background: linear-gradient(
+        to bottom,
+        rgba(4, 8, 20, 0.55) 0%,
+        rgba(4, 8, 20, 0.18) 30%,
+        rgba(4, 8, 20, 0.08) 55%,
+        rgba(4, 8, 20, 0.35) 100%
+    );
     z-index: 0;
 }
 .pricing-page > * { position: relative; z-index: 1; }
