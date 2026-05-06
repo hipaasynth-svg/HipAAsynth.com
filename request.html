@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request a Cohort — HipAAsynth</title>
+    <meta name="description" content="Request a deterministic synthetic patient cohort from HipAAsynth. Specify size, domain, demographics, and delivery requirements.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-<script>function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");
+    <script>function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");
 o.src="https://assets.apollo.io/micro/website-tracker/tracker.iife.js?nocache="+n,o.async=!0,o.defer=!0,
 o.onload=function(){window.trackingFunctions.onLoad({appId:"69c41c11f0ae56001d157f60"})},
 document.head.appendChild(o)}initApollo();</script>
 </head>
 <body>
-    <nav class="site-nav scrolled">
+    <nav class="site-nav" id="siteNav">
         <div class="nav-inner">
             <a href="/" class="nav-brand">
                 <img src="https://hipaasynth.com/logo.png" alt="HipAAsynth logo">
@@ -23,66 +27,113 @@ document.head.appendChild(o)}initApollo();</script>
             <ul class="nav-links" id="navLinks">
                 <li><a href="/">Home</a></li>
                 <li><a href="/#products">Products</a></li>
-                <li><a href="mailto:HipAAsynth@gmail.com">Contact</a></li>
+                <li><a href="/#validation">Validation</a></li>
+                <li><a href="/#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="page-content">
-        <h1>Request a Cohort</h1>
-        <p>Customers can specify desired cohort characteristics and delivery requirements without seeing proprietary engine details. HipAAsynth generation logic and implementation remain proprietary.</p>
-
-        <h2>Request format</h2>
-        <p>Define what you need using a structured request like this:</p>
-
-        <div class="code-block" style="margin: 24px 0 32px;">
-cohort:
-  name: "example_request"
-  size: 1000
-  seed: 42
-
-demographics:
-  age_mean: 58
-  age_std: 12
-  sex:
-    male: 0.52
-    female: 0.48
-
-conditions:
-  diabetes_prevalence: 0.22
-  hypertension_prevalence: 0.48
-
-time:
-  follow_up_years: 5
-
-delivery:
-  include_sample_csv: true
-  include_schema: true
-  include_validation: true
-  include_readme: true</div>
-
-        <p>This request format defines desired cohort characteristics and delivery requirements. HipAAsynth generation logic and implementation remain proprietary.</p>
-
-        <h2>What you can specify</h2>
-        <ul>
-            <li>Cohort size</li>
-            <li>Requested seed</li>
-            <li>Age distribution</li>
-            <li>Sex mix</li>
-            <li>Condition prevalence</li>
-            <li>Follow-up duration</li>
-            <li>Requested outputs</li>
-            <li>Validation artifacts requested</li>
-        </ul>
-
-        <h2>Ready to request?</h2>
-        <p>Send your cohort requirements by email. Include as much or as little detail as you have.</p>
-        <div style="margin-top: 20px;">
-            <a href="mailto:HipAAsynth@gmail.com?subject=Cohort%20Request" class="btn btn-primary">Send Request</a>
+    <header class="hero hero-night">
+        <div class="sky-badge-bg" aria-hidden="true">
+            <img src="H.png" alt="">
         </div>
+        <div class="hero-content">
+            <div class="hero-brand hero-brand-night">Request a Cohort</div>
+            <p class="hero-tagline hero-tagline-night">Specify what you need. We handle the rest.</p>
+            <div class="button-group">
+                <a href="mailto:cody@hipaasynth.com?subject=Cohort%20Request" class="btn btn-sky-primary">Send a Request</a>
+                <a href="/#products" class="btn btn-night-secondary">View Products</a>
+            </div>
+        </div>
+    </header>
 
-        <p style="margin-top: 32px; font-size: 0.85rem; color: #666;">Requests define desired cohort characteristics. Generation logic and implementation remain proprietary.</p>
-    </div>
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>What You Can Specify</h2>
+                <p>You define the cohort requirements. Generation logic and implementation remain proprietary.</p>
+            </div>
+            <div class="grid-4 fade-in">
+                <div class="capability-card">
+                    <div class="cap-title">Cohort Size</div>
+                    <ul>
+                        <li>500 patients (starter)</li>
+                        <li>1,000 to 10,000+ (production)</li>
+                        <li>Custom sizes on request</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Clinical Domain</div>
+                    <ul>
+                        <li>Cardiology, Diabetes, Oncology</li>
+                        <li>SNF, Rare Disease</li>
+                        <li>Longitudinal, Hospital Operations</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Demographics</div>
+                    <ul>
+                        <li>Age distribution</li>
+                        <li>Sex mix</li>
+                        <li>Condition prevalence targets</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Delivery</div>
+                    <ul>
+                        <li>Reproducible seed</li>
+                        <li>CSV, schema, validation artifacts</li>
+                        <li>Reproducibility statement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>How to Request</h2>
+                <p>Send your requirements by email. Include as much or as little detail as you have — we'll follow up to finalize scope before generation.</p>
+            </div>
+            <div class="grid-3x2 fade-in">
+                <div class="capability-card">
+                    <div class="cap-title">Start Simple</div>
+                    <ul>
+                        <li>A domain and cohort size is enough to begin</li>
+                        <li>We'll ask clarifying questions where needed</li>
+                        <li>No technical format required</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">Confirm Before Generation</div>
+                    <ul>
+                        <li>Scope and requirements confirmed in writing before work begins</li>
+                        <li>Pricing confirmed upfront per product tier</li>
+                    </ul>
+                </div>
+                <div class="capability-card">
+                    <div class="cap-title">What You Receive</div>
+                    <ul>
+                        <li>Structured patient CSV with schema</li>
+                        <li>Validation report and reproducibility statement</li>
+                        <li>README with cohort definition summary</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="fade-in" style="text-align:center; margin-top: 48px;">
+                <a href="mailto:cody@hipaasynth.com?subject=Cohort%20Request" class="btn btn-primary">Send a Request</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="safety-section">
+        <div class="container">
+            <div class="safety-box fade-in">
+                <p>HipAAsynth outputs are synthetic and contain no real patient data or PHI. Products and datasets are intended for testing, development, research, and benchmarking. They are not intended for clinical decision-making, diagnosis, treatment, or patient care.</p>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <div class="container">
@@ -90,13 +141,18 @@ delivery:
                 <div>
                     <div class="footer-brand-name">HipAAsynth</div>
                     <p class="footer-tagline">Deterministic synthetic healthcare data</p>
+                    <div class="footer-badges">
+                        <span class="badge">Synthetic Only</span>
+                        <span class="badge">Zero PHI</span>
+                        <span class="badge">Deterministic</span>
+                    </div>
                 </div>
                 <div>
                     <div class="footer-col-title">Resources</div>
                     <ul class="footer-links">
                         <li><a href="/">Home</a></li>
                         <li><a href="/#products">Products</a></li>
-                        <li><a href="https://huggingface.co/HipAAsynth" target="_blank">HuggingFace</a></li>
+                        <li><a href="mailto:cody@hipaasynth.com">Contact</a></li>
                     </ul>
                 </div>
                 <div>
@@ -112,14 +168,30 @@ delivery:
             </div>
             <div class="footer-bottom">
                 Synthetic only. No PHI. Deterministic outputs for testing, benchmarking, and validation.
+                <br>Commercial license and usage terms apply.
             </div>
         </div>
     </footer>
 
     <script>
+        var siteNav = document.getElementById('siteNav');
+        window.addEventListener('scroll', function() {
+            siteNav.classList.toggle('scrolled', window.scrollY > 10);
+        });
         var hamburgerBtn = document.getElementById('hamburgerBtn');
         var navLinks = document.getElementById('navLinks');
-        if (hamburgerBtn) hamburgerBtn.addEventListener('click', function() { navLinks.classList.toggle('open'); });
+        hamburgerBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() { navLinks.classList.remove('open'); });
+        });
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
     </script>
 </body>
 </html>
