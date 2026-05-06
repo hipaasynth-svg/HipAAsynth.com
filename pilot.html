@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directional Pilot — HipAAsynth</title>
+    <meta name="description" content="Find out if your clinical AI model holds up on a population it wasn't built for — before it reaches a patient.">
+    <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="page-wrap pilot-page">
+
+    <a href="/" class="back-link">← Back</a>
+
+    <div class="h-small">H</div>
+
+    <h1 class="page-heading">Directional Pilot</h1>
+    <p class="page-sub">Find out if your model holds up on a population it wasn't built for — before it reaches a patient.</p>
+
+    <div class="frosted-chip">
+        Teams preparing a clinical AI for deployment, regulatory filing, or institutional review. You have a model. You need to know where it breaks.
+    </div>
+
+    <div class="steps-card">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <div class="step-title">You send model outputs. We send you the cohort.</div>
+                <div class="step-body">50 patients, one population archetype — calibrated to federal health data, not generic benchmarks. You run your model. You send back answers. No patient data. No model access.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <div class="step-title">We find where it fails.</div>
+                <div class="step-body">Adversarial stress testing across missingness, noise, and population shift. Every result is deterministic — reproducible from a SHA-256 anchor hash. We surface the specific failure patterns, not just an accuracy number.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <div class="step-title">You get a clear signal.</div>
+                <div class="step-body">A signed report with pass rates by axis, guardrail violations, clinical edge cases, and the exact patient states where your model breaks. Enough to make a deployment decision — or catch a problem before it reaches a patient.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="proof-bar">
+        Currently running: Phase 2 population-robustness evaluation across 4 U.S. population archetypes — stroke (AHA/ASA 2019) and sepsis (Sepsis-3). Pre-registered on OSF. Clinical review: Faiyyaz Hangad (Stroke/CT/MRI), Promise Abegunde RN BSN (Sepsis).
+    </div>
+
+    <div class="price-box">
+        <div class="price-label">Pilot Engagement</div>
+        <div class="price-amount">$2,500</div>
+        <div class="price-detail">One population · One condition · Signed report</div>
+        <div class="price-detail">5–7 day turnaround · No patient data required · No model access needed</div>
+        <div class="price-result">You'll know if your model is ready for that population — or exactly why it isn't.</div>
+    </div>
+
+    <div class="btn-group-center">
+        <a href="mailto:hipaasynth@gmail.com?subject=20-Min%20Call%20Request" class="btn-ghost">Book a 20-min call →</a>
+        <a href="mailto:hipaasynth@gmail.com?subject=Pilot%20Inquiry" class="btn-ghost">Email us →</a>
+    </div>
+
+    <div class="founder-credit">
+        HipAAsynth LLC · Cody Carlson, Founder · Minot, North Dakota · BSL 1.1 Licensed
+    </div>
+
+</div>
+
+<div class="no-data">This site collects no data. No cookies. No tracking. No analytics.</div>
+
+<script>
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { if (e.isIntersecting) e.target.style.opacity = 1; });
+    }, { threshold: 0.08 });
+</script>
+
+</body>
+</html>
