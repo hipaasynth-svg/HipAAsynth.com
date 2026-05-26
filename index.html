@@ -3,346 +3,439 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HipAAsynth — Safety and Transparency in Healthcare AI</title>
-<meta name="description" content="The Six-Axis Adversarial Stress Test (6AAST). Pre-registered, cryptographically reproducible clinical AI validation. Independent. Deterministic. Transparent.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>HipAAsynth — Clinical AI Validation</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#060a10;
-  --bg2:#0c1018;
-  --bg3:#111822;
-  --blue:#4da8e8;
-  --blue-dim:#2d6fa3;
-  --blue-glow:rgba(77,168,232,.1);
-  --red:#e24038;
-  --red-dim:rgba(226,64,56,.12);
-  --green:#2dd4a0;
-  --green-dim:rgba(45,212,160,.1);
-  --txt:#dfe4eb;
-  --txt2:#7e8a9c;
-  --txt3:#4a5568;
-  --border:rgba(77,168,232,.08);
-  --border-h:rgba(77,168,232,.2);
-}
-html{scroll-behavior:smooth;background:var(--bg);color:var(--txt)}
-body{font-family:'Outfit',sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: #1e1e1e;
+    --border2: #2a2a2a;
+    --text: #e8e4d9;
+    --text2: #888;
+    --text3: #444;
+    --green: #00e5a0;
+    --green-dim: #00e5a010;
+    --amber: #f5a623;
+    --purple: #a78bfa;
+    --coral: #fb7185;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 13px; line-height: 1.6; }
 
-/* ═══ CIRCUIT BACKGROUND ═══ */
-.circuit-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.trace{position:absolute;background:var(--border);border-radius:1px}
-.trace.h{height:1px;}.trace.v{width:1px;}
-.node{position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(77,168,232,.06);border:1px solid rgba(77,168,232,.08)}
-.trace-1{top:15%;left:0;width:18%}.trace-2{top:15%;left:18%;height:22%}.trace-3{top:37%;left:18%;width:12%}
-.node-1{top:calc(37% - 2px);left:calc(30% - 2px)}
-.trace-4{top:55%;right:0;width:22%}.trace-5{top:55%;right:22%;height:18%}.trace-6{top:73%;right:22%;width:8%}
-.node-2{top:calc(73% - 2px);right:calc(30% - 2px)}
-.trace-7{top:80%;left:8%;height:20%}.trace-8{bottom:0;left:8%;width:15%}
-.node-3{top:calc(80% - 2px);left:calc(8% - 2px)}
-.trace-9{top:25%;right:35%;height:12%}.trace-10{top:25%;right:35%;width:10%}
-.node-4{top:calc(25% - 2px);right:calc(25% - 2px)}
-.trace-11{top:45%;left:40%;width:1px;height:15%}.node-5{top:calc(60% - 2px);left:calc(40% - 2px)}
-.trace-12{top:10%;left:55%;width:20%}.trace-13{top:10%;left:75%;height:10%}.node-6{top:calc(20% - 2px);left:calc(75% - 2px)}
+  /* NAV */
+  nav { border-bottom: 1px solid var(--border); padding: 0 40px; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--bg); z-index: 100; }
+  .nav-logo { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--green); letter-spacing: .15em; text-transform: uppercase; text-decoration: none; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { font-family: var(--font-mono); font-size: 10px; color: var(--text3); text-decoration: none; letter-spacing: .08em; text-transform: uppercase; transition: color .15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { font-family: var(--font-mono); font-size: 10px; color: var(--green); border: 1px solid #00e5a030; padding: 6px 14px; border-radius: 4px; text-decoration: none; letter-spacing: .08em; text-transform: uppercase; transition: background .15s; }
+  .nav-cta:hover { background: var(--green-dim); }
 
-/* ═══ NAV ═══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(24px);background:rgba(6,10,16,.8);border-bottom:1px solid var(--border)}
-.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
-.nav-logo img{width:34px;height:34px;border-radius:5px}
-.nav-logo span{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.95rem;color:var(--txt);letter-spacing:-.01em}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{font-size:.78rem;font-weight:500;color:var(--txt2);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .3s}
-.nav-links a:hover{color:var(--blue)}
+  /* SECTIONS */
+  section { max-width: 880px; margin: 0 auto; padding: 72px 40px; }
+  .section-label { font-family: var(--font-mono); font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .15em; margin-bottom: 16px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+  h1 { font-family: var(--font-mono); font-size: 36px; font-weight: 600; color: var(--text); letter-spacing: -.02em; line-height: 1.2; }
+  h2 { font-family: var(--font-mono); font-size: 18px; font-weight: 500; color: var(--text); letter-spacing: -.01em; margin-bottom: 12px; }
 
-/* ═══ HERO ═══ */
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 2rem 5rem;max-width:1100px;margin:0 auto}
-.hero-badge{display:inline-flex;align-items:center;gap:.55rem;padding:.4rem .9rem;background:var(--red-dim);border:1px solid rgba(226,64,56,.2);border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:500;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2.5rem;width:fit-content}
-.hero-badge .dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:blink 2s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.hero h1{font-family:'Source Serif 4',serif;font-weight:600;font-size:clamp(2.4rem,5.2vw,4rem);line-height:1.12;color:var(--txt);margin-bottom:1.8rem;max-width:780px}
-.hero h1 em{font-style:italic;font-weight:400;color:var(--blue)}
-.hero-sub{font-size:1.05rem;color:var(--txt2);max-width:600px;line-height:1.75;margin-bottom:3rem;font-weight:300}
-.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap}
-.hero-stat-n{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--blue);letter-spacing:-.03em}
-.hero-stat-l{font-size:.7rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.1em;margin-top:.15rem}
+  /* HERO */
+  .hero { padding: 96px 40px 80px; max-width: 880px; margin: 0 auto; }
+  .hero-eyebrow { font-family: var(--font-mono); font-size: 10px; color: var(--green); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .hero-eyebrow::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--green); }
+  .hero h1 { margin-bottom: 20px; max-width: 640px; }
+  .hero-sub { font-size: 15px; color: var(--text2); font-weight: 300; max-width: 520px; line-height: 1.8; margin-bottom: 36px; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { font-family: var(--font-mono); font-size: 11px; color: #0a0a0a; background: var(--green); border: none; padding: 11px 22px; border-radius: 4px; text-decoration: none; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: opacity .15s; }
+  .btn-primary:hover { opacity: .85; }
+  .btn-ghost { font-family: var(--font-mono); font-size: 11px; color: var(--text2); background: transparent; border: 1px solid var(--border2); padding: 11px 22px; border-radius: 4px; text-decoration: none; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: border-color .15s, color .15s; }
+  .btn-ghost:hover { border-color: var(--text3); color: var(--text); }
+  .hero-stats { display: flex; gap: 40px; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 3px; }
+  .stat-val { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--green); }
+  .stat-label { font-size: 11px; color: var(--text3); }
 
-/* ═══ DIVIDERS ═══ */
-.divider{max-width:1100px;margin:0 auto;padding:0 2rem}
-.divider .l{height:1px;background:linear-gradient(90deg,transparent,var(--border-h),transparent)}
+  /* PROBLEM */
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 24px; }
+  .problem-cell { background: var(--bg); padding: 24px; }
+  .problem-icon { font-size: 20px; margin-bottom: 12px; }
+  .problem-title { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .problem-desc { font-size: 11px; color: var(--text3); line-height: 1.6; }
 
-/* ═══ SECTIONS ═══ */
-.sec{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:6rem 2rem}
-.sec-tag{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--blue-dim);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1.2rem}
-.sec-title{font-family:'Source Serif 4',serif;font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:600;color:var(--txt);line-height:1.2;margin-bottom:3rem}
+  /* AXIS GRID */
+  .axis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
+  .axis-card { border: 1px solid var(--border); border-radius: 6px; padding: 16px; background: var(--bg); transition: border-color .15s; }
+  .axis-card:hover { border-color: var(--border2); }
+  .axis-card.ax-6 { background: #00e5a006; border-color: #00e5a015; }
+  .axis-card.ax-7 { background: #a78bfa08; border-color: #a78bfa20; grid-column: 1 / -1; }
+  .axis-num { font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+  .ax-6 .axis-num { color: var(--green); }
+  .ax-7 .axis-num { color: var(--purple); }
+  .axis-name { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .ax-7 .axis-name { color: #c4b5fd; }
+  .axis-desc { font-size: 11px; color: var(--text3); line-height: 1.5; }
+  .badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; padding: 2px 7px; border-radius: 3px; font-weight: 500; letter-spacing: .05em; margin-left: 8px; }
+  .badge-new { background: #a78bfa18; color: var(--purple); border: 1px solid #a78bfa30; }
+  .badge-live { background: #00e5a015; color: var(--green); border: 1px solid #00e5a030; }
 
-/* ═══ MISSION ═══ */
-.mission blockquote{font-family:'Source Serif 4',serif;font-size:clamp(1.2rem,2.4vw,1.7rem);line-height:1.5;color:var(--txt);max-width:760px;border-left:2px solid var(--blue);padding-left:1.8rem}
-.mission blockquote .hl{color:var(--blue)}
-.mission-after{margin-top:2rem;font-size:.92rem;color:var(--txt2);max-width:600px;padding-left:1.8rem;border-left:2px solid transparent;line-height:1.7;font-weight:300}
+  /* DIFF BOX */
+  .diff-box { border: 1px solid #a78bfa20; background: #a78bfa06; border-radius: 8px; padding: 20px; margin-top: 16px; }
+  .diff-grid { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 20px; margin-top: 8px; }
+  .diff-sep { background: var(--border); }
+  .diff-label { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
 
-/* ═══ 6AAST GRID ═══ */
-.axes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden}
-.ax{background:var(--bg2);padding:1.8rem;transition:background .3s}
-.ax:hover{background:var(--bg3)}
-.ax-n{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.6rem}
-.ax h4{font-size:.98rem;font-weight:600;color:var(--txt);margin-bottom:.45rem}
-.ax p{font-size:.82rem;color:var(--txt2);line-height:1.6;font-weight:300}
-.ax.primary{background:linear-gradient(135deg,var(--bg2),rgba(226,64,56,.03))}
-.ax.primary .ax-n{color:var(--red)}
-.ax-tag{display:inline-block;margin-top:.65rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;padding:.15rem .45rem;border-radius:3px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
-.tag-g{background:var(--green-dim);color:var(--green)}
-.tag-r{background:var(--red-dim);color:var(--red)}
+  /* WORKFLOW */
+  .workflow { display: flex; align-items: stretch; gap: 0; margin: 20px 0; }
+  .wf-step { flex: 1; }
+  .wf-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 16px 12px 14px; margin: 0 4px; height: 100%; text-align: center; }
+  .wf-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .wf-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .wf-sub { font-size: 10px; color: var(--text3); line-height: 1.4; }
+  .wf-arrow { display: flex; align-items: center; justify-content: center; width: 20px; flex-shrink: 0; color: var(--border2); font-size: 16px; }
 
-/* ═══ RESULTS ═══ */
-.results-pending{max-width:680px}
-.results-pending p{font-size:.95rem;color:var(--txt2);line-height:1.75;margin-bottom:1rem;font-weight:300}
-.results-pending p:last-child{color:var(--txt);font-weight:500;font-style:italic;margin-bottom:0}
+  /* CAP PIPELINE */
+  .cap-stage { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; border-bottom: 1px solid #0f0f0f; }
+  .cap-stage:last-child { border-bottom: none; }
+  .stage-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .s1 { background: #0a2820; border: 1px solid #00e5a030; color: var(--green); }
+  .s2 { background: #1a1520; border: 1px solid #a78bfa30; color: var(--purple); }
+  .s3 { background: #201510; border: 1px solid #f5a62330; color: var(--amber); }
+  .s4 { background: #201010; border: 1px solid #fb718530; color: var(--coral); }
+  .stage-title { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .stage-sub { font-size: 11px; color: var(--text3); line-height: 1.5; margin-bottom: 8px; }
+  .stage-hash { font-family: var(--font-mono); font-size: 10px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; color: var(--green); display: inline-block; }
 
-/* ═══ PI LETTER ═══ */
-.pi-letter .letter-body{max-width:720px;border-left:2px solid var(--blue-dim);padding-left:1.8rem}
-.pi-letter .letter-body p{font-family:'Source Serif 4',serif;font-size:1rem;color:var(--txt2);line-height:1.8;margin-bottom:1.2rem}
-.pi-letter .letter-body p:first-child{color:var(--txt)}
-.pi-letter .letter-closing{color:var(--txt)!important;font-weight:600;font-style:italic}
-.pi-letter .letter-sig{margin-top:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--blue);font-weight:500;letter-spacing:.01em}
-.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
-.results-col h4{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;margin-bottom:1.2rem;padding-bottom:.6rem;border-bottom:2px solid}
-.results-col.held h4{color:var(--green);border-color:var(--green)}
-.results-col.fail h4{color:var(--red);border-color:var(--red)}
-.r-item{padding:1rem 0;border-bottom:1px solid var(--border)}
-.r-item:last-child{border-bottom:none}
-.r-hyp{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;color:var(--txt3);letter-spacing:.05em;margin-bottom:.25rem}
-.r-t{font-size:.9rem;font-weight:500;color:var(--txt);margin-bottom:.2rem}
-.r-d{font-size:.78rem;color:var(--txt2);line-height:1.55;font-weight:300}
+  /* CHAIN VIZ */
+  .chain-viz { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 20px 0 8px; }
+  .chain-block { border-radius: 4px; padding: 6px 12px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; white-space: nowrap; }
+  .cb1 { background: #0a2820; border: 1px solid #00e5a030; color: var(--green); }
+  .cb2 { background: #1a1520; border: 1px solid #a78bfa30; color: var(--purple); }
+  .cb3 { background: #201510; border: 1px solid #f5a62330; color: var(--amber); }
+  .cb4 { background: #201010; border: 1px solid #fb718530; color: var(--coral); }
+  .chain-plus { color: var(--border2); font-size: 16px; }
+  .chain-arrow { color: var(--green); font-size: 14px; }
 
-/* ═══ METHOD CARDS ═══ */
-.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-.m-card{padding:1.8rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;transition:border-color .3s}
-.m-card:hover{border-color:var(--border-h)}
-.m-card h4{font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600;color:var(--blue);margin-bottom:.5rem}
-.m-card p{font-size:.82rem;color:var(--txt2);line-height:1.6;font-weight:300}
-.m-hash{margin-top:.6rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--txt3);word-break:break-all;line-height:1.5}
+  /* VERIFY MOCKUP */
+  .verify-mockup { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 20px 0; }
+  .verify-header { background: var(--bg2); padding: 10px 16px; font-family: var(--font-mono); font-size: 10px; color: var(--text3); border-bottom: 1px solid var(--border); }
+  .verify-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid #0c0c0c; }
+  .verify-row:last-child { border-bottom: none; }
+  .verify-name { font-size: 11px; color: var(--text2); }
+  .verify-hash { font-family: var(--font-mono); font-size: 10px; color: var(--text3); }
+  .verify-check { font-size: 11px; color: var(--green); font-weight: 600; font-family: var(--font-mono); }
+  .verify-footer { background: #00e5a008; border-top: 1px solid #00e5a020; padding: 10px 16px; font-size: 11px; color: var(--green); font-family: var(--font-mono); }
 
-/* ═══ CTA ═══ */
-.cta{text-align:center}
-.cta h3{font-family:'Source Serif 4',serif;font-size:clamp(1.5rem,2.8vw,2.2rem);color:var(--txt);margin-bottom:1rem;font-weight:600}
-.cta p{color:var(--txt2);font-size:1rem;max-width:500px;margin:0 auto 2.5rem;font-weight:300}
-.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.75rem 1.5rem;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:600;border-radius:6px;text-decoration:none;transition:all .3s;cursor:pointer;border:none}
-.btn-p{background:var(--blue);color:var(--bg)}
-.btn-p:hover{background:#6cbaf0;box-shadow:0 0 30px rgba(77,168,232,.2)}
-.btn-s{background:transparent;color:var(--txt2);border:1px solid var(--border-h)}
-.btn-s:hover{color:var(--txt);border-color:var(--blue)}
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 20px 0; }
+  .pricing-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 24px; position: relative; transition: border-color .15s; }
+  .pricing-card:hover { border-color: var(--border2); }
+  .pricing-card.featured { border-color: #00e5a035; background: #00e5a005; }
+  .pricing-icon { font-size: 22px; margin-bottom: 14px; }
+  .pricing-tier { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .08em; }
+  .pricing-desc { font-size: 12px; color: var(--text3); line-height: 1.6; margin-bottom: 16px; }
+  .pricing-tag { font-family: var(--font-mono); font-size: 10px; color: var(--text3); border-top: 1px solid var(--border); padding-top: 12px; }
+  .pricing-note { background: var(--bg2); border-radius: 8px; padding: 20px; margin: 16px 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .pricing-note-item p:first-child { font-family: var(--font-mono); font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px; }
+  .pricing-note-item p:last-child { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .pricing-cta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 20px; border-top: 1px solid var(--border); margin-top: 8px; }
+  .pricing-cta-text p:first-child { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+  .pricing-cta-text p:last-child { font-size: 12px; color: var(--text3); }
 
-/* ═══ FOOTER ═══ */
-footer{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:2.5rem 2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.f-left{display:flex;align-items:center;gap:.6rem}
-.f-left img{width:24px;height:24px;border-radius:3px}
-.f-left span{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--txt3)}
-.f-right{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--txt3);letter-spacing:.03em}
-.f-tag{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--txt3)}
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 32px 40px; max-width: 880px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: var(--font-mono); font-size: 11px; color: var(--green); letter-spacing: .15em; text-transform: uppercase; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-family: var(--font-mono); font-size: 10px; color: var(--text3); text-decoration: none; letter-spacing: .06em; transition: color .15s; }
+  .footer-links a:hover { color: var(--text2); }
+  .footer-copy { font-size: 10px; color: var(--text3); font-family: var(--font-mono); }
 
-/* ═══ ANIMATIONS ═══ */
-@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-.fi{opacity:0;animation:rise .7s ease-out forwards}
-.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.35s}.d4{animation-delay:.5s}
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease-out,transform .65s ease-out}
-.reveal.vis{opacity:1;transform:translateY(0)}
-
-/* ═══ RESPONSIVE ═══ */
-@media(max-width:900px){
-  nav{padding:.8rem 1.2rem}
-  .nav-links{display:none}
-  .hero{padding:6rem 1.2rem 3.5rem}
-  .hero-stats{gap:1.5rem}
-  .axes{grid-template-columns:1fr}
-  .results-grid{grid-template-columns:1fr}
-  .methods{grid-template-columns:1fr}
-  .sec{padding:3.5rem 1.2rem}
-  footer{padding:2rem 1.2rem;flex-direction:column;text-align:center}
-  .divider{padding:0 1.2rem}
-}
+  @media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero, section { padding: 48px 20px; }
+    h1 { font-size: 24px; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .axis-grid { grid-template-columns: 1fr; }
+    .ax-7 { grid-column: 1; }
+    .diff-grid { grid-template-columns: 1fr; }
+    .diff-sep { display: none; }
+    .pricing-note { grid-template-columns: 1fr; }
+    footer { padding: 24px 20px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- Circuit traces -->
-<div class="circuit-canvas">
-  <div class="trace h trace-1"></div><div class="trace v trace-2"></div><div class="trace h trace-3"></div><div class="node node-1"></div>
-  <div class="trace h trace-4"></div><div class="trace v trace-5"></div><div class="trace h trace-6"></div><div class="node node-2"></div>
-  <div class="trace v trace-7"></div><div class="trace h trace-8"></div><div class="node node-3"></div>
-  <div class="trace v trace-9"></div><div class="trace h trace-10"></div><div class="node node-4"></div>
-  <div class="trace v trace-11"></div><div class="node node-5"></div>
-  <div class="trace h trace-12"></div><div class="trace v trace-13"></div><div class="node node-6"></div>
-</div>
-
+<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">
-    <img src="H.png" alt="HipAAsynth">
-    <span>HipAAsynth</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#framework">6AAST</a></li>
-    <li><a href="#findings">Findings</a></li>
-    <li><a href="#method">Methodology</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <a class="nav-logo" href="#">HipAAsynth</a>
+  <div class="nav-links">
+    <a href="#framework">Framework</a>
+    <a href="#cap">Verification</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <a class="nav-cta" href="mailto:hello@hipaasynth.com">Contact</a>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="hero-badge fi"><span class="dot"></span>Study Publishing Soon</div>
-  <h1 class="fi d1">Safety and transparency in <em>healthcare AI</em></h1>
-  <p class="hero-sub fi d2">The Six-Axis Adversarial Stress Test is the first pre-registered, cryptographically reproducible evaluation framework for clinical AI. We test models against the populations they'll actually serve&thinsp;—&thinsp;rural, tribal, aging, underserved&thinsp;—&thinsp;because patients deserve AI that's been tested on people like them.</p>
-  <div class="hero-stats fi d3">
-    <div><div class="hero-stat-n">46,276</div><div class="hero-stat-l">API Calls</div></div>
-    <div><div class="hero-stat-n">6</div><div class="hero-stat-l">Adversarial Axes</div></div>
-    <div><div class="hero-stat-n">4</div><div class="hero-stat-l">Population Archetypes</div></div>
-    <div><div class="hero-stat-n">6</div><div class="hero-stat-l">Pre-Registered Hypotheses</div></div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Clinical AI Validation</div>
+  <h1>Your model passed the benchmark.<br>Now prove it works in the real world.</h1>
+  <p class="hero-sub">HipAAsynth stress-tests clinical AI models across seven adversarial conditions before deployment — and issues a cryptographically verifiable certification artifact any regulator can independently confirm.</p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="mailto:hello@hipaasynth.com">Request an evaluation</a>
+    <a class="btn-ghost" href="#framework">See the framework</a>
   </div>
-</section>
-
-<div class="divider"><div class="l"></div></div>
-
-<!-- ═══ MISSION ═══ -->
-<section class="sec mission reveal">
-  <div class="sec-tag">Mission</div>
-  <blockquote>Clinical AI is rolling out fastest in the places least equipped to catch its mistakes. We build the tools to make sure it works for <span class="hl">everyone</span> — rural hospitals, tribal health systems, aging communities, and the underserved populations that never make it into the training data.</blockquote>
-</section>
-
-<div class="divider"><div class="l"></div></div>
-
-<!-- ═══ PI LETTER ═══ -->
-<section class="sec pi-letter reveal">
-  <div class="sec-tag">From the Principal Investigator</div>
-  <div class="letter-body">
-    <p>This is the first application of the Six-Axis Adversarial Stress Test to a live clinical AI model under pre-registered conditions, and every finding in this report is offered in the spirit of collaboration — not judgment.</p>
-    <p>The 90% accuracy threshold was set at the top on purpose. In patient safety work, you set the bar where you want the field to be, not where you expect it to land on the first measurement. That threshold may need recalibration as more models are tested under identical conditions, and any adjustment will be made openly, with the data behind it.</p>
-    <p>Growing a validation practice in a field this complex means being transparent about the missteps and course corrections along the way — not just the clean results. I am committed to bringing on the deepest clinical, statistical, and regulatory expertise I can find as HipAAsynth matures, because no one person has the full picture in this work.</p>
-    <p>I look forward to every evaluation that follows — and to the frontier models that will define this industry proving they can meet the standard.</p>
-    <p class="letter-closing">The mission is patient safety. The method is transparency. The rest we figure out together.</p>
-    <div class="letter-sig">— Cody Carlson, Founder, HipAAsynth LLC</div>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-val">7</span>
+      <span class="stat-label">Adversarial axes</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">Zero</span>
+      <span class="stat-label">PHI required</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">Zero</span>
+      <span class="stat-label">Model access required</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">100%</span>
+      <span class="stat-label">Third-party verifiable</span>
+    </div>
   </div>
-</section>
+</div>
 
-<div class="divider"><div class="l"></div></div>
+<hr class="divider">
 
-<!-- ═══ 6AAST ═══ -->
-<section class="sec reveal" id="framework">
-  <div class="sec-tag">The Framework</div>
-  <h3 class="sec-title">Six-Axis Adversarial Stress Test</h3>
-  <div class="axes">
-    <div class="ax">
-      <div class="ax-n">Axis 1</div>
-      <h4>Data Missingness</h4>
-      <p>Clinical variables removed at 4 controlled tiers (5–20%). Models EHR incompleteness — the dominant failure mode in rural critical-access settings.</p>
+<!-- PROBLEM -->
+<section>
+  <div class="section-label">The problem</div>
+  <h2>Benchmarks measure what a model knows.<br>They do not measure how it behaves.</h2>
+  <div class="problem-grid">
+    <div class="problem-cell">
+      <div class="problem-icon">📊</div>
+      <div class="problem-title">Benchmark saturation</div>
+      <div class="problem-desc">Frontier models now score above 88% on legacy benchmarks. High scores no longer distinguish reliable models from unreliable ones in production.</div>
     </div>
-    <div class="ax">
-      <div class="ax-n">Axis 2</div>
-      <h4>Noise Injection</h4>
-      <p>Gaussian noise on continuous clinical variables at 3 severity tiers. Simulates real-world measurement variability from point-of-care devices.</p>
+    <div class="problem-cell">
+      <div class="problem-icon">⚠️</div>
+      <div class="problem-title">Deployment divergence</div>
+      <div class="problem-desc">A model validated on clean, curated data encounters missing fields, coding inconsistencies, and population variance the moment it goes live.</div>
     </div>
-    <div class="ax">
-      <div class="ax-n">Axis 3</div>
-      <h4>Temporal Drift</h4>
-      <p>18-month population evolution simulation across disease prevalence, prescription patterns, and demographics. Calibrated to CDC BRFSS and CMS trends.</p>
-    </div>
-    <div class="ax">
-      <div class="ax-n">Axis 4</div>
-      <h4>Population Shift</h4>
-      <p>Cross-archetype equity analysis across urban, rural, tribal, and aging populations. Zero additional API calls — pure analytical comparison against the urban anchor.</p>
-    </div>
-    <div class="ax">
-      <div class="ax-n">Axis 5</div>
-      <h4>Instrument Integrity</h4>
-      <p>SHA-256 determinism verification across independent processes and hash seeds. Your seed is your dataset — byte-identical, every time.</p>
-      <span class="ax-tag tag-g">Verified</span>
-    </div>
-    <div class="ax primary">
-      <div class="ax-n">Axis 6 — Primary Outcome</div>
-      <h4>LLM Output Variability &amp; Guardrail Stress</h4>
-      <p>Every high-risk patient submitted 4 times on byte-identical prompts. Measures consistency, non-parseable rates, and safety guardrail violations under the vendor's own deployment template.</p>
-      <span class="ax-tag tag-r">Guardrail Finding</span>
+    <div class="problem-cell">
+      <div class="problem-icon">⚖️</div>
+      <div class="problem-title">Regulatory exposure</div>
+      <div class="problem-desc">Unvalidated clinical AI creates False Claims Act liability, ECRI-flagged patient safety risk, and HHS AI Compliance Plan obligations with no defensible paper trail.</div>
     </div>
   </div>
 </section>
 
-<div class="divider"><div class="l"></div></div>
+<hr class="divider">
 
-<!-- ═══ FINDINGS ═══ -->
-<section class="sec reveal" id="findings">
-  <div class="sec-tag">First Evaluation</div>
-  <h3 class="sec-title">Results publishing soon</h3>
-  <div class="results-pending">
-    <p>The first 6AAST evaluation — protocol HSX-ORINN-2026-001 — has been completed. Six pre-registered hypotheses were tested across two clinical domains, four population archetypes, and all six adversarial axes. Some hypotheses held. Some did not. The full study report, including every number, every confidence interval, and every limitation, will be published here with a link to the complete report.</p>
-    <p>We report what held up and what didn't — because that's the point.</p>
+<!-- FRAMEWORK -->
+<section id="framework">
+  <div class="section-label">The 7AAST framework</div>
+  <h2>Seven conditions every deployed<br>clinical AI model must survive.</h2>
+  <p style="font-size:13px;color:var(--text3);max-width:560px;line-height:1.7;margin-bottom:8px">Every evaluation runs on a synthetic patient population calibrated to federal benchmarks — CDC BRFSS, ACS, IHS. Zero PHI. Fully deterministic. Any third party can reproduce the run independently.</p>
+
+  <div class="axis-grid">
+    <div class="axis-card ax-6">
+      <div class="axis-num">Axis 01</div>
+      <div class="axis-name">Missingness</div>
+      <div class="axis-desc">5–20% of clinical fields systematically removed. Labs absent. Vitals unrecorded. History incomplete.</div>
+    </div>
+    <div class="axis-card ax-6">
+      <div class="axis-num">Axis 02</div>
+      <div class="axis-name">Gaussian noise</div>
+      <div class="axis-desc">Continuous variables corrupted within clinically realistic bounds. Sensor drift. Transcription variance.</div>
+    </div>
+    <div class="axis-card ax-6">
+      <div class="axis-num">Axis 03</div>
+      <div class="axis-name">Temporal drift</div>
+      <div class="axis-desc">18-month deployment simulation. Population characteristics shift over time. The model you trained is not the model you deployed.</div>
+    </div>
+    <div class="axis-card ax-6">
+      <div class="axis-num">Axis 04</div>
+      <div class="axis-name">Population shift</div>
+      <div class="axis-desc">Out-of-distribution demographic profiles. Rural, tribal, dual-eligible. Patients no benchmark dataset was built around.</div>
+    </div>
+    <div class="axis-card ax-6">
+      <div class="axis-num">Axis 05</div>
+      <div class="axis-name">Label noise</div>
+      <div class="axis-desc">Systematic inconsistency injected into ground truth coding. Reflects real-world ICD documentation variance.</div>
+    </div>
+    <div class="axis-card ax-6">
+      <div class="axis-num">Axis 06</div>
+      <div class="axis-name">Semantic perturbation</div>
+      <div class="axis-desc">Identical clinical conditions documented in structurally different ways. Note style, abbreviation, phrasing variation.</div>
+    </div>
+    <div class="axis-card ax-7">
+      <div style="display:flex;gap:20px;align-items:flex-start">
+        <div style="flex:1">
+          <div class="axis-num">Axis 07 <span class="badge badge-new">New</span></div>
+          <div class="axis-name">Representational polymorphism</div>
+          <div class="axis-desc" style="color:var(--text2)">Two patients. Identical clinical profiles — same age, diagnosis, labs, vitals. One record arrives as a structured FHIR bundle. The other as a free-text clinical note. A reliable model produces consistent recommendations for both. An inconsistent model diverges — not because the clinical picture changed, but because the data representation did. This is the failure mode static benchmarks never surface. It causes unexplained output variance across sites, EHR vendors, and documentation cultures.</div>
+        </div>
+        <div style="flex-shrink:0;text-align:center;padding-top:4px;opacity:.4">
+          <div style="font-size:28px;margin-bottom:6px;color:var(--purple)">≣</div>
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--purple)">vs</div>
+          <div style="font-size:28px;margin-top:6px;color:var(--purple)">≡</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKFLOW -->
+  <div class="section-label" style="margin-top:40px">How an evaluation runs</div>
+  <div class="workflow">
+    <div class="wf-step"><div class="wf-box"><span class="wf-icon">🧬</span><div class="wf-label">Population</div><div class="wf-sub">Synthetic cohort built from federal benchmarks. Zero PHI.</div></div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step"><div class="wf-box"><span class="wf-icon">⚙️</span><div class="wf-label">7 axes applied</div><div class="wf-sub">Each perturbation runs deterministically on anchored seed.</div></div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step"><div class="wf-box"><span class="wf-icon">🤖</span><div class="wf-label">Model queried</div><div class="wf-sub">API calls against each perturbed population slice.</div></div></div>
+    <div class="wf-arrow">→</div>
+    <div class="wf-step"><div class="wf-box"><span class="wf-icon">📋</span><div class="wf-label">Report issued</div><div class="wf-sub">Signed certification report with CAP artifact.</div></div></div>
   </div>
 </section>
 
-<div class="divider"><div class="l"></div></div>
+<hr class="divider">
 
-<!-- ═══ METHODOLOGY ═══ -->
-<section class="sec reveal" id="method">
-  <div class="sec-tag">Methodology</div>
-  <h3 class="sec-title">How we test</h3>
-  <div class="methods">
-    <div class="m-card">
-      <h4>Deterministic Cohorts</h4>
-      <p>SHA-256 anchor-rooted synthetic patient generation. Pure Python, zero PHI, zero dependencies. Calibrated to CDC BRFSS, ACS, HRSA, and IHS structural data. Every patient reproducible from a single seed.</p>
-      <div class="m-hash">Your Seed Is Your Dataset</div>
+<!-- CAP -->
+<section id="cap">
+  <div class="section-label">Cryptographic artifact pipeline — CAP</div>
+  <h2>Every report is cryptographically sealed.<br>Any regulator can verify it independently.</h2>
+  <p style="font-size:13px;color:var(--text3);max-width:560px;line-height:1.7;margin-bottom:24px">Four stages. Each seals a component of the evaluation to everything that preceded it. The final artifact is anchored to the Bitcoin blockchain. No access to HipAAsynth systems required. No trust required — just math.</p>
+
+  <div>
+    <div class="cap-stage">
+      <div class="stage-num s1">S1</div>
+      <div>
+        <div class="stage-title">Population seal</div>
+        <div class="stage-sub">The synthetic patient population is SHA-256 hashed in canonical form. A permanent fingerprint of exactly which patients participated.</div>
+        <div class="stage-hash">SHA-256( patients.json ) → population_hash</div>
+      </div>
     </div>
-    <div class="m-card">
-      <h4>Pre-Registered</h4>
-      <p>All hypotheses, thresholds, and statistical methods locked on the Open Science Framework before a single API call. Prompt SHA-256 hashes frozen. No post-hoc hypothesis selection.</p>
-      <div class="m-hash">OSF DOI: 10.17605/OSF.IO/JHFKM</div>
+    <div class="cap-stage">
+      <div class="stage-num s2">S2</div>
+      <div>
+        <div class="stage-title">Preregistration seal</div>
+        <div class="stage-sub">The study design is hashed together with the population seal. Proves the hypotheses were locked before any model outputs were observed.</div>
+        <div class="stage-hash">SHA-256( prereg.md + S1 ) → prereg_hash</div>
+      </div>
     </div>
-    <div class="m-card">
-      <h4>Clinical Review</h4>
-      <p>Sepsis module calibrated by a bedside RN/BSN. Stroke module reviewed by a diagnostic imaging specialist. Population archetypes validated against published epidemiology.</p>
-      <div class="m-hash">TRIPOD-LLM + TRIPOD+AI aligned</div>
+    <div class="cap-stage">
+      <div class="stage-num s3">S3</div>
+      <div>
+        <div class="stage-title">Results seal</div>
+        <div class="stage-sub">Every model output — patient by patient, axis by axis — is canonically sorted and hashed with both previous seals. Results are permanently bound to the population and study design.</div>
+        <div class="stage-hash">SHA-256( results.csv + S2 + S1 ) → results_hash</div>
+      </div>
     </div>
-    <div class="m-card">
-      <h4>Zero Real Patient Data</h4>
-      <p>All records are computer-generated from aggregate federal statistical distributions. No PHI as defined by 45 CFR § 160.103 is generated, stored, or accessed at any stage.</p>
+    <div class="cap-stage">
+      <div class="stage-num s4">S4</div>
+      <div>
+        <div class="stage-title">Final artifact + QR code</div>
+        <div class="stage-sub">All three seals combine into a final artifact hash. A QR code is embedded on the last page of the report. The hash is anchored to the Bitcoin blockchain via OpenTimestamps — permanent, court-admissible, verifiable by anyone.</div>
+        <div class="stage-hash">SHA-256( S3 + S2 + S1 ) → artifact_hash → ⛓ Bitcoin</div>
+      </div>
     </div>
-    <div class="m-card">
-      <h4>Adversarial, Not Adversary</h4>
-      <p>The 6AAST is a collaborative safety framework. Findings are offered to vendors and deployers to support responsible deployment — not as an adversarial action.</p>
-    </div>
-    <div class="m-card">
-      <h4>Fully Auditable</h4>
-      <p>Complete SHA-256 manifest of all code, prompts, and result files. Independent verification requires only the seed, engine version, and published profile configurations.</p>
-    </div>
+  </div>
+
+  <div class="chain-viz">
+    <div class="chain-block cb1">Population</div>
+    <div class="chain-plus">+</div>
+    <div class="chain-block cb2">Prereg</div>
+    <div class="chain-plus">+</div>
+    <div class="chain-block cb3">Results</div>
+    <div class="chain-plus">+</div>
+    <div class="chain-block cb4">Report</div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-block" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text)">One artifact hash</div>
+  </div>
+  <p style="font-size:11px;color:var(--text3);line-height:1.6">Modifying any component changes that stage's hash and invalidates every stage that follows. The chain cannot be selectively altered.</p>
+
+  <div class="section-label" style="margin-top:32px">What the verification page shows</div>
+  <div class="verify-mockup">
+    <div class="verify-header">HipAAsynth — Certification Verification &nbsp;|&nbsp; scan QR on report final page</div>
+    <div class="verify-row"><span class="verify-name">Stage 1 — Population integrity</span><span class="verify-hash">d4b1dff53de420af...</span><span class="verify-check">✓ VERIFIED</span></div>
+    <div class="verify-row"><span class="verify-name">Stage 2 — Preregistration anchor</span><span class="verify-hash">6ebed1be6a1ddef1...</span><span class="verify-check">✓ VERIFIED</span></div>
+    <div class="verify-row"><span class="verify-name">Stage 3 — Results integrity</span><span class="verify-hash">a19918caf0e654f8...</span><span class="verify-check">✓ VERIFIED</span></div>
+    <div class="verify-row"><span class="verify-name">Stage 4 — Final artifact</span><span class="verify-hash">b6e3c74b9d363683...</span><span class="verify-check">✓ VERIFIED</span></div>
+    <div class="verify-footer">✓ CHAIN INTACT — This certification artifact has not been modified since issuance.</div>
   </div>
 </section>
 
-<div class="divider"><div class="l"></div></div>
+<hr class="divider">
 
-<!-- ═══ CTA ═══ -->
-<section class="sec cta reveal" id="contact">
-  <h3>Independent validation for clinical AI</h3>
-  <p>If your organization builds or deploys clinical AI, the 6AAST provides the evidence your patients, partners, and regulators need.</p>
-  <div class="cta-btns">
-    <a href="mailto:hipaasynth@gmail.com" class="btn btn-p">Get in Touch</a>
-    <a href="https://doi.org/10.17605/OSF.IO/JHFKM" target="_blank" rel="noopener" class="btn btn-s">View Pre-Registration →</a>
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-label">Transparent pricing</div>
+  <h2>Evaluations starting at $3,500</h2>
+  <p style="font-size:13px;color:var(--text3);max-width:520px;line-height:1.7;margin-bottom:24px">Every evaluation includes the full certification scope. Price scales with your organization's size and deployment context — not with what we deliver.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-icon">🚀</div>
+      <div class="pricing-tier">Startup</div>
+      <div class="pricing-desc">Pre-revenue or early stage. Building the case for deployment. Certification supports fundraising and regulatory de-risking.</div>
+      <div class="pricing-tag">Series A and below</div>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-icon">🏢</div>
+      <div class="pricing-tier">Growth stage</div>
+      <div class="pricing-desc">Deployed product with real users. Beginning to face procurement and payer scrutiny. Certification is a sales and compliance asset.</div>
+      <div class="pricing-tag">Series B and above</div>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-icon">🏥</div>
+      <div class="pricing-tier">Enterprise</div>
+      <div class="pricing-desc">Health system, payer, or established vendor with regulatory exposure. Certification is a legal and compliance instrument.</div>
+      <div class="pricing-tag">Hospital system / payer</div>
+    </div>
+  </div>
+
+  <div class="pricing-note">
+    <div class="pricing-note-item">
+      <p>Every tier includes</p>
+      <p>Full 7AAST evaluation. Signed certification report. CAP cryptographic artifact with QR verification.</p>
+    </div>
+    <div class="pricing-note-item">
+      <p>What scales</p>
+      <p>Price reflects the regulatory and commercial value of certification to your organization — not what we deliver.</p>
+    </div>
+    <div class="pricing-note-item">
+      <p>No PHI required</p>
+      <p>We never access your patient data or model weights. Evaluation runs entirely on HipAAsynth synthetic populations.</p>
+    </div>
+  </div>
+
+  <div class="pricing-cta">
+    <div class="pricing-cta-text">
+      <p>Request an evaluation scope</p>
+      <p>Three questions. Custom quote within 24 hours.</p>
+    </div>
+    <a class="btn-primary" href="mailto:hello@hipaasynth.com">Get a quote</a>
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
+<hr class="divider">
+
+<!-- FOOTER -->
 <footer>
-  <div class="f-left">
-    <img src="H.png" alt="HipAAsynth">
-    <span>© 2026 HipAAsynth LLC</span>
+  <span class="footer-logo">HipAAsynth LLC</span>
+  <div class="footer-links">
+    <a href="#framework">Framework</a>
+    <a href="#cap">Verification</a>
+    <a href="#pricing">Pricing</a>
+    <a href="mailto:hello@hipaasynth.com">Contact</a>
   </div>
-  <div class="f-tag">Your Seed Is Your Dataset</div>
-  <div class="f-right">Minot, North Dakota &nbsp;|&nbsp; BSL 1.1 &nbsp;|&nbsp; Engine v1.0.5</div>
+  <span class="footer-copy">© 2026 HipAAsynth LLC · Minot, ND</span>
 </footer>
 
-<script>
-// Scroll reveal
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }});
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
 </body>
 </html>
