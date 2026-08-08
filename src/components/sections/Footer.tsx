@@ -64,7 +64,15 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-background/10 pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <nav className="border-t border-background/10 pt-8 mb-6 flex flex-wrap gap-x-6 gap-y-2 text-background/60 text-sm">
+          <a href="/privacy.html" className="hover:text-background transition-colors">Privacy</a>
+          <a href="/terms.html" className="hover:text-background transition-colors">Terms</a>
+          <a href="/license.html" className="hover:text-background transition-colors">License</a>
+          <a href="/disclaimer.html" className="hover:text-background transition-colors">Disclaimer</a>
+          <a href="/ip-notice.html" className="hover:text-background transition-colors">IP Notice</a>
+        </nav>
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="text-background/40 text-xs font-mono">
             &copy; {new Date().getFullYear()} HipAAsynth LLC. All rights reserved.
           </div>
