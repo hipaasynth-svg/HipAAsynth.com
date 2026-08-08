@@ -21,7 +21,7 @@ const deliverables = [
   },
   {
     title: "CAP Certificate",
-    subtitle: "Verified & Immutable tiers",
+    subtitle: "Cryptographic attestation",
     desc: "Cryptographic Attestation Protocol: four-stage SHA-256 hash chain binding population, results, reports, and timestamp into a single immutable proof. Anchored to Bitcoin via OpenTimestamps. QR code links to a live verification page.",
     calibrations: [],
     locked: false,

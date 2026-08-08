@@ -3,7 +3,6 @@ import { Problem } from "@/components/sections/Problem";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FairnessPassport } from "@/components/sections/FairnessPassport";
 import { Deliverables } from "@/components/sections/Deliverables";
-import { Pricing } from "@/components/sections/Pricing";
 import { Differentiators } from "@/components/sections/Differentiators";
 import { OpenSource } from "@/components/sections/OpenSource";
 import { Footer } from "@/components/sections/Footer";
@@ -19,7 +18,6 @@ export default function Home() {
         <HowItWorks />
         <FairnessPassport />
         <Deliverables />
-        <Pricing />
         <Differentiators />
         <OpenSource />
       </main>
