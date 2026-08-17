@@ -53,7 +53,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-sm mb-4 text-background/90 uppercase tracking-wider">Request an Evaluation</h4>
             <p className="text-background/70 text-sm leading-relaxed mb-4">
-              Engagements run in 8–16 hours of founder time. The engine runs in under a minute.
+              Engagements run in 8–16 hours of expert engineering time. The engine runs in under a minute.
             </p>
             <a
               href="mailto:cody@hipaasynth.com"

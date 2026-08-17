@@ -11,7 +11,7 @@ const openComponents = [
 const closedComponents = [
   { name: "CAP pipeline (Bitcoin-anchored certification)", license: "Proprietary" },
   { name: "LLM evaluators & clinical harnesses", license: "BSL 1.1" },
-  { name: "FDA-ready tier logic", license: "Proprietary" },
+  { name: "Regulatory mapping logic (FDA TPLC / EU AI Act)", license: "Proprietary" },
 ];
 
 export function OpenSource() {
@@ -32,10 +32,10 @@ export function OpenSource() {
               Open Source Foundation
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              The engine is open source. The methodology is inspectable. Companies discover it on GitHub, run it internally, see failures — then come to HipAAsynth for the certified version that regulators and hospital procurement officers will accept.
+              The engine is open source and the methodology is fully inspectable — run it yourself, audit every metric, and reproduce every result. HipAAsynth adds the independently verifiable, tamper-evident certification layer built for regulatory submissions and hospital procurement.
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed mb-8">
-              AGPL v3 means: any organization embedding this engine in a commercial product must either open-source their full stack or obtain a commercial license. The open-source release is also the top of the funnel — every published FairnessPassport on a public model is permanent marketing.
+              AGPL v3 means: any organization embedding this engine in a commercial product must either open-source their full stack or obtain a commercial license. Internal evaluation, research, and non-commercial use are always free.
             </p>
             <a
               href="https://github.com/hipaasynth-svg/HipAAsynth"
