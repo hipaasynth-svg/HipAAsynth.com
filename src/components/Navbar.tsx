@@ -41,17 +41,17 @@ export function Navbar() {
           <button onClick={() => scrollTo("problem")} className="hover:text-foreground transition-colors">The Problem</button>
           <button onClick={() => scrollTo("how-it-works")} className="hover:text-foreground transition-colors">7AAST Engine</button>
           <button onClick={() => scrollTo("fairness-passport")} className="hover:text-foreground transition-colors">FairnessPassport</button>
-          <button onClick={() => scrollTo("pricing")} className="hover:text-foreground transition-colors">Tiers</button>
+          <button onClick={() => scrollTo("open-source")} className="hover:text-foreground transition-colors">Open Source</button>
         </nav>
 
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="sm" className="hidden sm:flex" asChild>
-            <a href="https://github.com/hipaasynth-svg/HipAAsynth" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
+            <a href="mailto:cody@hipaasynth.com">Contact</a>
           </Button>
           <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" asChild>
-            <a href="mailto:cody@hipaasynth.com">Request Evaluation</a>
+            <a href="https://github.com/hipaasynth-svg/HipAAsynth" target="_blank" rel="noopener noreferrer">
+              View on GitHub
+            </a>
           </Button>
         </div>
       </div>
