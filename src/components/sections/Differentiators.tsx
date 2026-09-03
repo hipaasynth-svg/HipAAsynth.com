@@ -14,8 +14,8 @@ const reasons = [
     detail: "Synthetic patients generated entirely from published statistics. No real data ingested. No HIPAA exposure. No data sharing agreements.",
   },
   {
-    label: "Tamper-Proof",
-    detail: "CAP certificate: four-stage SHA-256 hash chain anchored to Bitcoin via OpenTimestamps. Immutable by construction.",
+    label: "Tamper-Evident",
+    detail: "CAP certificate: four-stage SHA-256 hash chain, submitted to OpenTimestamps for Bitcoin confirmation. Any edit to the underlying data changes the hash and is immediately detectable.",
   },
   {
     label: "Regulator-Mapped",
