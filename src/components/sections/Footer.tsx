@@ -14,7 +14,7 @@ export function Footer() {
             </div>
             <p className="text-background/70 text-sm leading-relaxed">
               Independent Clinical AI Validation Services.<br />
-              Deterministic. Tamper-Proof. Regulator-Ready.
+              Deterministic. Tamper-Evident. Regulator-Mapped.
             </p>
             <p className="text-background/50 text-xs mt-4">
               HipAAsynth LLC<br />

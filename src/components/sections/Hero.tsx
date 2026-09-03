@@ -55,7 +55,7 @@ export function Hero() {
               <div className="text-sm text-muted-foreground mt-1 font-semibold uppercase tracking-wider">Polymorphic Forms</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-foreground font-mono">54</div>
+              <div className="text-3xl font-bold text-foreground font-mono">500+</div>
               <div className="text-sm text-muted-foreground mt-1 font-semibold uppercase tracking-wider">Automated Tests</div>
             </div>
             <div>
