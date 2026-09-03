@@ -32,7 +32,7 @@ export function OpenSource() {
               Open Source Foundation
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              The engine is open source. The methodology is inspectable. Companies discover it on GitHub, run it internally, see failures — then come to HipAAsynth for the certified version that regulators and hospital procurement officers will accept.
+              The engine is open source and the methodology is inspectable — any researcher, hospital, or regulator can read the code and verify how the results are produced without contacting us.
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed mb-8">
               AGPL v3 means: any organization embedding this engine in a commercial product must either open-source their full stack or obtain a commercial license. The open-source release is also the top of the funnel — every published FairnessPassport on a public model is permanent marketing.

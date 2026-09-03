@@ -24,7 +24,7 @@ export function Hero() {
             
             <p className="mt-6 text-xl text-muted-foreground leading-relaxed font-medium">
               Clinical AI needs independent premarket safety evaluation. <br className="hidden md:block" />
-              Mount Sinai / Nature Medicine (May 2026): ChatGPT Health undertriaged 51.6% of true medical emergencies. 
+              Mount Sinai / Nature Medicine (February 2026): ChatGPT Health under-triaged 52% of cases physicians agreed required emergency care.
               HipAAsynth is the answer.
             </p>
             
@@ -55,7 +55,7 @@ export function Hero() {
               <div className="text-sm text-muted-foreground mt-1 font-semibold uppercase tracking-wider">Polymorphic Forms</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-foreground font-mono">54</div>
+              <div className="text-3xl font-bold text-foreground font-mono">500+</div>
               <div className="text-sm text-muted-foreground mt-1 font-semibold uppercase tracking-wider">Automated Tests</div>
             </div>
             <div>
